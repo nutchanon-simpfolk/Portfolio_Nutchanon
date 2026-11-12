@@ -1,0 +1,773 @@
+<title>Simpfolk Portfolio</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="Simpfolk — photographer, editor and videographer portfolio.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+Thai:wght@400;500;600;700&display=swap">
+<style>
+/* Layout concept: Apple Store rhythm. Thin translucent nav, huge quiet headlines, rounded gray cards on white.
+   Photographer = record crate (sleeve + spinning disc + fanned minis). Videographer = ScreenX cinema (center + two angled side screens).
+   Palette: white / black / gray only. */
+:root{
+  --bg:#ffffff;
+  --surface:#f5f5f7;
+  --surface-2:#e8e8ed;
+  --fg:#1d1d1f;
+  --mute:#6e6e73;
+  --line:rgba(0,0,0,.14);
+  --glass:rgba(255,255,255,.8);
+  --btn-bg:#1d1d1f;
+  --btn-fg:#ffffff;
+  --stage:#000000;
+  --stage-fg:#f5f5f7;
+  --shadow:rgba(0,0,0,.28);
+  --font:-apple-system,BlinkMacSystemFont,"SF Pro Display","SF Pro Text","Inter","Noto Sans Thai","Helvetica Neue",Arial,sans-serif;
+  --mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+  --gut:clamp(16px,4vw,48px);
+  --r:28px;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#000000;--surface:#161617;--surface-2:#2a2a2d;--fg:#f5f5f7;--mute:#a1a1a6;--line:rgba(255,255,255,.18);
+  --glass:rgba(22,22,23,.8);--btn-bg:#f5f5f7;--btn-fg:#1d1d1f;--shadow:rgba(0,0,0,.7);color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#000000;--surface:#161617;--surface-2:#2a2a2d;--fg:#f5f5f7;--mute:#a1a1a6;--line:rgba(255,255,255,.18);
+  --glass:rgba(22,22,23,.8);--btn-bg:#f5f5f7;--btn-fg:#1d1d1f;--shadow:rgba(0,0,0,.7);color-scheme:dark}
+
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--fg);font:400 17px/1.47 var(--font);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:60;background:var(--glass);-webkit-backdrop-filter:saturate(180%) blur(20px);backdrop-filter:saturate(180%) blur(20px)}
+a{color:inherit;text-decoration:none}
+button{font:inherit;color:inherit}
+img{display:block;max-width:100%}
+h1,h2,h3,p{margin:0}
+:focus-visible{outline:2px solid var(--fg);outline-offset:3px}
+.wrap{max-width:1280px;margin-inline:auto;padding-left:max(var(--gut),env(safe-area-inset-left,0px));padding-right:max(var(--gut),env(safe-area-inset-right,0px))}
+.eyebrow{font-size:14px;font-weight:600;color:var(--mute);letter-spacing:.01em}
+.h-xl{font-size:clamp(48px,9vw,112px);font-weight:700;letter-spacing:-.035em;line-height:1}
+.h-l{font-size:clamp(34px,5.4vw,64px);font-weight:700;letter-spacing:-.03em;line-height:1.05;text-wrap:balance}
+.h-m{font-size:clamp(24px,3vw,34px);font-weight:600;letter-spacing:-.02em;line-height:1.12}
+.lead{font-size:clamp(19px,2.2vw,26px);line-height:1.3;color:var(--mute);font-weight:500;letter-spacing:-.01em;max-width:34ch}
+.mono{font-family:var(--mono);font-size:12px;letter-spacing:.04em}
+
+/* buttons */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:0 22px;border-radius:980px;border:1px solid transparent;background:var(--btn-bg);color:var(--btn-fg);font-size:15px;font-weight:500;cursor:pointer;transition:opacity .2s,transform .2s}
+.btn:hover{opacity:.82}
+.btn:active{transform:scale(.97)}
+.btn-ghost{background:transparent;color:var(--fg);border-color:var(--line)}
+.btn-light{background:#f5f5f7;color:#1d1d1f}
+.btn-sm{min-height:34px;padding:0 16px;font-size:13px}
+.link{display:inline-flex;align-items:center;gap:4px;font-size:17px;font-weight:500;cursor:pointer;background:none;border:0;padding:0}
+.link::after{content:"›";font-size:1.3em;line-height:1;transition:transform .2s}
+.link:hover::after{transform:translateX(3px)}
+.chip{display:inline-flex;align-items:center;min-height:34px;padding:0 14px;border-radius:980px;background:var(--surface-2);font-size:14px}
+
+/* mock banner */
+.mock{background:var(--surface);color:var(--mute);font-size:12px;text-align:center;padding:8px 16px}
+.mock b{color:var(--fg);font-weight:600}
+
+/* nav */
+.nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:50;background:var(--glass);-webkit-backdrop-filter:saturate(180%) blur(20px);backdrop-filter:saturate(180%) blur(20px);border-bottom:1px solid var(--line)}
+.nav-in{display:flex;align-items:center;justify-content:space-between;gap:16px;height:48px}
+.brand{font-weight:700;font-size:18px;letter-spacing:-.02em}
+.nav-links{display:flex;gap:clamp(16px,3.2vw,40px);font-size:13px}
+.nav-links a{color:var(--mute);transition:color .2s;padding-block:14px;position:relative}
+.nav-links a:hover,.nav-links a[aria-current="page"]{color:var(--fg)}
+.nav-links a[aria-current="page"]::after{content:"";position:absolute;left:0;right:0;bottom:8px;height:1.5px;background:var(--fg)}
+.nav-end{display:flex;align-items:center;gap:8px}
+.nav-links .short{display:none}
+@media (max-width:480px){.nav-links .full{display:none}.nav-links .short{display:inline}}
+@media (max-width:760px){
+  .nav-in{flex-wrap:wrap;height:auto;row-gap:0;padding-top:6px}
+  .brand{order:1}
+  .nav-end{order:2}
+  .nav-links{order:3;flex:0 0 100%;justify-content:space-between;gap:0;overflow-x:auto;scrollbar-width:none}
+  .nav-links::-webkit-scrollbar{display:none}
+  .nav-links a{padding:10px 4px;white-space:nowrap}
+  .nav-links a[aria-current="page"]::after{bottom:4px}
+}
+
+/* page enter */
+#view{min-height:70vh}
+#view.in{animation:pageIn .6s cubic-bezier(.2,.7,.2,1)}
+@keyframes pageIn{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.page-head{padding-block:clamp(48px,8vw,104px) clamp(28px,4vw,56px)}
+.page-head .lead{margin-top:18px}
+.section{padding-block:clamp(40px,6vw,88px)}
+.sec-head{margin-bottom:clamp(20px,3vw,36px);display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap}
+@supports (animation-timeline: view()){
+  .rv{animation:rv linear both;animation-timeline:view();animation-range:entry 0% entry 38%}
+  @keyframes rv{from{opacity:.15;transform:translateY(36px)}to{opacity:1;transform:none}}
+}
+.card{background:var(--surface);border-radius:var(--r);padding:clamp(22px,3vw,40px)}
+
+/* info: explore cards */
+.hero-actions{display:flex;align-items:center;gap:20px;flex-wrap:wrap;margin-top:clamp(24px,3vw,36px)}
+.explore{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+@media (max-width:900px){.explore{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.ex{position:relative;display:flex;flex-direction:column;justify-content:space-between;aspect-ratio:3/4;border-radius:var(--r);overflow:hidden;background:var(--surface-2);padding:clamp(18px,2vw,26px);color:#fff;isolation:isolate}
+.ex img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:-2;transition:transform .8s cubic-bezier(.2,.7,.2,1)}
+.ex::before{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(rgba(0,0,0,.5),transparent 40%,rgba(0,0,0,.55))}
+.ex:hover img{transform:scale(1.05)}
+.ex small{font-size:13px;font-weight:600;opacity:.85}
+.ex b{display:block;font-size:clamp(24px,2.6vw,34px);font-weight:700;letter-spacing:-.025em;line-height:1.05;margin-top:4px}
+.ex .plus{align-self:flex-end;width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.9);color:#1d1d1f;display:grid;place-items:center;font-size:22px;line-height:1;font-weight:300}
+.about-text{font-size:clamp(24px,3.6vw,44px);font-weight:600;letter-spacing:-.025em;line-height:1.14;max-width:26ch;color:var(--fg);text-wrap:balance}
+.two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+@media (max-width:760px){.two{grid-template-columns:1fr}}
+.tl{display:flex;flex-direction:column;gap:14px}
+.tl-i{display:grid;grid-template-columns:minmax(0,150px) minmax(0,1fr);gap:8px 28px;padding-block:18px;border-top:1px solid var(--line)}
+.tl-i:first-child{border-top:0;padding-top:0}
+.tl-i:last-child{padding-bottom:0}
+.tl-p{font-size:14px;color:var(--mute);font-variant-numeric:tabular-nums}
+.tl-i h3{font-size:19px;font-weight:600;letter-spacing:-.01em}
+.tl-i p{color:var(--mute);font-size:15px}
+.tl-i ul{margin:8px 0 0;padding-left:18px;color:var(--mute);font-size:15px}
+@media (max-width:560px){.tl-i{grid-template-columns:1fr}}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.skill h3{font-size:19px;font-weight:600}
+.soft-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+@media (max-width:1000px){.soft-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:520px){.soft-grid{grid-template-columns:1fr}}
+.soft h3{font-size:19px;font-weight:600;margin-bottom:8px}
+.soft p{color:var(--mute);font-size:15px}
+
+/* home */
+.home-hero{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:clamp(24px,5vw,72px);align-items:center;padding-block:clamp(36px,6vw,88px) clamp(12px,2vw,24px)}
+.hh-name{font-size:clamp(40px,6.2vw,80px);line-height:1.02;margin-top:8px;text-wrap:balance}
+.hh-photo{aspect-ratio:4/5;max-width:460px;width:100%;justify-self:end;border-radius:var(--r);overflow:hidden;background:var(--surface-2)}
+.hh-photo img{width:100%;height:100%;object-fit:cover}
+@media (max-width:760px){.home-hero{grid-template-columns:1fr}.hh-photo{order:-1;justify-self:start;max-width:220px}}
+.hrecs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+@media (max-width:760px){.hrecs{grid-template-columns:1fr}}
+.hrec{display:flex;flex-direction:column;gap:clamp(16px,2vw,28px);background:var(--surface);border-radius:var(--r);padding:clamp(20px,3vw,40px);overflow:hidden;transition:transform .4s cubic-bezier(.2,.7,.2,1)}
+.hrec:hover{transform:translateY(-4px)}
+.hrec-t{display:flex;flex-direction:column;gap:4px}
+.hrec-t .mono{color:var(--mute)}
+.hrec-t h3{font-size:clamp(28px,3.4vw,44px);font-weight:700;letter-spacing:-.03em;line-height:1.05}
+.hrec-t p{color:var(--mute);font-size:15px}
+.hrec-t .link{margin-top:8px;font-size:15px}
+.bento{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));grid-template-rows:repeat(2,minmax(0,1fr));gap:12px;aspect-ratio:2/1}
+.bento a{position:relative;display:block;overflow:hidden;border-radius:22px;background:var(--surface-2)}
+.bento a:first-child{grid-column:1/3;grid-row:1/3}
+.bento img{width:100%;height:100%;object-fit:cover;object-position:50% 25%;transition:transform .8s cubic-bezier(.2,.7,.2,1)}
+.bento a:hover img{transform:scale(1.04)}
+.bento .tag{position:absolute;left:12px;bottom:12px;padding:5px 11px;border-radius:980px;background:rgba(0,0,0,.55);color:#fff;font-size:12px;font-weight:600;backdrop-filter:blur(8px)}
+@media (max-width:760px){.bento{aspect-ratio:auto;grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:none}.bento a{aspect-ratio:4/5}.bento a:first-child{grid-column:1/3;grid-row:auto}}
+.vt{background:#000;color:#f5f5f7;border-radius:var(--r);padding:clamp(22px,3.5vw,48px)}
+.vt-head{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap;margin-bottom:clamp(20px,3vw,32px)}
+.vt-head p{color:#a1a1a6;margin-top:8px}
+.vt-row{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.vt-c{position:relative;display:block;aspect-ratio:9/16;border-radius:16px;overflow:hidden;background:#111;color:#fff}
+.vt-c img{width:100%;height:100%;object-fit:cover;transition:transform .8s cubic-bezier(.2,.7,.2,1)}
+.vt-c::after{content:"";position:absolute;inset:0;background:linear-gradient(transparent 55%,rgba(0,0,0,.7))}
+.vt-c:hover img{transform:scale(1.05)}
+.vt-c .t{position:absolute;left:14px;bottom:12px;z-index:1;font-size:14px;font-weight:600}
+@media (max-width:760px){.vt-row{grid-auto-flow:column;grid-template-columns:none;grid-auto-columns:42%;overflow-x:auto;scrollbar-width:none}.vt-row::-webkit-scrollbar{display:none}}
+.btn-light-ghost{background:transparent;color:#f5f5f7;border-color:rgba(255,255,255,.4)}
+
+/* resume (home) */
+.resume-wrap{padding-top:clamp(20px,3vw,40px)}
+.resume{background:var(--surface);border-radius:var(--r);padding:clamp(22px,4vw,56px)}
+.r-top{display:grid;grid-template-columns:minmax(0,300px) minmax(0,1fr);gap:clamp(24px,4vw,56px);align-items:center}
+.r-photo{aspect-ratio:4/5;border-radius:22px;overflow:hidden;background:var(--surface-2)}
+.r-photo img{width:100%;height:100%;object-fit:cover}
+.ph{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;color:var(--mute)}
+.ph span{font-size:clamp(72px,10vw,120px);font-weight:700;letter-spacing:-.04em;line-height:1;color:var(--fg);opacity:.85}
+.r-name{font-size:clamp(38px,5.6vw,72px);line-height:1.02;margin-top:6px;text-wrap:balance}
+.r-full{color:var(--mute);font-size:18px;margin-top:6px}
+.r-title{font-size:clamp(19px,2.2vw,26px);font-weight:600;letter-spacing:-.015em;margin-top:10px}
+.r-sum{color:var(--mute);margin-top:14px;max-width:52ch}
+.r-meta{display:flex;flex-wrap:wrap;gap:6px 18px;margin-top:16px;font-size:14px;color:var(--mute)}
+.r-cols{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(20px,3vw,40px);margin-top:clamp(28px,4vw,48px);padding-top:clamp(24px,3vw,36px);border-top:1px solid var(--line)}
+.r-h{font-size:13px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--mute);margin-bottom:12px}
+.r-i{padding-block:10px;border-top:1px solid var(--line)}
+.r-i:first-of-type{border-top:0;padding-top:0}
+.r-i b{display:block;font-weight:600;font-size:15px;line-height:1.35}
+.r-i span{display:block;font-size:13px;color:var(--mute);line-height:1.4}
+.r-sk{margin-bottom:12px}
+.r-sk small{display:block;font-size:12px;color:var(--mute);margin-bottom:6px}
+.r-sk .chips{margin-top:0;gap:6px}
+.r-sk .chip{min-height:28px;padding:0 11px;font-size:13px}
+@media (max-width:900px){.r-cols{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:760px){.r-top{grid-template-columns:1fr}.r-photo{max-width:240px}.r-cols{grid-template-columns:1fr}}
+
+/* editor */
+.ba{--p:50;position:relative;border-radius:var(--r);overflow:hidden;aspect-ratio:3/2;background:var(--surface-2);user-select:none;touch-action:pan-y}
+.ba img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.ba .before{filter:grayscale(.4) contrast(.78) brightness(1.08) saturate(.6)}
+.ba .after-l{position:absolute;inset:0;clip-path:inset(0 0 0 calc(var(--p)*1%))}
+.ba .bar{position:absolute;top:0;bottom:0;left:calc(var(--p)*1%);width:2px;background:#fff;box-shadow:0 0 12px rgba(0,0,0,.4);pointer-events:none}
+.ba .bar::after{content:"";position:absolute;top:50%;left:50%;width:44px;height:44px;margin:-22px;border-radius:50%;background:#fff;box-shadow:0 2px 12px rgba(0,0,0,.35)}
+.ba .tag{position:absolute;top:16px;padding:6px 12px;border-radius:980px;background:rgba(0,0,0,.55);color:#fff;font-size:12px;font-weight:600;backdrop-filter:blur(8px)}
+.ba .tag.l{left:16px}.ba .tag.r{right:16px}
+.ba input{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:ew-resize;margin:0}
+.reels{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+@media (max-width:640px){.reels{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.reel{position:relative;aspect-ratio:9/16;border-radius:var(--r);overflow:hidden;background:var(--surface-2);color:#fff;display:flex;align-items:flex-end;padding:18px}
+.reel img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.reel::before{content:"";position:absolute;inset:0;background:linear-gradient(transparent 55%,rgba(0,0,0,.65))}
+.reel span{position:relative;font-weight:600;font-size:15px}
+.play{position:absolute;top:50%;left:50%;width:56px;height:56px;margin:-28px;border-radius:50%;background:rgba(255,255,255,.88);display:grid;place-items:center;color:#1d1d1f}
+.play svg{width:22px;height:22px;margin-left:3px}
+.steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr));gap:14px}
+.step b{display:block;font-size:14px;color:var(--mute);font-weight:600;margin-bottom:28px;font-variant-numeric:tabular-nums}
+.step h3{font-size:24px;font-weight:700;letter-spacing:-.02em;margin-bottom:8px}
+.step p{color:var(--mute);font-size:15px}
+
+/* photographer: record crate */
+.seg{display:inline-flex;gap:4px;padding:4px;background:var(--surface);border-radius:980px;flex-wrap:wrap}
+.seg button{min-height:36px;padding:0 18px;border:0;border-radius:980px;background:transparent;color:var(--mute);font-size:14px;font-weight:500;cursor:pointer;transition:background .25s,color .25s}
+.seg button[aria-pressed="true"]{background:var(--bg);color:var(--fg);box-shadow:0 1px 4px rgba(0,0,0,.14)}
+.rec{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);gap:clamp(20px,4vw,56px);align-items:center;margin-top:20px;overflow:hidden}
+@media (max-width:860px){.rec{grid-template-columns:1fr}}
+.rec-art{container-type:inline-size;position:relative;aspect-ratio:100/84;width:100%;max-width:640px;margin-inline:auto}
+.rec-art>*{position:absolute}
+.sleeve{left:13cqw;top:4cqw;width:58cqw;aspect-ratio:4/5;z-index:3;padding:0;border:0;border-radius:.6cqw;overflow:hidden;background:var(--surface-2);box-shadow:0 2.4cqw 6cqw var(--shadow);cursor:zoom-in;transition:transform .5s cubic-bezier(.2,.7,.2,1)}
+.sleeve:hover{transform:translateY(-1cqw) rotate(-.6deg)}
+.sleeve img{width:100%;height:100%;object-fit:cover;animation:swap .7s cubic-bezier(.2,.7,.2,1) both}
+.disc{left:42cqw;top:12cqw;width:56cqw;aspect-ratio:1;border-radius:50%;z-index:2;background:radial-gradient(circle,#000 0 33%,transparent 33%),repeating-radial-gradient(circle,#0a0a0b 0 .45cqw,#232326 .45cqw .9cqw);box-shadow:0 1.4cqw 4cqw var(--shadow);animation:spin 10s linear infinite;transition:left .6s cubic-bezier(.2,.7,.2,1)}
+.rec-art:hover .disc{left:46cqw}
+.disc-l{position:absolute;inset:31%;border-radius:50%;overflow:hidden;border:.5cqw solid #111}
+.disc-l img{width:100%;height:100%;object-fit:cover;transform:scale(1.5)}
+.disc::after{content:"";position:absolute;left:50%;top:50%;width:2.2cqw;height:2.2cqw;margin:-1.1cqw;border-radius:50%;background:var(--surface)}
+.mini{left:var(--x);top:var(--y);width:20cqw;aspect-ratio:4/5;z-index:1;padding:0;border:0;border-radius:.5cqw;overflow:hidden;background:var(--surface-2);box-shadow:0 .8cqw 2.4cqw var(--shadow);transform:rotate(var(--r));transition:transform .35s cubic-bezier(.2,.7,.2,1);cursor:pointer}
+.mini:hover{transform:translateX(-1.6cqw) rotate(var(--r))}
+.mini img{width:100%;height:100%;object-fit:cover}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes swap{from{opacity:0;transform:scale(1.06)}to{opacity:1;transform:none}}
+.rec-info .mono{color:var(--mute)}
+.rec-info h2{margin-top:10px}
+.rec-info .blurb{color:var(--mute);margin-top:12px;max-width:34ch}
+.rec-info .cap{margin-top:22px;font-size:14px;color:var(--mute);min-height:3em;max-width:38ch}
+.rec-ctrl{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:20px}
+.round{width:44px;height:44px;border-radius:50%;border:1px solid var(--line);background:var(--bg);display:grid;place-items:center;cursor:pointer;transition:background .2s}
+.round:hover{background:var(--surface-2)}
+.round svg{width:18px;height:18px}
+.all{display:grid;grid-template-rows:0fr;transition:grid-template-rows .7s cubic-bezier(.2,.7,.2,1)}
+.all.open{grid-template-rows:1fr}
+.all>div{overflow:hidden;min-height:0}
+.all-in{padding-top:clamp(28px,4vw,48px)}
+.cols{columns:4;column-gap:10px}
+@media (max-width:1000px){.cols{columns:3}}
+@media (max-width:560px){.cols{columns:2;column-gap:8px}}
+.tile{display:block;width:100%;margin:0 0 10px;padding:0;border:0;border-radius:14px;overflow:hidden;background:var(--surface-2);break-inside:avoid;aspect-ratio:var(--ar);cursor:zoom-in}
+@media (max-width:560px){.tile{margin-bottom:8px}}
+.tile img{width:100%;height:100%;object-fit:cover;transition:transform .7s cubic-bezier(.2,.7,.2,1)}
+.tile:hover img{transform:scale(1.04)}
+.all.open .tile{animation:flip .7s calc(var(--i)*35ms) cubic-bezier(.2,.7,.2,1) both}
+@keyframes flip{from{opacity:0;transform:perspective(900px) rotateX(-22deg) translateY(36px)}to{opacity:1;transform:none}}
+
+/* videographer: ScreenX */
+.cinema{position:relative;background:var(--stage);color:var(--stage-fg);border-radius:var(--r);overflow:hidden;padding:clamp(20px,3vw,44px) clamp(8px,2vw,28px) 0;isolation:isolate}
+.ambient{position:absolute;inset:-20%;z-index:-1;background-size:cover;background-position:center;filter:blur(90px) saturate(1.5);opacity:.4;transition:background-image .6s}
+.screens{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);align-items:center;perspective:1500px}
+.scr{position:relative;overflow:hidden;background:#0c0c0d}
+.scr-c{z-index:2;height:min(66vh,620px);aspect-ratio:9/16;border-radius:6px;box-shadow:0 0 140px rgba(255,255,255,.1)}
+.scr-c>img{width:100%;height:100%;object-fit:cover;animation:swap .7s both}
+.scr-s{height:min(58vh,540px);width:100%;max-width:300px}
+.scr-s img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:blur(3px) brightness(.8) saturate(1.2)}
+.scr-l{justify-self:end;transform:rotateY(34deg);transform-origin:100% 50%;border-radius:6px 0 0 6px;-webkit-mask-image:linear-gradient(to right,transparent,#000 70%);mask-image:linear-gradient(to right,transparent,#000 70%)}
+.scr-l img{object-position:left center;transform:scaleX(-1)}
+.scr-r{justify-self:start;transform:rotateY(-34deg);transform-origin:0 50%;border-radius:0 6px 6px 0;-webkit-mask-image:linear-gradient(to left,transparent,#000 70%);mask-image:linear-gradient(to left,transparent,#000 70%)}
+.scr-r img{object-position:right center;transform:scaleX(-1)}
+@media (max-width:640px){.screens{grid-template-columns:minmax(0,14vw) auto minmax(0,14vw)}.scr-c{height:min(58vh,480px)}}
+.scr .shine{position:absolute;inset:0;background:linear-gradient(115deg,transparent 40%,rgba(255,255,255,.12) 50%,transparent 60%);transform:translateX(-120%);animation:shine 7s 1s ease-in-out infinite;pointer-events:none}
+@keyframes shine{to{transform:translateX(120%)}}
+.scr-c .play{background:rgba(255,255,255,.9)}
+.scr-c .note{position:absolute;left:12px;right:12px;bottom:14px;padding:10px 12px;border-radius:12px;background:rgba(0,0,0,.65);backdrop-filter:blur(8px);font-size:13px;line-height:1.35;text-align:center}
+.scr-c iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.floor{height:46px;margin-inline:-8%;background:radial-gradient(ellipse at 50% 0,rgba(255,255,255,.16),transparent 65%)}
+.cin-bar{display:flex;align-items:center;justify-content:space-between;gap:14px 24px;flex-wrap:wrap;padding-block:6px 4px}
+.cin-bar h2{font-size:clamp(22px,2.6vw,30px);font-weight:700;letter-spacing:-.02em}
+.cin-bar .mono{color:#a1a1a6;display:block;margin-bottom:2px}
+.tickets{display:flex;gap:10px;overflow-x:auto;padding:18px 2px 26px;scrollbar-width:none}
+.tickets::-webkit-scrollbar{display:none}
+.ticket{flex:0 0 78px;aspect-ratio:9/16;padding:0;border:2px solid transparent;border-radius:10px;overflow:hidden;background:#1a1a1c;opacity:.5;cursor:pointer;transition:opacity .25s,transform .25s,border-color .25s}
+.ticket:hover{opacity:.85}
+.ticket[aria-current="true"]{opacity:1;border-color:#f5f5f7;transform:translateY(-4px)}
+.ticket img{width:100%;height:100%;object-fit:cover}
+
+/* other */
+.big2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+@media (max-width:860px){.big2{grid-template-columns:1fr}}
+.feat{border-radius:var(--r);padding:clamp(28px,4vw,56px);display:flex;flex-direction:column;gap:18px;min-height:clamp(360px,46vw,560px)}
+.feat.dark{background:#000;color:#f5f5f7}
+.feat.dark .lead,.feat.dark li{color:#a1a1a6}
+.feat.gray{background:var(--surface)}
+.feat .lead{font-size:clamp(17px,1.8vw,21px);max-width:30ch}
+.feat ul{list-style:none;margin:auto 0 0;padding:0;display:flex;flex-direction:column}
+.feat li{padding-block:12px;border-top:1px solid var(--line);font-size:16px;color:var(--mute)}
+.feat.dark li{border-color:rgba(255,255,255,.18)}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .feat.dark{background:var(--surface)}}
+:root[data-theme="dark"] .feat.dark{background:var(--surface)}
+
+/* contact + footer */
+.contact{padding-block:clamp(56px,8vw,112px);scroll-margin-top:110px}
+.contact .row{display:flex;align-items:center;gap:12px 20px;flex-wrap:wrap;margin-top:28px}
+.chan{margin-top:28px;max-width:820px;border-bottom:1px solid var(--line)}
+.chan-r{display:flex;align-items:center;flex-wrap:wrap;gap:10px 14px;padding-block:16px;border-top:1px solid var(--line)}
+.chan-k{width:56px;color:var(--mute)}
+.chan-r .email{flex:1 1 200px;min-width:0}
+.email{font-size:clamp(17px,2vw,22px);font-weight:500;overflow-wrap:anywhere;user-select:all}
+.foot{border-top:1px solid var(--line);padding-block:18px calc(28px + env(safe-area-inset-bottom,0px));display:flex;justify-content:space-between;gap:10px 24px;flex-wrap:wrap;font-size:12px;color:var(--mute)}
+
+/* lightbox */
+.lb{position:fixed;inset:0;z-index:100;background:#000;color:#f5f5f7;display:flex;flex-direction:column}
+.lb-top{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:max(14px,env(safe-area-inset-top,0px)) max(var(--gut),env(safe-area-inset-right,0px)) 10px max(var(--gut),env(safe-area-inset-left,0px))}
+.lb-top .mono{color:#a1a1a6}
+.lb-top .mono b{color:#f5f5f7;font-weight:500}
+.lb-x{width:44px;height:44px;display:grid;place-items:center;background:rgba(255,255,255,.12);border:0;border-radius:50%;cursor:pointer;color:#f5f5f7}
+.lb-x svg{width:18px;height:18px}
+.lb-stage{--side:72px;position:relative;flex:1;min-height:0;margin:0;touch-action:pan-y}
+.lb-stage img{position:absolute;top:0;bottom:0;left:var(--side);right:var(--side);width:calc(100% - 2*var(--side));height:100%;object-fit:contain;user-select:none;-webkit-user-drag:none}
+.lb-cap{margin:0;padding:12px max(var(--gut),env(safe-area-inset-right,0px)) calc(16px + env(safe-area-inset-bottom,0px)) max(var(--gut),env(safe-area-inset-left,0px));color:#a1a1a6;font-size:13px;text-align:center;min-height:3.4em}
+.lb-nav{position:absolute;top:50%;translate:0 -50%;width:48px;height:64px;display:grid;place-items:center;background:none;border:0;color:#f5f5f7;cursor:pointer;opacity:.75}
+.lb-nav:hover{opacity:1}
+.lb-nav svg{width:28px;height:28px}
+.lb-prev{left:max(4px,env(safe-area-inset-left,0px))}
+.lb-next{right:max(4px,env(safe-area-inset-right,0px))}
+@media (max-width:640px){.lb-stage{--side:0px}.lb-nav{top:auto;bottom:calc(52px + env(safe-area-inset-bottom,0px));translate:none;height:48px;background:rgba(0,0,0,.55)}}
+
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{animation:none!important;transition:none!important}
+}
+</style>
+
+<div class="mock"><b>Mock-up</b> · ข้อความและข้อมูลที่ขึ้นต้นด้วย “(ตัวอย่าง)” หรือ 20XX เป็นข้อมูลตัวอย่างสำหรับดูโครงหน้า</div>
+
+<header class="nav">
+  <div class="wrap nav-in">
+    <a class="brand" href="#home" id="brand">Simpfolk</a>
+    <nav class="nav-links" id="nav-links" aria-label="Main"></nav>
+    <div class="nav-end">
+      <a class="btn btn-sm nav-book" href="#contact">Contact</a>
+    </div>
+  </div>
+</header>
+
+<main id="view"></main>
+
+<section class="contact wrap" id="contact" aria-labelledby="h-contact">
+  <p class="eyebrow">Contact</p>
+  <h2 class="h-l" id="h-contact" style="margin-top:8px">Let’s make something.</h2>
+  <div class="chan">
+    <div class="chan-r"><span class="mono chan-k">Email</span><span class="email" id="email-text"></span><button class="btn" type="button" id="copy-email">Copy email</button><a class="btn btn-ghost" id="mail-link" href="#contact">Send email</a></div>
+    <div class="chan-r" id="line-row"><span class="mono chan-k">LINE</span><span class="email" id="line-text"></span><button class="btn" type="button" id="copy-line">Copy ID</button><a class="btn btn-ghost" id="line-link" href="#contact" target="_blank" rel="noopener">Add on LINE</a></div>
+  </div>
+  <div class="row" id="socials" style="margin-top:18px"></div>
+</section>
+<footer class="wrap foot">
+  <span id="foot-c"></span>
+  <a href="#top" data-top>Back to top ↑</a>
+</footer>
+
+<div class="lb" id="lb" role="dialog" aria-modal="true" aria-label="Photo viewer" hidden>
+  <div class="lb-top">
+    <span class="mono" id="lb-count"></span>
+    <button class="lb-x" type="button" id="lb-close" aria-label="Close viewer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 5l14 14M19 5L5 19"/></svg></button>
+  </div>
+  <button class="lb-nav lb-prev" type="button" id="lb-prev" aria-label="Previous photo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M15 4l-8 8 8 8"/></svg></button>
+  <figure class="lb-stage" id="lb-stage"><img id="lb-img" alt=""></figure>
+  <button class="lb-nav lb-next" type="button" id="lb-next" aria-label="Next photo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M9 4l8 8-8 8"/></svg></button>
+  <p class="lb-cap" id="lb-cap"></p>
+</div>
+
+<script src="data.js"></script>
+<script>
+const S = window.SITE;
+const $ = (s, r = document) => r.querySelector(s);
+const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const pad = n => String(n).padStart(2, '0');
+const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const PLAY = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 4.5v15l13-7.5z"/></svg>';
+const ARR_L = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>';
+const ARR_R = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>';
+
+/* ---------- normalize data ---------- */
+S.galleries.forEach(g => {
+  g.photos = g.photos.map(p => typeof p === 'string' ? { f: p } : p);
+  g.photos.forEach((p, i) => { p.n = i + 1; p.src = g.folder + p.f; p.gt = g.title; p.gid = g.id; });
+});
+const ALL = S.galleries.flatMap(g => g.photos);
+const RECORDS = [
+  ...S.galleries.map(g => ({ id: g.id, title: g.title, blurb: g.blurb, items: g.photos })),
+  ...S.collections.map(c => ({ id: c.id, title: c.title, blurb: c.blurb, items: ALL.filter(p => p.t === c.filter) }))
+].filter(r => r.items.length);
+const ROUTES = [
+  { id: 'home', label: 'Home' },
+  { id: 'info', label: 'Info' },
+  { id: 'editor', label: 'Editor' },
+  { id: 'photographer', label: 'Photographer', short: 'Photo' },
+  { id: 'videographer', label: 'Videographer', short: 'Video' },
+  { id: 'other', label: 'Other' }
+];
+const pick = (src, alt) => ({ src, alt });
+const cover = {
+  editor: ALL.find(p => p.f === 'color-04.jpg') || ALL[0],
+  photographer: ALL.find(p => p.f === 'bw-01.jpg') || ALL[0],
+  videographer: ALL.find(p => p.f === 'color-02.jpg') || ALL[0],
+  other: ALL.find(p => p.f === 'color-10.jpg') || ALL[0]
+};
+
+/* ---------- shell: nav, menu, contact ---------- */
+$('#nav-links').innerHTML = ROUTES.map(r => `<a href="#${r.id}" data-r="${r.id}"><span class="full">${r.label}</span><span class="short">${r.short || r.label}</span></a>`).join('');
+$('#email-text').textContent = S.contact.email;
+$('#mail-link').href = 'mailto:' + S.contact.email + '?subject=' + encodeURIComponent('Inquiry');
+const soc = [];
+if (S.contact.phone) soc.push(`<span class="chip">${esc(S.contact.phone)}</span>`);
+if (S.contact.instagram) soc.push(`<a class="chip" target="_blank" rel="noopener" href="https://instagram.com/${esc(S.contact.instagram.replace(/^@/, ''))}">Instagram</a>`);
+if (S.contact.tiktok) soc.push(`<a class="chip" target="_blank" rel="noopener" href="https://www.tiktok.com/@${esc(S.contact.tiktok.replace(/^@/, ''))}">TikTok</a>`);
+$('#socials').innerHTML = soc.join('');
+$('#socials').hidden = !soc.length;
+$('#foot-c').textContent = '© 2026 ' + S.name + '. All photographs belong to the photographer.';
+const lineId = S.contact.line;
+if (lineId) {
+  $('#line-text').textContent = lineId;
+  const bare = lineId.replace(/^@/, '');
+  $('#line-link').href = lineId.startsWith('@') ? 'https://line.me/R/ti/p/%40' + encodeURIComponent(bare) : 'https://line.me/ti/p/~' + encodeURIComponent(bare);
+} else $('#line-row').hidden = true;
+function bindCopy(btn, text, el) {
+  btn.addEventListener('click', async () => {
+    const old = btn.textContent;
+    try { await navigator.clipboard.writeText(text); btn.textContent = 'Copied'; }
+    catch (_) { const r = document.createRange(); r.selectNodeContents(el); const sel = getSelection(); sel.removeAllRanges(); sel.addRange(r); btn.textContent = 'Press Ctrl/Cmd + C'; }
+    setTimeout(() => btn.textContent = old, 1800);
+  });
+}
+bindCopy($('#copy-email'), S.contact.email, $('#email-text'));
+if (lineId) bindCopy($('#copy-line'), lineId, $('#line-text'));
+
+/* ---------- views ---------- */
+function homeView() {
+  const I = S.info, P = S.profile || {}, H = S.home || {};
+  const photo = P.photo
+    ? `<img src="${esc(P.photo)}" alt="Portrait of ${esc(P.fullName || S.name)}">`
+    : `<div class="ph" role="img" aria-label="Profile photo placeholder"><span>${esc(S.name.charAt(0))}</span><small class="mono">Photo placeholder</small></div>`;
+  const recDefs = (H.records && H.records.length ? H.records : S.galleries.slice(0, 2).map(g => ({ id: g.id }))).slice(0, 2);
+  const HMINI = [['0cqw', '6cqw', '-9deg'], ['2cqw', '28cqw', '-3deg'], ['0cqw', '50cqw', '7deg']];
+  const recs = recDefs.map(d => {
+    const g = S.galleries.find(x => x.id === d.id); if (!g) return null;
+    const byF = f => g.photos.find(p => p.f === f);
+    const main = byF(d.main) || g.photos[0];
+    let minis = (d.minis || []).map(byF).filter(p => p && p !== main);
+    if (!minis.length) minis = g.photos.filter(p => p !== main);
+    return { g, main, minis: minis.slice(0, 3) };
+  }).filter(Boolean);
+  const recCards = recs.map(({ g, main, minis }, i) => `
+    <a class="hrec" href="#photographer" data-goto-photo="${esc(g.id)}:${g.photos.indexOf(main)}" aria-label="Open the ${esc(g.title)} record, ${g.photos.length} frames">
+      <div class="rec-art">
+        ${minis.map((p, j) => `<span class="mini" style="--x:${HMINI[j][0]};--y:${HMINI[j][1]};--r:${HMINI[j][2]}"><img src="${esc(p.src)}" alt="" loading="lazy"></span>`).join('')}
+        <div class="disc" aria-hidden="true"><div class="disc-l"><img src="${esc(main.src)}" alt=""></div></div>
+        <span class="sleeve"><img src="${esc(main.src)}" alt="${esc(main.alt)}" loading="lazy"></span>
+      </div>
+      <div class="hrec-t"><span class="mono">Record ${pad(i + 1)}</span><h3>${esc(g.title)}</h3><p>${g.photos.length} frames</p><span class="link">Open record</span></div>
+    </a>`).join('');
+  const vids = ((H.videos && H.videos.length) ? H.videos : [0, 1, 2, 3]).map(i => ({ v: S.videos[i], i })).filter(x => x.v).slice(0, 4);
+  const meta = [S.contact.email, S.contact.line && 'LINE ' + S.contact.line].filter(Boolean).map(x => `<span>${esc(x)}</span>`).join('');
+  return `
+  <section class="wrap home-hero">
+    <div>
+      <p class="eyebrow">Hello, I’m</p>
+      <h1 class="h-xl hh-name">${esc(P.fullName || S.name)}</h1>
+      ${P.fullName ? `<p class="r-full">Nickname · ${esc(S.name)}</p>` : ''}
+      <p class="r-title">${esc(P.title || S.roles.join(' · '))}</p>
+      <p class="r-sum">${esc(P.intro || I.summary)}</p>
+      <div class="r-meta">${meta}</div>
+      <div class="hero-actions">
+        <a class="btn" href="#contact">Contact</a>
+        <a class="link" href="#info">Full resume</a>
+      </div>
+    </div>
+    <div class="hh-photo">${photo}</div>
+  </section>
+  <section class="wrap section">
+    <div class="sec-head rv"><div><p class="eyebrow">Selected work</p><h2 class="h-l" style="margin-top:6px">Photography</h2></div><a class="btn" href="#photographer">View all photos</a></div>
+    <div class="hrecs rv">${recCards}</div>
+  </section>
+  <section class="wrap section" style="padding-top:0">
+    <div class="vt rv">
+      <div class="vt-head"><div><p class="eyebrow" style="color:#a1a1a6">Selected work</p><h2 class="h-l" style="margin-top:6px">Videography</h2><p>Short-form videos from TikTok.</p></div><a class="btn btn-light" href="#videographer">View all videos</a></div>
+      <div class="vt-row">${vids.map(x => `<a class="vt-c" href="#videographer" data-goto-vid="${x.i}" aria-label="Open ${esc(x.v.title)}"><img src="${esc(x.v.cover)}" alt="" loading="lazy"><span class="play" aria-hidden="true">${PLAY}</span><span class="t">${esc(x.v.title)}</span></a>`).join('')}</div>
+    </div>
+  </section>`;
+}
+
+function infoView() {
+  const I = S.info, P = S.profile || {};
+  const ex = [['editor', 'Editor', 'Retouch, grade, cut'], ['photographer', 'Photographer', 'Portrait & candid'], ['videographer', 'Videographer', 'Short-form video'], ['other', 'Other', 'Events & KOL']]
+    .map(([id, t, d]) => `<a class="ex rv" href="#${id}"><img src="${esc(cover[id].src)}" alt="" loading="lazy"><span><small>${esc(d)}</small><b>${t}</b></span><span class="plus" aria-hidden="true">+</span></a>`).join('');
+  const photo = P.photo
+    ? `<img src="${esc(P.photo)}" alt="Portrait of ${esc(P.fullName || S.name)}">`
+    : `<div class="ph" role="img" aria-label="Profile photo placeholder"><span>${esc(S.name.charAt(0))}</span><small class="mono">Photo placeholder</small></div>`;
+  const meta = [S.contact.email, S.contact.line && 'LINE ' + S.contact.line, S.contact.phone].filter(Boolean).map(x => `<span>${esc(x)}</span>`).join('');
+  return `
+  <section class="wrap resume-wrap">
+    <article class="resume" aria-label="Resume">
+      <div class="r-top">
+        <div class="r-photo">${photo}</div>
+        <div>
+          <p class="eyebrow">Resume</p>
+          <h1 class="h-xl r-name">${esc(P.fullName || S.name)}</h1>
+          ${P.fullName ? `<p class="r-full">Nickname · ${esc(S.name)}</p>` : ''}
+          <p class="r-title">${esc(P.title || S.roles.join(' · '))}</p>
+          <p class="r-sum">${esc(I.summary)}</p>
+          <div class="r-meta">${meta}</div>
+          <div class="hero-actions">
+            <a class="btn" href="#contact">Contact</a>
+            ${S.cv ? `<a class="btn btn-ghost" href="${esc(S.cv)}" target="_blank" rel="noopener">Download CV</a>` : ''}
+          </div>
+        </div>
+      </div>
+      <div class="r-cols">
+        <section><h2 class="r-h">Education</h2>${I.education.map(e => `<div class="r-i"><b>${esc(e.title)}</b><span>${esc(e.detail)}</span>${e.period ? `<span>${esc(e.period)}</span>` : ''}</div>`).join('')}</section>
+        <section><h2 class="r-h">Experience</h2>${I.experience.map(e => `<div class="r-i"><b>${esc(e.title)}</b><span>${esc(e.org)}</span><span>${esc(e.period)}</span></div>`).join('')}</section>
+        <section><h2 class="r-h">Skills</h2>
+          ${I.hard.map(h => `<div class="r-sk"><small>${esc(h.group)}</small><div class="chips">${h.items.map(i => `<span class="chip">${esc(i)}</span>`).join('')}</div></div>`).join('')}
+          <div class="r-sk"><small>Soft skills</small><div class="chips">${I.soft.map(s => `<span class="chip">${esc(s.title)}</span>`).join('')}</div></div>
+        </section>
+      </div>
+    </article>
+  </section>
+  <section class="wrap section">
+    <div class="sec-head rv"><h2 class="h-m">Explore the work</h2></div>
+    <div class="explore">${ex}</div>
+  </section>`;
+}
+
+function editorView() {
+  const E = S.editor;
+  const demo = ALL.find(p => p.f === 'color-10.jpg') || ALL[0];
+  const reels = S.videos.slice(0, 3).map(v => `<div class="reel rv"><img src="${esc(v.cover)}" alt="" loading="lazy"><span class="play" aria-hidden="true">${PLAY}</span><span>Edit reel · ${esc(v.title)}</span></div>`).join('');
+  return `
+  <section class="wrap page-head">
+    <p class="eyebrow">Editor</p>
+    <h1 class="h-xl" style="margin-top:10px">Edit.<br>Finish.</h1>
+    <p class="lead">${esc(E.lead)}</p>
+  </section>
+  <section class="wrap">
+    <div class="ba rv" id="ba">
+      <img class="before" src="${esc(demo.src)}" alt="Before: flat, ungraded version of the photo">
+      <div class="after-l"><img src="${esc(demo.src)}" alt="After: graded version of the photo"></div>
+      <span class="tag l">Before</span><span class="tag r">After</span>
+      <div class="bar"></div>
+      <input type="range" min="0" max="100" value="50" id="ba-r" aria-label="Before and after comparison">
+    </div>
+    <p class="mono" style="color:var(--mute);margin-top:12px">Mock-up · ภาพ Before จำลองด้วยฟิลเตอร์ ให้แทนด้วยรูปก่อน/หลังรีทัชจริง</p>
+  </section>
+  <section class="wrap section">
+    <div class="sec-head rv"><h2 class="h-l">Video edits</h2><a class="link" href="#videographer">All videos</a></div>
+    <div class="reels">${reels}</div>
+  </section>
+  <section class="wrap section" style="padding-top:0">
+    <div class="sec-head rv"><h2 class="h-l">Workflow</h2></div>
+    <div class="steps">${E.steps.map((s, i) => `<div class="card step rv"><b>${pad(i + 1)}</b><h3>${esc(s.t)}</h3><p>${esc(s.d)}</p></div>`).join('')}</div>
+  </section>`;
+}
+
+/* photographer: record crate */
+let rec = { r: 0, i: 0, open: false };
+function photographerView() {
+  return `
+  <section class="wrap page-head">
+    <p class="eyebrow">Photographer</p>
+    <h1 class="h-xl" style="margin-top:10px">Frames,<br>on record.</h1>
+    <p class="lead">Pick a record. Flip through its frames, or open the whole crate.</p>
+  </section>
+  <section class="wrap">
+    <div class="seg" role="group" aria-label="Choose a record" id="rec-seg">${RECORDS.map((r, i) => `<button type="button" data-r="${i}" aria-pressed="${i === rec.r}">${esc(r.title)}</button>`).join('')}</div>
+    <div class="card rec" id="rec"></div>
+    <div class="all" id="all"><div><div class="all-in"><div class="sec-head"><h2 class="h-l" id="all-t"></h2><span class="mono" id="all-c" style="color:var(--mute)"></span></div><div class="cols" id="all-cols"></div></div></div></div>
+  </section>`;
+}
+const MINI = [['0cqw', '4cqw', '-9deg'], ['2cqw', '22cqw', '-4deg'], ['0cqw', '40cqw', '5deg'], ['3cqw', '58cqw', '10deg']];
+function paintRecord(animate) {
+  const R = RECORDS[rec.r], n = R.items.length, it = R.items[rec.i];
+  const minis = [1, 2, 3, 4].filter(k => k < n).map((k, j) => ({ p: R.items[(rec.i + k) % n], at: (rec.i + k) % n, m: MINI[j] }));
+  $('#rec').innerHTML = `
+    <div class="rec-art">
+      ${minis.map(m => `<button class="mini" type="button" data-pick="${m.at}" style="--x:${m.m[0]};--y:${m.m[1]};--r:${m.m[2]}" aria-label="Show frame ${m.p.n}: ${esc(m.p.alt)}"><img src="${esc(m.p.src)}" alt="" loading="lazy"></button>`).join('')}
+      <div class="disc" aria-hidden="true"><div class="disc-l"><img src="${esc(it.src)}" alt=""></div></div>
+      <button class="sleeve" type="button" data-open="${rec.i}" aria-label="Open frame ${it.n} full size"><img src="${esc(it.src)}" alt="${esc(it.alt)}"></button>
+    </div>
+    <div class="rec-info">
+      <p class="mono">Record ${pad(rec.r + 1)} / ${pad(RECORDS.length)}</p>
+      <h2 class="h-l">${esc(R.title)}</h2>
+      <p class="blurb">${esc(R.blurb)}</p>
+      <p class="cap"><b style="color:var(--fg);font-weight:600">Frame ${pad(rec.i + 1)} / ${pad(n)}</b><br>${esc(it.alt)}</p>
+      <div class="rec-ctrl">
+        <button class="round" type="button" data-step="-1" aria-label="Previous frame">${ARR_L}</button>
+        <button class="round" type="button" data-step="1" aria-label="Next frame">${ARR_R}</button>
+        <button class="btn" type="button" id="all-btn" aria-expanded="${rec.open}">${rec.open ? 'Hide all frames' : 'View all ' + n + ' frames'}</button>
+      </div>
+    </div>`;
+  $('#all-t').textContent = R.title + ' · all frames';
+  $('#all-c').textContent = n + ' frames';
+  if (!animate) return;
+}
+function paintAll() {
+  const R = RECORDS[rec.r];
+  $('#all-cols').innerHTML = R.items.map((p, i) => `<button class="tile" type="button" data-open="${i}" style="--ar:${p.w || 2} / ${p.h || 3};--i:${Math.min(i, 14)}" aria-label="Open frame ${p.n}: ${esc(p.alt)}"><img src="${esc(p.src)}" alt="" loading="lazy" ${p.w ? '' : 'onload="this.parentNode.style.setProperty(\'--ar\',this.naturalWidth+\' / \'+this.naturalHeight)"'}></button>`).join('');
+  $('#all').classList.toggle('open', rec.open);
+}
+function bindPhotographer() {
+  paintRecord(); paintAll();
+  const view = $('#view');
+  $('#rec-seg').addEventListener('click', e => {
+    const b = e.target.closest('button'); if (!b) return;
+    rec.r = +b.dataset.r; rec.i = 0;
+    document.querySelectorAll('#rec-seg button').forEach(x => x.setAttribute('aria-pressed', String(x === b)));
+    paintRecord(); paintAll();
+  });
+  $('#rec').addEventListener('click', e => {
+    const R = RECORDS[rec.r];
+    const m = e.target.closest('[data-pick]'), s = e.target.closest('[data-step]'), o = e.target.closest('[data-open]'), a = e.target.closest('#all-btn');
+    if (m) { rec.i = +m.dataset.pick; paintRecord(); }
+    else if (s) { rec.i = (rec.i + +s.dataset.step + R.items.length) % R.items.length; paintRecord(); }
+    else if (o) openLB(R.items.map(lbItem), +o.dataset.open, o);
+    else if (a) { rec.open = !rec.open; $('#all').classList.toggle('open', rec.open); a.setAttribute('aria-expanded', String(rec.open)); a.textContent = rec.open ? 'Hide all frames' : 'View all ' + R.items.length + ' frames'; if (rec.open) setTimeout(() => $('#all').scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' }), 120); }
+  });
+  $('#all-cols').addEventListener('click', e => {
+    const o = e.target.closest('[data-open]'); if (o) openLB(RECORDS[rec.r].items.map(lbItem), +o.dataset.open, o);
+  });
+}
+
+/* videographer: ScreenX */
+let vid = 0;
+const tiktokId = u => { const m = /\/video\/(\d+)/.exec(u || ''); return m && m[1]; };
+function videographerView() {
+  return `
+  <section class="wrap page-head">
+    <p class="eyebrow">Videographer</p>
+    <h1 class="h-xl" style="margin-top:10px">Wide<br>screen.</h1>
+    <p class="lead">One video up front. The walls light up with it.</p>
+  </section>
+  <section class="wrap">
+    <div class="cinema" id="cinema">
+      <div class="ambient" id="ambient"></div>
+      <div class="screens" id="screens"></div>
+      <div class="floor" aria-hidden="true"></div>
+      <div class="cin-bar" id="cin-bar"></div>
+      <div class="tickets" id="tickets" role="list">${S.videos.map((v, i) => `<button class="ticket" role="listitem" type="button" data-v="${i}" aria-label="${esc(v.title)}"><img src="${esc(v.cover)}" alt="" loading="lazy"></button>`).join('')}</div>
+    </div>
+    <p class="mono" style="color:var(--mute);margin-top:12px">Mock-up · ใช้รูปถ่ายเป็นปกชั่วคราว ใส่ลิงก์ TikTok ที่ <code>videos</code> ใน data.js</p>
+  </section>`;
+}
+function paintVideo(playing) {
+  const v = S.videos[vid], id = tiktokId(v.url);
+  $('#ambient').style.backgroundImage = `url("${v.cover}")`;
+  $('#screens').innerHTML = `
+    <div class="scr scr-s scr-l" aria-hidden="true"><img src="${esc(v.cover)}" alt=""><span class="shine"></span></div>
+    <div class="scr scr-c">
+      ${playing && id ? `<iframe src="https://www.tiktok.com/player/v1/${id}" allow="fullscreen; encrypted-media" allowfullscreen title="${esc(v.title)}"></iframe>`
+        : `<img src="${esc(v.cover)}" alt="${esc(v.title)} cover"><span class="shine"></span>
+           <button class="play" type="button" id="v-play" aria-label="Play ${esc(v.title)}" style="border:0;cursor:pointer">${PLAY}</button>
+           ${playing && !id ? '<p class="note">ยังไม่ได้ใส่ลิงก์ TikTok ของคลิปนี้ (ใส่ที่ data.js)</p>' : ''}`}
+    </div>
+    <div class="scr scr-s scr-r" aria-hidden="true"><img src="${esc(v.cover)}" alt=""><span class="shine"></span></div>`;
+  $('#cin-bar').innerHTML = `<div><span class="mono">Now showing · ${pad(vid + 1)} / ${pad(S.videos.length)}</span><h2>${esc(v.title)}</h2></div>
+    <div class="rec-ctrl" style="margin:0"><button class="round" type="button" data-vs="-1" aria-label="Previous video" style="background:#1c1c1e;border-color:#333;color:#f5f5f7">${ARR_L}</button><button class="round" type="button" data-vs="1" aria-label="Next video" style="background:#1c1c1e;border-color:#333;color:#f5f5f7">${ARR_R}</button>${v.url ? `<a class="btn btn-light" target="_blank" rel="noopener" href="${esc(v.url)}">Open on TikTok</a>` : ''}</div>`;
+  document.querySelectorAll('.ticket').forEach((t, i) => { if (i === vid) t.setAttribute('aria-current', 'true'); else t.removeAttribute('aria-current'); });
+}
+function bindVideographer() {
+  paintVideo(false);
+  $('#cinema').addEventListener('click', e => {
+    const t = e.target.closest('[data-v]'), s = e.target.closest('[data-vs]'), p = e.target.closest('#v-play');
+    if (t) { vid = +t.dataset.v; paintVideo(false); t.scrollIntoView({ inline: 'center', block: 'nearest', behavior: reduce ? 'auto' : 'smooth' }); }
+    else if (s) { vid = (vid + +s.dataset.vs + S.videos.length) % S.videos.length; paintVideo(false); }
+    else if (p) paintVideo(true);
+  });
+}
+
+function otherView() {
+  const O = S.other;
+  return `
+  <section class="wrap page-head">
+    <p class="eyebrow">Other</p>
+    <h1 class="h-xl" style="margin-top:10px">Events &amp;<br>KOL.</h1>
+    <p class="lead">Beyond the camera: covering events and finding the right creators for a brand.</p>
+  </section>
+  <section class="wrap"><div class="big2">
+    <div class="feat dark rv"><div><p class="eyebrow" style="color:#a1a1a6">01</p><h2 class="h-l" style="margin-top:6px">${esc(O.events.title)}</h2></div><p class="lead">${esc(O.events.lead)}</p><ul>${O.events.items.map(i => `<li>${esc(i)}</li>`).join('')}</ul></div>
+    <div class="feat gray rv"><div><p class="eyebrow">02</p><h2 class="h-l" style="margin-top:6px">${esc(O.kol.title)}</h2></div><p class="lead">${esc(O.kol.lead)}</p><ul>${['Creator shortlist & matching', 'Negotiation & scheduling', 'Content production support', 'Post-campaign report'].map(i => `<li>${i}</li>`).join('')}</ul></div>
+  </div></section>
+  <section class="wrap section">
+    <div class="sec-head rv"><h2 class="h-l">How KOL sourcing works</h2></div>
+    <div class="steps">${O.kol.steps.map((s, i) => `<div class="card step rv"><b>${pad(i + 1)}</b><h3>${esc(s.t)}</h3><p>${esc(s.d)}</p></div>`).join('')}</div>
+  </section>
+  <section class="wrap section" style="padding-top:0">
+    <div class="card rv" style="display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap">
+      <div><h2 class="h-m">Have an event or a campaign brief?</h2><p style="color:var(--mute);margin-top:6px">Send the date, place and goal. We’ll reply with a plan.</p></div>
+      <a class="btn" href="#contact">Contact</a>
+    </div>
+  </section>`;
+}
+
+/* ---------- router ---------- */
+const view = $('#view');
+function route() {
+  const id = (location.hash || '#home').slice(1);
+  const r = ROUTES.some(x => x.id === id) ? id : 'home';
+  view.innerHTML = { home: homeView, info: infoView, editor: editorView, photographer: photographerView, videographer: videographerView, other: otherView }[r]();
+  if (r === 'editor') {
+    const ba = $('#ba'); $('#ba-r').addEventListener('input', e => ba.style.setProperty('--p', e.target.value));
+  }
+  if (r === 'photographer') bindPhotographer();
+  if (r === 'videographer') bindVideographer();
+  document.querySelectorAll('#nav-links a').forEach(a => a.getAttribute('data-r') === r ? a.setAttribute('aria-current', 'page') : a.removeAttribute('aria-current'));
+  scrollTo({ top: 0, behavior: 'instant' });
+  view.classList.remove('in'); void view.offsetWidth; view.classList.add('in');
+}
+addEventListener('hashchange', route);
+route();
+
+/* ---------- in-page (non-route) links ---------- */
+document.addEventListener('click', e => {
+  const gp = e.target.closest('[data-goto-photo]');
+  if (gp) { const [gid, i] = gp.dataset.gotoPhoto.split(':'); const ri = RECORDS.findIndex(r => r.id === gid); if (ri >= 0) { rec.r = ri; rec.i = +i; rec.open = false; } return; }
+  const gv = e.target.closest('[data-goto-vid]');
+  if (gv) { vid = +gv.dataset.gotoVid; return; }
+  const a = e.target.closest('a[href^="#"]'); if (!a) return;
+  const id = a.getAttribute('href').slice(1);
+  if (ROUTES.some(x => x.id === id)) return;
+  const t = a.hasAttribute('data-top') || id === 'top' ? document.body : document.getElementById(id);
+  if (!t) return;
+  e.preventDefault();
+  t.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });
+});
+
+/* ---------- lightbox ---------- */
+const lb = $('#lb'), lbImg = $('#lb-img');
+let cur = { list: [], i: 0, opener: null };
+const lbItem = p => ({ src: p.src, alt: p.alt || '', label: p.gt || '', n: p.n, t: p.t || '' });
+function show() {
+  const it = cur.list[cur.i];
+  $('#lb-count').innerHTML = esc(it.label) + ' · <b>' + pad(it.n) + '</b> · ' + (cur.i + 1) + ' / ' + cur.list.length + (it.t ? ' · ' + esc(it.t) : '');
+  $('#lb-cap').textContent = it.alt; lbImg.alt = it.alt; lbImg.src = it.src;
+  [-1, 1].forEach(d => { new Image().src = cur.list[(cur.i + d + cur.list.length) % cur.list.length].src; });
+}
+function step(d) { cur.i = (cur.i + d + cur.list.length) % cur.list.length; show(); }
+function openLB(list, i, opener) { cur = { list, i, opener }; lb.hidden = false; document.body.style.overflow = 'hidden'; show(); $('#lb-close').focus(); }
+function closeLB() { lb.hidden = true; document.body.style.overflow = ''; lbImg.removeAttribute('src'); if (cur.opener && document.contains(cur.opener)) cur.opener.focus(); }
+$('#lb-close').addEventListener('click', closeLB);
+$('#lb-prev').addEventListener('click', () => step(-1));
+$('#lb-next').addEventListener('click', () => step(1));
+$('#lb-stage').addEventListener('click', e => { if (e.target === e.currentTarget) closeLB(); });
+document.addEventListener('keydown', e => {
+  if (!lb.hidden) {
+    if (e.key === 'Escape') closeLB();
+    else if (e.key === 'ArrowLeft') step(-1);
+    else if (e.key === 'ArrowRight') step(1);
+    else if (e.key === 'Tab') {
+      const f = [...lb.querySelectorAll('button')], a = f[0], z = f[f.length - 1];
+      if (e.shiftKey && document.activeElement === a) { e.preventDefault(); z.focus(); }
+      else if (!e.shiftKey && document.activeElement === z) { e.preventDefault(); a.focus(); }
+    }
+  }
+});
+let sx = null;
+$('#lb-stage').addEventListener('pointerdown', e => { sx = e.clientX; });
+$('#lb-stage').addEventListener('pointerup', e => { if (sx === null) return; const dx = e.clientX - sx; sx = null; if (Math.abs(dx) > 50) step(dx < 0 ? 1 : -1); });
+</script>
