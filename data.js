@@ -111,7 +111,7 @@ window.SITE = {
      url = ลิงก์ TikTok แบบเต็ม (…/video/ตัวเลข)   cover = รูปปก (วางไว้ใน images/video/ ได้)
      ตอนนี้เป็น mock-up: ใช้รูปถ่ายเป็นปกชั่วคราวและยังไม่มีลิงก์ */
   videos: [
-    { title: 'Video 01', https://www.tiktok.com/@scrumpgelateria/video/7598813310141713672: '', cover: 'images/cover-01.jpg' },
+    { title: 'Video 01', https://www.tiktok.com/@scrumpgelateria/video/7598813310141713672: '', cover: 'images/cover/cover-01.jpg' },
     { title: 'Video 02', url: '', cover: 'images/bw/bw-01.jpg' },
     { title: 'Video 03', url: '', cover: 'images/color/color-05.jpg' },
     { title: 'Video 04', url: '', cover: 'images/bw/bw-07.jpg' },
