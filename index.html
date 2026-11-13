@@ -301,7 +301,7 @@ h1,h2,h3,p{margin:0}
 @keyframes shine{to{transform:translateX(120%)}}
 .scr-c .play{background:rgba(255,255,255,.9)}
 .scr-c .note{position:absolute;left:12px;right:12px;bottom:14px;padding:10px 12px;border-radius:12px;background:rgba(0,0,0,.65);backdrop-filter:blur(8px);font-size:13px;line-height:1.35;text-align:center}
-.scr-c iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.scr-c iframe{position:absolute;inset:0;width:100%;height:100%;border:0;background:#000}
 .floor{height:46px;margin-inline:-8%;background:radial-gradient(ellipse at 50% 0,rgba(255,255,255,.16),transparent 65%)}
 .cin-bar{display:flex;align-items:center;justify-content:space-between;gap:14px 24px;flex-wrap:wrap;padding-block:6px 4px}
 .cin-bar h2{font-size:clamp(22px,2.6vw,30px);font-weight:700;letter-spacing:-.02em}
@@ -681,6 +681,7 @@ function bindPhotographer() {
 
 /* videographer: ScreenX */
 let vid = 0;
+const ttSrc = id => `https://www.tiktok.com/player/v1/${id}?autoplay=1&rel=0&loop=1&music_info=0&description=0`;
 const tiktokId = u => { const m = /\/video\/(\d+)/.exec(u || ''); return m && m[1]; };
 function videographerView() {
   return `
@@ -707,7 +708,7 @@ function paintVideo(playing) {
   $('#screens').innerHTML = `
     <button class="scr scr-s scr-l" type="button" data-vs="-1" aria-label="Previous clip: ${esc(pv.title)}"><img src="${esc(pv.cover)}" alt=""><span class="shine"></span><span class="sx-cap"><small>← Previous</small>${esc(pv.title)}</span></button>
     <div class="scr scr-c">
-      ${playing && id ? `<iframe src="https://www.tiktok.com/embed/v2/${id}" allow="fullscreen; encrypted-media" allowfullscreen title="${esc(v.title)}"></iframe>`
+      ${playing && id ? `<iframe src="${ttSrc(id)}" allow="fullscreen; encrypted-media" allowfullscreen title="${esc(v.title)}"></iframe>`
         : `<img src="${esc(v.cover)}" alt="${esc(v.title)} cover"><span class="shine"></span>
            <button class="play" type="button" id="v-play" aria-label="Play ${esc(v.title)}" style="border:0;cursor:pointer">${PLAY}</button>
            ${playing && !id ? '<p class="note">ยังไม่ได้ใส่ลิงก์ TikTok ของคลิปนี้ (ใส่ที่ data.js)</p>' : ''}`}
@@ -759,7 +760,7 @@ function route() {
   view.innerHTML = { home: homeView, info: infoView, editor: editorView, photographer: photographerView, videographer: videographerView, other: otherView }[r]();
   if (r === 'editor') {
     const ba = $('#ba'); $('#ba-r').addEventListener('input', e => ba.style.setProperty('--p', e.target.value));
-    const playReel = el => { if (!el || !el.dataset.tt || el.classList.contains('playing')) return; el.classList.add('playing'); el.innerHTML = `<iframe src="https://www.tiktok.com/embed/v2/${el.dataset.tt}" allow="fullscreen; encrypted-media" allowfullscreen title="Edit reel"></iframe>`; };
+    const playReel = el => { if (!el || !el.dataset.tt || el.classList.contains('playing')) return; el.classList.add('playing'); el.innerHTML = `<iframe src="${ttSrc(el.dataset.tt)}" allow="fullscreen; encrypted-media" allowfullscreen title="Edit reel"></iframe>`; };
     const rl = document.querySelector('.reels');
     rl.addEventListener('click', e => playReel(e.target.closest('.reel')));
     rl.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { const el = e.target.closest('.reel'); if (el && el.dataset.tt) { e.preventDefault(); playReel(el); } } });
