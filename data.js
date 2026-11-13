@@ -45,8 +45,9 @@ window.SITE = {
     ],
     /* experience แสดงเป็นไทม์ไลน์ เรียงจากล่าสุดไปเก่าสุด  title = ตำแหน่ง (เว้นว่างได้ ถ้าไม่ใส่จะแสดงชื่อบริษัทเป็นหัวข้อ) */
     experience: [
-      { period: '2025 – Now', title: '', org: 'COSDENT COMPANY LIMITED', points: [] },
-      { period: 'July – October 2024', title: '', org: 'Mainstand Creator (Thailand) Co., Ltd', points: [] }
+      { period: '2025 – Now', title: '', org: 'COSDENT COMPANY LIMITED', points: ['Marketing', 'Cameraman'] },
+      { period: 'July – October 2024', title: '', org: 'Mainstand Creator (Thailand) Co., Ltd', points: ['Cameraman', 'Livestream'] },
+      { period: 'Personal channel', title: 'Content Creator', org: 'Outsidezitys · TikTok · YouTube', points: ['Editor', 'Creative', 'Graphic'] }
     ],
     hard: [
       { group: 'Photography', items: ['Portrait', 'Candid', 'Studio lighting', 'Product', 'Production'] },

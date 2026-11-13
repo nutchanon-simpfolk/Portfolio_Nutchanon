@@ -15,6 +15,7 @@
   --fg:#1d1d1f;
   --mute:#6e6e73;
   --accent:#d9480f;
+  --green:#1f7a3f;
   --line:rgba(0,0,0,.14);
   --glass:rgba(255,255,255,.8);
   --btn-bg:#1d1d1f;
@@ -29,10 +30,10 @@
 }
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
   --bg:#000000;--surface:#161617;--surface-2:#2a2a2d;--fg:#f5f5f7;--mute:#a1a1a6;--line:rgba(255,255,255,.18);
-  --accent:#ff9a3c;--glass:rgba(22,22,23,.8);--btn-bg:#f5f5f7;--btn-fg:#1d1d1f;--shadow:rgba(0,0,0,.7);color-scheme:dark}}
+  --accent:#ff9a3c;--green:#34c759;--glass:rgba(22,22,23,.8);--btn-bg:#f5f5f7;--btn-fg:#1d1d1f;--shadow:rgba(0,0,0,.7);color-scheme:dark}}
 :root[data-theme="dark"]{
   --bg:#000000;--surface:#161617;--surface-2:#2a2a2d;--fg:#f5f5f7;--mute:#a1a1a6;--line:rgba(255,255,255,.18);
-  --accent:#ff9a3c;--glass:rgba(22,22,23,.8);--btn-bg:#f5f5f7;--btn-fg:#1d1d1f;--shadow:rgba(0,0,0,.7);color-scheme:dark}
+  --accent:#ff9a3c;--green:#34c759;--glass:rgba(22,22,23,.8);--btn-bg:#f5f5f7;--btn-fg:#1d1d1f;--shadow:rgba(0,0,0,.7);color-scheme:dark}
 
 *{box-sizing:border-box}
 [hidden]{display:none!important}
@@ -183,9 +184,9 @@ h1,h2,h3,p{margin:0}
 .tl::before{content:"";position:absolute;left:4px;top:8px;bottom:8px;width:2px;background:var(--line)}
 .tl-i{position:relative;display:flex;flex-direction:column;gap:3px;padding-bottom:20px}
 .tl-i:last-child{padding-bottom:0}
-.tl-i::before{content:"";position:absolute;left:-20px;top:5px;width:10px;height:10px;border-radius:50%;background:var(--bg);border:2px solid var(--accent)}
-.tl-i:first-child::before{background:var(--accent)}
-.tl-p{font-family:var(--mono);font-size:12px;color:var(--accent);letter-spacing:.02em}
+.tl-i::before{content:"";position:absolute;left:-20px;top:5px;width:10px;height:10px;border-radius:50%;background:var(--bg);border:2px solid var(--green)}
+.tl-i:first-child::before{background:var(--green)}
+.tl-p{font-family:var(--mono);font-size:12px;color:var(--green);letter-spacing:.02em}
 .tl-i>span:not(.tl-p){color:var(--mute);font-size:14px}
 .r-sum{color:var(--accent);font-weight:600;margin-top:14px;max-width:52ch}
 .r-meta{display:flex;flex-wrap:wrap;gap:6px 18px;margin-top:16px;font-size:14px;color:var(--mute)}
