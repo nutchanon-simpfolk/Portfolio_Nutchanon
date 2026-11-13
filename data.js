@@ -45,9 +45,13 @@ window.SITE = {
     ],
     /* experience แสดงเป็นไทม์ไลน์ เรียงจากล่าสุดไปเก่าสุด  title = ตำแหน่ง (เว้นว่างได้ ถ้าไม่ใส่จะแสดงชื่อบริษัทเป็นหัวข้อ) */
     experience: [
-      { period: '2025 – Now', title: '', org: 'COSDENT COMPANY LIMITED', points: ['Marketing', 'Cameraman'] },
-      { period: 'July – October 2024', title: '', org: 'Mainstand Creator (Thailand) Co., Ltd', points: ['Cameraman', 'Livestream'] },
-      { period: 'Personal channel', title: 'Content Creator', org: 'Outsidezitys · TikTok · YouTube', points: ['Editor', 'Creative', 'Graphic'] }
+      { period: '2025 – Now', title: '', org: 'COSDENT COMPANY LIMITED', points: ['Marketing', 'Video and Photographer'] },
+      { period: 'July – October 2024', title: '', org: 'Mainstand Creator (Thailand) Co., Ltd', points: ['Video and Photographer', 'Livestream'] },
+      { period: '2024 – 2026', title: 'Content Creator - Outsidezitys', org: '', points: ['Editor', 'Creative', 'Graphic'],
+        links: [
+          { label: 'TikTok', url: 'https://www.tiktok.com/@outsidezitys' },
+          { label: 'YouTube', url: 'https://www.youtube.com/@OutsideZitys-ฟุตบอลปลายแถว' }
+        ] }
     ],
     hard: [
       { group: 'Photography', items: ['Portrait', 'Candid', 'Studio lighting', 'Product', 'Production'] },
@@ -69,7 +73,7 @@ window.SITE = {
      w,h = ขนาดพิกเซลของรูป (ไม่บังคับ)  t = 'portrait' หรือ 'candid' (ไม่บังคับ)  */
   hero: { src: 'images/color/color-02.jpg', alt: 'Model in a black leather jacket kneeling in a white spotlight on a red backdrop' },
   galleries: [
-    { id: 'color', title: 'Color', folder: 'images/color/', audio: 'audio/Song_BIRDS OF A FEATHER .mp3', /* เพลงตอนเลื่อนเมาส์ไปที่แผ่น (เว้นว่าง = ไม่มีเสียง) */
+    { id: 'color', title: 'Color', folder: 'images/color/', caption: 'ปี 2026 @cosdent', audio: 'audio/Song_BIRDS OF A FEATHER .mp3', /* เพลงตอนเลื่อนเมาส์ไปที่แผ่น (เว้นว่าง = ไม่มีเสียง) */
       blurb: 'Red sweeps, denim, white backdrops and silhouettes cut out by a single light.',
       photos: [
         { f:'color-01.jpg', w:1333, h:2000, t:'candid',   alt:'Woman in a blue denim set smiling, long hair falling across the foreground' },
@@ -83,7 +87,7 @@ window.SITE = {
         { f:'color-09.jpg', w:1333, h:2000, t:'portrait', alt:'Silhouette of a person with a ponytail looking upward against a red backdrop' },
         { f:'color-10.jpg', w:2000, h:1333, t:'candid',   alt:'Five people in black and white outfits standing in a row between studio lights' }
       ]},
-    { id: 'bw', title: 'Black & White', folder: 'images/bw/', audio: 'audio/Song_505.mp3',
+    { id: 'bw', title: 'Black & White', folder: 'images/bw/', caption: 'ปี 2026 @cosdent', audio: 'audio/Song_505.mp3',
       blurb: 'Tuxedos, spotlights and long shadows. Contrast first, grain left in.',
       photos: [
         { f:'bw-01.jpg', w:1333, h:2000, t:'portrait', alt:'Man in a tuxedo and bow tie lit by a hard spotlight, shadow on the wall' },

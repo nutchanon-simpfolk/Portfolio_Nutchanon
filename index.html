@@ -122,6 +122,8 @@ h1,h2,h3,p{margin:0}
 .tl-i{display:grid;grid-template-columns:minmax(0,150px) minmax(0,1fr);gap:8px 28px;padding-block:18px;border-top:1px solid var(--line)}
 .tl-i:first-child{border-top:0;padding-top:0}
 .tl-i:last-child{padding-bottom:0}
+.tl-links{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+.tl-links .btn{min-height:34px;padding:0 16px;font-size:13px}
 .tl-p{font-size:14px;color:var(--mute);font-variant-numeric:tabular-nums}
 .tl-i h3{font-size:19px;font-weight:600;letter-spacing:-.01em}
 .tl-i p{color:var(--mute);font-size:15px}
@@ -421,12 +423,11 @@ const IC = (() => {
 /* ---------- normalize data ---------- */
 S.galleries.forEach(g => {
   g.photos = g.photos.map(p => typeof p === 'string' ? { f: p } : p);
-  g.photos.forEach((p, i) => { p.n = i + 1; p.src = g.folder + p.f; p.gt = g.title; p.gid = g.id; });
+  g.photos.forEach((p, i) => { p.n = i + 1; p.src = g.folder + p.f; p.gt = g.title; p.gid = g.id; p.cap = g.caption || ''; });
 });
 const ALL = S.galleries.flatMap(g => g.photos);
 const RECORDS = [
-  ...S.galleries.map(g => ({ id: g.id, title: g.title, blurb: g.blurb, audio: g.audio || '', items: g.photos })),
-  ...S.collections.map(c => ({ id: c.id, title: c.title, blurb: c.blurb, audio: c.audio || '', items: ALL.filter(p => p.t === c.filter) }))
+  ...S.galleries.map(g => ({ id: g.id, title: g.title, blurb: g.blurb, audio: g.audio || '', items: g.photos }))
 ].filter(r => r.items.length);
 const ROUTES = [
   { id: 'home', label: 'Home' },
@@ -565,7 +566,7 @@ function infoView() {
       </div>
       <div class="r-cols">
         <section><h2 class="r-h">Education</h2>${I.education.map(e => `<div class="r-i"><b>${esc(e.title)}</b><span>${esc(e.detail)}</span>${e.period ? `<span>${esc(e.period)}</span>` : ''}</div>`).join('')}</section>
-        <section><h2 class="r-h">Experience</h2><div class="tl">${I.experience.map(e => `<div class="tl-i"><span class="tl-p">${esc(e.period)}</span><b>${esc(e.title || e.org)}</b>${e.title ? `<span>${esc(e.org)}</span>` : ''}${(e.points || []).map(p => `<span>${esc(p)}</span>`).join('')}</div>`).join('')}</div></section>
+        <section><h2 class="r-h">Experience</h2><div class="tl">${I.experience.map(e => `<div class="tl-i"><span class="tl-p">${esc(e.period)}</span><b>${esc(e.title || e.org)}</b>${e.title && e.org ? `<span>${esc(e.org)}</span>` : ''}${(e.points || []).map(p => `<span>${esc(p)}</span>`).join('')}${(e.links || []).length ? `<div class="tl-links">${e.links.map(l => `<a class="btn btn-ghost" href="${esc(l.url)}" target="_blank" rel="noopener">${esc(l.label)}</a>`).join('')}</div>` : ''}</div>`).join('')}</div></section>
         <section><h2 class="r-h">Skills</h2>
           ${I.hard.map(h => `<div class="r-sk"><small>${esc(h.group)}</small><div class="chips">${h.items.map(i => `<span class="chip">${esc(i)}</span>`).join('')}</div></div>`).join('')}
           <div class="r-sk"><small>Soft skills</small><div class="chips">${I.soft.map(s => `<span class="chip">${esc(s.title)}</span>`).join('')}</div></div>
@@ -609,72 +610,69 @@ function editorView() {
   </section>`;
 }
 
-/* photographer: record crate */
-let rec = { r: 0, i: 0, open: false };
+/* photographer: two records (Color, Black & White) shown together */
+const recState = {}; let recFocus = null;
+const rs = id => recState[id] || (recState[id] = { i: 0, open: false });
 function photographerView() {
   return `
   <section class="wrap page-head">
     <p class="eyebrow">Photographer</p>
     <h1 class="h-xl" style="margin-top:10px">Frames,<br>on record.</h1>
-    <p class="lead">Pick a record. Flip through its frames, or open the whole crate.</p>
+    <p class="lead">Two records: Color and Black &amp; White. Flip through the frames, or open the whole crate.</p>
   </section>
-  <section class="wrap">
-    <div class="seg" role="group" aria-label="Choose a record" id="rec-seg">${RECORDS.map((r, i) => `<button type="button" data-r="${i}" aria-pressed="${i === rec.r}">${esc(r.title)}</button>`).join('')}</div>
-    <div class="card rec" id="rec"></div>
-    <div class="all" id="all"><div><div class="all-in"><div class="sec-head"><h2 class="h-l" id="all-t"></h2><span class="mono" id="all-c" style="color:var(--mute)"></span></div><div class="cols" id="all-cols"></div></div></div></div>
-  </section>`;
+  ${RECORDS.map((R, ri) => `
+  <section class="wrap rec-sec" id="rec-${esc(R.id)}" data-aud="${esc(R.id)}" data-ri="${ri}">
+    <div class="card rec"></div>
+    <div class="all"><div><div class="all-in"><div class="sec-head"><h2 class="h-l all-t"></h2><span class="mono all-c" style="color:var(--mute)"></span></div><div class="cols all-cols"></div></div></div></div>
+  </section>`).join('')}`;
 }
 const MINI = [['0cqw', '4cqw', '-9deg'], ['2cqw', '22cqw', '-4deg'], ['0cqw', '40cqw', '5deg'], ['3cqw', '58cqw', '10deg']];
-function paintRecord(animate) {
-  const R = RECORDS[rec.r], n = R.items.length, it = R.items[rec.i];
-  const minis = [1, 2, 3, 4].filter(k => k < n).map((k, j) => ({ p: R.items[(rec.i + k) % n], at: (rec.i + k) % n, m: MINI[j] }));
-  $('#rec').innerHTML = `
-    <div class="rec-art" data-aud="${esc(R.id)}">
+function paintRecord(sec) {
+  const ri = +sec.dataset.ri, R = RECORDS[ri], st = rs(R.id), n = R.items.length, it = R.items[st.i];
+  const minis = [1, 2, 3, 4].filter(k => k < n).map((k, j) => ({ p: R.items[(st.i + k) % n], at: (st.i + k) % n, m: MINI[j] }));
+  sec.querySelector('.rec').innerHTML = `
+    <div class="rec-art">
       ${minis.map(m => `<button class="mini" type="button" data-pick="${m.at}" style="--x:${m.m[0]};--y:${m.m[1]};--r:${m.m[2]}" aria-label="Show frame ${m.p.n}: ${esc(m.p.alt)}"><img src="${esc(m.p.src)}" alt="" loading="lazy"></button>`).join('')}
       <div class="disc" aria-hidden="true"><div class="disc-l"><img src="${esc(it.src)}" alt=""></div></div>
-      <button class="sleeve" type="button" data-open="${rec.i}" aria-label="Open frame ${it.n} full size"><img src="${esc(it.src)}" alt="${esc(it.alt)}"></button>
+      <button class="sleeve" type="button" data-open="${st.i}" aria-label="Open frame ${it.n} full size"><img src="${esc(it.src)}" alt="${esc(it.alt)}"></button>
     </div>
     <div class="rec-info">
-      <p class="mono">Record ${pad(rec.r + 1)} / ${pad(RECORDS.length)}</p>
+      <p class="mono">Record ${pad(ri + 1)} / ${pad(RECORDS.length)}</p>
       <h2 class="h-l">${esc(R.title)}</h2>
       <p class="blurb">${esc(R.blurb)}</p>
       ${R.audio ? '<p class="mono" style="color:var(--mute)">♪ Hover the record to play its track</p>' : ''}
-      <p class="cap"><b style="color:var(--fg);font-weight:600">Frame ${pad(rec.i + 1)} / ${pad(n)}</b><br>${esc(it.alt)}</p>
+      <p class="cap"><b style="color:var(--fg);font-weight:600">Frame ${pad(st.i + 1)} / ${pad(n)}</b><br>${esc(it.cap || it.alt)}</p>
       <div class="rec-ctrl">
         <button class="round" type="button" data-step="-1" aria-label="Previous frame">${ARR_L}</button>
         <button class="round" type="button" data-step="1" aria-label="Next frame">${ARR_R}</button>
-        <button class="btn" type="button" id="all-btn" aria-expanded="${rec.open}">${rec.open ? 'Hide all frames' : 'View all ' + n + ' frames'}</button>
+        <button class="btn all-btn" type="button" aria-expanded="${st.open}">${st.open ? 'Hide all frames' : 'View all ' + n + ' frames'}</button>
       </div>
     </div>`;
-  $('#all-t').textContent = R.title + ' · all frames';
-  $('#all-c').textContent = n + ' frames';
-  if (!animate) return;
 }
-function paintAll() {
-  const R = RECORDS[rec.r];
-  $('#all-cols').innerHTML = R.items.map((p, i) => `<button class="tile" type="button" data-open="${i}" style="--ar:${p.w || 2} / ${p.h || 3};--i:${Math.min(i, 14)}" aria-label="Open frame ${p.n}: ${esc(p.alt)}"><img src="${esc(p.src)}" alt="" loading="lazy" ${p.w ? '' : 'onload="this.parentNode.style.setProperty(\'--ar\',this.naturalWidth+\' / \'+this.naturalHeight)"'}></button>`).join('');
-  $('#all').classList.toggle('open', rec.open);
+function paintAll(sec) {
+  const R = RECORDS[+sec.dataset.ri], st = rs(R.id);
+  sec.querySelector('.all-t').textContent = R.title + ' · all frames';
+  sec.querySelector('.all-c').textContent = R.items.length + ' frames';
+  sec.querySelector('.all-cols').innerHTML = R.items.map((p, i) => `<button class="tile" type="button" data-open="${i}" style="--ar:${p.w || 2} / ${p.h || 3};--i:${Math.min(i, 14)}" aria-label="Open frame ${p.n}: ${esc(p.alt)}"><img src="${esc(p.src)}" alt="" loading="lazy" ${p.w ? '' : 'onload="this.parentNode.style.setProperty(\'--ar\',this.naturalWidth+\' / \'+this.naturalHeight)"'}></button>`).join('');
+  sec.querySelector('.all').classList.toggle('open', st.open);
 }
 function bindPhotographer() {
-  paintRecord(); paintAll();
-  const view = $('#view');
-  $('#rec-seg').addEventListener('click', e => {
-    const b = e.target.closest('button'); if (!b) return;
-    rec.r = +b.dataset.r; rec.i = 0;
-    document.querySelectorAll('#rec-seg button').forEach(x => x.setAttribute('aria-pressed', String(x === b)));
-    paintRecord(); paintAll();
+  document.querySelectorAll('.rec-sec').forEach(sec => {
+    paintRecord(sec); paintAll(sec);
+    const R = RECORDS[+sec.dataset.ri], st = rs(R.id);
+    sec.addEventListener('click', e => {
+      const m = e.target.closest('[data-pick]'), s = e.target.closest('[data-step]'), o = e.target.closest('[data-open]'), a = e.target.closest('.all-btn');
+      if (m) { st.i = +m.dataset.pick; paintRecord(sec); }
+      else if (s) { st.i = (st.i + +s.dataset.step + R.items.length) % R.items.length; paintRecord(sec); }
+      else if (o) openLB(R.items.map(lbItem), +o.dataset.open, o);
+      else if (a) {
+        st.open = !st.open; sec.querySelector('.all').classList.toggle('open', st.open);
+        a.setAttribute('aria-expanded', String(st.open)); a.textContent = st.open ? 'Hide all frames' : 'View all ' + R.items.length + ' frames';
+        if (st.open) setTimeout(() => sec.querySelector('.all').scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' }), 120);
+      }
+    });
   });
-  $('#rec').addEventListener('click', e => {
-    const R = RECORDS[rec.r];
-    const m = e.target.closest('[data-pick]'), s = e.target.closest('[data-step]'), o = e.target.closest('[data-open]'), a = e.target.closest('#all-btn');
-    if (m) { rec.i = +m.dataset.pick; paintRecord(); }
-    else if (s) { rec.i = (rec.i + +s.dataset.step + R.items.length) % R.items.length; paintRecord(); }
-    else if (o) openLB(R.items.map(lbItem), +o.dataset.open, o);
-    else if (a) { rec.open = !rec.open; $('#all').classList.toggle('open', rec.open); a.setAttribute('aria-expanded', String(rec.open)); a.textContent = rec.open ? 'Hide all frames' : 'View all ' + R.items.length + ' frames'; if (rec.open) setTimeout(() => $('#all').scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' }), 120); }
-  });
-  $('#all-cols').addEventListener('click', e => {
-    const o = e.target.closest('[data-open]'); if (o) openLB(RECORDS[rec.r].items.map(lbItem), +o.dataset.open, o);
-  });
+  if (recFocus) { const f = $('#rec-' + recFocus); recFocus = null; if (f) setTimeout(() => f.scrollIntoView({ behavior: 'auto', block: 'start' }), 60); }
 }
 
 /* videographer: ScreenX */
@@ -785,25 +783,32 @@ function fade(a, to, ms, done) {
 }
 function recPlay(id) { const a = audioFor(id); if (!a) return; try { const p = a.play(); if (p && p.catch) p.catch(() => {}); } catch (e) {} fade(a, .8, 500); }
 function recStop(id) { const a = players[id]; if (!a) return; fade(a, 0, 400, () => a.pause()); }
-function recLeave() { if (hovId) { recStop(hovId); hovId = null; } }
-document.addEventListener('mouseover', e => {
-  const art = e.target.closest && e.target.closest('.rec-art[data-aud]');
-  const id = art ? art.dataset.aud : null;
+let lockId = null, mx = 0, my = 0; /* lockId: record whose photo is open in the lightbox (its song keeps playing) */
+function recLeave(force) { if (lockId && !force) return; if (hovId) { recStop(hovId); hovId = null; } }
+function recSet(id) {
   if (id === hovId) return;
-  recLeave();
+  recLeave(true);
   if (id && audioFor(id)) { hovId = id; recPlay(id); }
+}
+function recUnder() { const el = document.elementFromPoint(mx, my), z = el && el.closest && el.closest('[data-aud]'); return z ? z.dataset.aud : null; }
+document.addEventListener('mouseover', e => {
+  mx = e.clientX; my = e.clientY;
+  if (lockId) return;
+  const z = e.target.closest && e.target.closest('[data-aud]');
+  recSet(z ? z.dataset.aud : null);
 });
+document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; }, { passive: true });
 document.addEventListener('mouseout', e => { if (!e.relatedTarget) recLeave(); });
 /* browsers block sound until the first click/tap/key: retry on it if a record is under the cursor */
 ['pointerdown', 'keydown'].forEach(ev => document.addEventListener(ev, () => { if (hovId) recPlay(hovId); }, { passive: true }));
-addEventListener('hashchange', recLeave);
+addEventListener('hashchange', () => { lockId = null; recLeave(true); });
 addEventListener('hashchange', route);
 route();
 
 /* ---------- in-page (non-route) links ---------- */
 document.addEventListener('click', e => {
   const gp = e.target.closest('[data-goto-photo]');
-  if (gp) { const [gid, i] = gp.dataset.gotoPhoto.split(':'); const ri = RECORDS.findIndex(r => r.id === gid); if (ri >= 0) { rec.r = ri; rec.i = +i; rec.open = false; } return; }
+  if (gp) { const [gid, i] = gp.dataset.gotoPhoto.split(':'); if (RECORDS.some(r => r.id === gid)) { recState[gid] = { i: +i, open: false }; recFocus = gid; } return; }
   const gv = e.target.closest('[data-goto-vid]');
   if (gv) { vid = +gv.dataset.gotoVid; return; }
   const a = e.target.closest('a[href^="#"]'); if (!a) return;
@@ -818,16 +823,16 @@ document.addEventListener('click', e => {
 /* ---------- lightbox ---------- */
 const lb = $('#lb'), lbImg = $('#lb-img');
 let cur = { list: [], i: 0, opener: null };
-const lbItem = p => ({ src: p.src, alt: p.alt || '', label: p.gt || '', n: p.n, t: p.t || '' });
+const lbItem = p => ({ src: p.src, alt: p.alt || '', cap: p.cap || '', label: p.gt || '', n: p.n, t: p.t || '' });
 function show() {
   const it = cur.list[cur.i];
   $('#lb-count').innerHTML = esc(it.label) + ' · <b>' + pad(it.n) + '</b> · ' + (cur.i + 1) + ' / ' + cur.list.length + (it.t ? ' · ' + esc(it.t) : '');
-  $('#lb-cap').textContent = it.alt; lbImg.alt = it.alt; lbImg.src = it.src;
+  $('#lb-cap').textContent = it.cap || it.alt; lbImg.alt = it.alt; lbImg.src = it.src;
   [-1, 1].forEach(d => { new Image().src = cur.list[(cur.i + d + cur.list.length) % cur.list.length].src; });
 }
 function step(d) { cur.i = (cur.i + d + cur.list.length) % cur.list.length; show(); }
-function openLB(list, i, opener) { cur = { list, i, opener }; lb.hidden = false; document.body.style.overflow = 'hidden'; show(); $('#lb-close').focus(); }
-function closeLB() { lb.hidden = true; document.body.style.overflow = ''; lbImg.removeAttribute('src'); if (cur.opener && document.contains(cur.opener)) cur.opener.focus(); }
+function openLB(list, i, opener) { cur = { list, i, opener }; const z = opener && opener.closest && opener.closest('[data-aud]'); if (z) { lockId = z.dataset.aud; recSet(lockId); recPlay(lockId); } lb.hidden = false; document.body.style.overflow = 'hidden'; show(); $('#lb-close').focus(); }
+function closeLB() { lb.hidden = true; lockId = null; recSet(recUnder()); document.body.style.overflow = ''; lbImg.removeAttribute('src'); if (cur.opener && document.contains(cur.opener)) cur.opener.focus(); }
 $('#lb-close').addEventListener('click', closeLB);
 $('#lb-prev').addEventListener('click', () => step(-1));
 $('#lb-next').addEventListener('click', () => step(1));
