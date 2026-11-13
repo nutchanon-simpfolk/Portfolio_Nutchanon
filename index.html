@@ -220,6 +220,10 @@ h1,h2,h3,p{margin:0}
 .reel{position:relative;aspect-ratio:9/16;border-radius:var(--r);overflow:hidden;background:var(--surface-2);color:#fff;display:flex;align-items:flex-end;padding:18px}
 .reel img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 .reel::before{content:"";position:absolute;inset:0;background:linear-gradient(transparent 55%,rgba(0,0,0,.65))}
+.reel.can-play{cursor:pointer}
+.reel.playing{padding:0;background:#000}
+.reel.playing::before{display:none}
+.reel iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
 .reel span{position:relative;font-weight:600;font-size:15px}
 .play{position:absolute;top:50%;left:50%;width:56px;height:56px;margin:-28px;border-radius:50%;background:rgba(255,255,255,.88);display:grid;place-items:center;color:#1d1d1f}
 .play svg{width:22px;height:22px;margin-left:3px}
@@ -583,7 +587,7 @@ function infoView() {
 function editorView() {
   const E = S.editor;
   const demo = ALL.find(p => p.f === 'color-10.jpg') || ALL[0];
-  const reels = S.videos.slice(0, 3).map(v => `<div class="reel rv"><img src="${esc(v.cover)}" alt="" loading="lazy"><span class="play" aria-hidden="true">${PLAY}</span><span>Edit reel · ${esc(v.title)}</span></div>`).join('');
+  const reels = S.videos.slice(0, 3).map(v => { const id = tiktokId(v.url); return `<div class="reel rv${id ? ' can-play' : ''}"${id ? ` data-tt="${id}" role="button" tabindex="0" aria-label="Play ${esc(v.title)}"` : ''}><img src="${esc(v.cover)}" alt="" loading="lazy"><span class="play" aria-hidden="true">${PLAY}</span><span>Edit reel · ${esc(v.title)}</span></div>`; }).join('');
   return `
   <section class="wrap page-head">
     <p class="eyebrow">Editor</p>
@@ -755,6 +759,10 @@ function route() {
   view.innerHTML = { home: homeView, info: infoView, editor: editorView, photographer: photographerView, videographer: videographerView, other: otherView }[r]();
   if (r === 'editor') {
     const ba = $('#ba'); $('#ba-r').addEventListener('input', e => ba.style.setProperty('--p', e.target.value));
+    const playReel = el => { if (!el || !el.dataset.tt || el.classList.contains('playing')) return; el.classList.add('playing'); el.innerHTML = `<iframe src="https://www.tiktok.com/embed/v2/${el.dataset.tt}" allow="fullscreen; encrypted-media" allowfullscreen title="Edit reel"></iframe>`; };
+    const rl = document.querySelector('.reels');
+    rl.addEventListener('click', e => playReel(e.target.closest('.reel')));
+    rl.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { const el = e.target.closest('.reel'); if (el && el.dataset.tt) { e.preventDefault(); playReel(el); } } });
   }
   if (r === 'photographer') bindPhotographer();
   if (r === 'videographer') bindVideographer();
