@@ -782,7 +782,11 @@ function bindPhotographer() {
 
 /* videographer: ScreenX */
 let vid = 0;
-const ttSrc = id => `https://www.tiktok.com/player/v1/${id}?autoplay=1&rel=0&loop=1&music_info=0&description=0`;
+const ttSrc = id => `https://www.tiktok.com/player/v1/${id}?autoplay=1&muted=1&controls=1&play_button=1&volume_control=1&progress_bar=1&fullscreen_button=1&rel=0&loop=1&music_info=0&description=0`;
+const ttFrame = (id, title) => `<iframe src="${ttSrc(id)}" allow="autoplay; fullscreen; encrypted-media" allowfullscreen title="${esc(title)}"></iframe>`;
+/* autoplay (muted) when a clip scrolls into view; the viewer unmutes / pauses with the player controls */
+const AUTO = !reduce && !(navigator.connection && navigator.connection.saveData);
+let autoIo = null, cinVis = false;
 const tiktokId = u => { const m = /\/video\/(\d+)/.exec(u || ''); return m && m[1]; };
 function videographerView() {
   return `
@@ -802,17 +806,17 @@ function videographerView() {
     <p class="mono" style="color:var(--mute);margin-top:12px">Mock-up · ใช้รูปถ่ายเป็นปกชั่วคราว ใส่ลิงก์ TikTok ที่ <code>videos</code> ใน data.js</p>
   </section>`;
 }
-function paintVideo(playing) {
+function paintVideo(playing, manual) {
   const N = S.videos.length, v = S.videos[vid], id = tiktokId(v.url);
   const pv = S.videos[(vid - 1 + N) % N], nx = S.videos[(vid + 1) % N];
   $('#ambient').style.backgroundImage = `url("${v.cover}")`;
   $('#screens').innerHTML = `
     <button class="scr scr-s scr-l" type="button" data-vs="-1" aria-label="Previous clip: ${esc(pv.title)}"><img src="${esc(pv.cover)}" alt=""><span class="shine"></span><span class="sx-cap"><small>← Previous</small>${esc(pv.title)}</span></button>
     <div class="scr scr-c">
-      ${playing && id ? `<iframe src="${ttSrc(id)}" allow="fullscreen; encrypted-media" allowfullscreen title="${esc(v.title)}"></iframe>`
+      ${playing && id ? ttFrame(id, v.title)
         : `<img src="${esc(v.cover)}" alt="${esc(v.title)} cover"><span class="shine"></span>
            <button class="play" type="button" id="v-play" aria-label="Play ${esc(v.title)}" style="border:0;cursor:pointer">${PLAY}</button>
-           ${playing && !id ? '<p class="note">ยังไม่ได้ใส่ลิงก์ TikTok ของคลิปนี้ (ใส่ที่ data.js)</p>' : ''}`}
+           ${manual && !id ? '<p class="note">ยังไม่ได้ใส่ลิงก์ TikTok ของคลิปนี้ (ใส่ที่ data.js)</p>' : ''}`}
     </div>
     <button class="scr scr-s scr-r" type="button" data-vs="1" aria-label="Next clip: ${esc(nx.title)}"><img src="${esc(nx.cover)}" alt=""><span class="shine"></span><span class="sx-cap"><small>Next →</small>${esc(nx.title)}</span></button>`;
   $('#cin-bar').innerHTML = `<div><span class="mono">Now showing · ${pad(vid + 1)} / ${pad(S.videos.length)}</span><h2>${esc(v.title)}</h2></div>
@@ -820,12 +824,21 @@ function paintVideo(playing) {
   document.querySelectorAll('.ticket').forEach((t, i) => { if (i === vid) t.setAttribute('aria-current', 'true'); else t.removeAttribute('aria-current'); });
 }
 function bindVideographer() {
-  paintVideo(false);
+  cinVis = false; paintVideo(false);
+  if (AUTO) {
+    autoIo = new IntersectionObserver(es => es.forEach(en => {
+      /* share of the screen that is visible (or of the viewport, if the screen is taller than it) */
+      const share = en.intersectionRect.height / Math.max(1, Math.min(en.boundingClientRect.height, innerHeight * .9));
+      if (share >= .6 && !cinVis) { cinVis = true; paintVideo(true); }
+      else if (share < .15 && cinVis) { cinVis = false; paintVideo(false); }
+    }), { threshold: Array.from({ length: 21 }, (_, i) => i / 20) });
+    autoIo.observe($('#screens'));
+  }
   $('#cinema').addEventListener('click', e => {
     const t = e.target.closest('[data-v]'), s = e.target.closest('[data-vs]'), p = e.target.closest('#v-play');
-    if (t) { vid = +t.dataset.v; paintVideo(false); t.scrollIntoView({ inline: 'center', block: 'nearest', behavior: reduce ? 'auto' : 'smooth' }); }
-    else if (s) { vid = (vid + +s.dataset.vs + S.videos.length) % S.videos.length; paintVideo(false); }
-    else if (p) paintVideo(true);
+    if (t) { vid = +t.dataset.v; paintVideo(cinVis); t.scrollIntoView({ inline: 'center', block: 'nearest', behavior: reduce ? 'auto' : 'smooth' }); }
+    else if (s) { vid = (vid + +s.dataset.vs + S.videos.length) % S.videos.length; paintVideo(cinVis); }
+    else if (p) paintVideo(true, true);
   });
 }
 
@@ -858,10 +871,17 @@ const view = $('#view');
 function route() {
   const id = (location.hash || '#home').slice(1);
   const r = ROUTES.some(x => x.id === id) ? id : 'home';
+  if (autoIo) { autoIo.disconnect(); autoIo = null; }
   view.innerHTML = { home: homeView, info: infoView, editor: editorView, photographer: photographerView, videographer: videographerView, other: otherView }[r]();
   if (r === 'editor') {
     const ba = $('#ba'); $('#ba-r').addEventListener('input', e => ba.style.setProperty('--p', e.target.value));
-    const playReel = el => { if (!el || !el.dataset.tt || el.classList.contains('playing')) return; el.classList.add('playing'); el.innerHTML = `<iframe src="${ttSrc(el.dataset.tt)}" allow="fullscreen; encrypted-media" allowfullscreen title="Edit reel"></iframe>`; };
+    document.querySelectorAll('.reel[data-tt]').forEach(el => { el._orig = el.innerHTML; });
+    const playReel = el => { if (!el || !el.dataset.tt || el.classList.contains('playing')) return; el.classList.add('playing'); el.innerHTML = ttFrame(el.dataset.tt, 'Edit reel'); };
+    const stopReel = el => { if (!el.classList.contains('playing')) return; el.classList.remove('playing'); el.innerHTML = el._orig; };
+    if (AUTO) {
+      autoIo = new IntersectionObserver(es => es.forEach(en => { if (en.intersectionRatio >= .6) playReel(en.target); else if (en.intersectionRatio < .15) stopReel(en.target); }), { threshold: [0, .15, .6] });
+      document.querySelectorAll('.reel[data-tt]').forEach(el => autoIo.observe(el));
+    }
     document.querySelectorAll('.reels').forEach(rl => {
       rl.addEventListener('click', e => playReel(e.target.closest('.reel')));
       rl.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { const el = e.target.closest('.reel'); if (el && el.dataset.tt) { e.preventDefault(); playReel(el); } } });
