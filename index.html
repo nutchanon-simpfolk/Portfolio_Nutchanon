@@ -281,6 +281,8 @@ h1,h2,h3,p{margin:0}
 .reel{position:relative;aspect-ratio:9/16;border-radius:var(--r);overflow:hidden;background:var(--surface-2);color:#fff;display:flex;align-items:flex-end;padding:18px}
 .reel img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 .reel::before{content:"";position:absolute;inset:0;background:linear-gradient(transparent 55%,rgba(0,0,0,.65))}
+.reel-h{margin:34px 0 16px}
+.reel-h:first-of-type{margin-top:8px}
 .reel.can-play{cursor:pointer}
 .reel.playing{padding:0;background:#000}
 .reel.playing::before{display:none}
@@ -652,10 +654,14 @@ function infoView() {
   </section>`;
 }
 
+/* Editor reel groups: clips with {ref:i} point at S.videos[i] */
+function reelGroups() { return ((S.editor && S.editor.reelGroups) || []).map(g => ({ title: g.title, clips: g.clips.map(c => c.ref != null ? S.videos[c.ref] : c).filter(Boolean) })); }
 function editorView() {
   const E = S.editor;
   const demo = ALL.find(p => p.f === 'color-10.jpg') || ALL[0];
-  const reels = S.videos.slice(0, 3).map(v => { const id = tiktokId(v.url); return `<div class="reel rv${id ? ' can-play' : ''}"${id ? ` data-tt="${id}" role="button" tabindex="0" aria-label="Play ${esc(v.title)}"` : ''}><img src="${esc(v.cover)}" alt="" loading="lazy"><span class="play" aria-hidden="true">${PLAY}</span><span>Edit reel · ${esc(v.title)}</span></div>`; }).join('');
+  const groups = reelGroups().length ? reelGroups() : [{ title: '', clips: S.videos.slice(0, 3) }];
+  const reelCard = v => { const id = tiktokId(v.url); return `<div class="reel rv${id ? ' can-play' : ''}"${id ? ` data-tt="${id}" role="button" tabindex="0" aria-label="Play ${esc(v.title)}"` : ''}><img src="${esc(v.cover)}" alt="" loading="lazy"><span class="play" aria-hidden="true">${PLAY}</span><span>Edit reel · ${esc(v.title)}</span></div>`; };
+  const reels = groups.map(g => `${g.title ? `<h3 class="h-m reel-h">${esc(g.title)}</h3>` : ''}<div class="reels">${g.clips.map(reelCard).join('')}</div>`).join('');
   return `
   <section class="wrap page-head">
     <p class="eyebrow">Editor</p>
@@ -674,7 +680,7 @@ function editorView() {
   </section>
   <section class="wrap section">
     <div class="sec-head rv"><h2 class="h-l">Video edits</h2><a class="link" href="#videographer">All videos</a></div>
-    <div class="reels">${reels}</div>
+    ${reels}
   </section>
   <section class="wrap section" style="padding-top:0">
     <div class="sec-head rv"><h2 class="h-l">Workflow</h2></div>
@@ -856,9 +862,10 @@ function route() {
   if (r === 'editor') {
     const ba = $('#ba'); $('#ba-r').addEventListener('input', e => ba.style.setProperty('--p', e.target.value));
     const playReel = el => { if (!el || !el.dataset.tt || el.classList.contains('playing')) return; el.classList.add('playing'); el.innerHTML = `<iframe src="${ttSrc(el.dataset.tt)}" allow="fullscreen; encrypted-media" allowfullscreen title="Edit reel"></iframe>`; };
-    const rl = document.querySelector('.reels');
-    rl.addEventListener('click', e => playReel(e.target.closest('.reel')));
-    rl.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { const el = e.target.closest('.reel'); if (el && el.dataset.tt) { e.preventDefault(); playReel(el); } } });
+    document.querySelectorAll('.reels').forEach(rl => {
+      rl.addEventListener('click', e => playReel(e.target.closest('.reel')));
+      rl.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { const el = e.target.closest('.reel'); if (el && el.dataset.tt) { e.preventDefault(); playReel(el); } } });
+    });
   }
   if (r === 'photographer') bindPhotographer();
   if (r === 'videographer') bindVideographer();
@@ -867,9 +874,9 @@ function route() {
   view.classList.remove('in'); void view.offsetWidth; view.classList.add('in');
 }
 /* if a video cover file is missing, fall back to `fb` (a photo) so no broken image shows */
-S.videos.forEach(v => {
+[...S.videos, ...reelGroups().flatMap(g => g.clips)].forEach(v => {
   if (!v.fb || v.fb === v.cover) return;
-  const t = new Image(); t.onerror = () => { v.cover = v.fb; if (document.querySelector('.cinema, .vt')) route(); }; t.src = v.cover;
+  const t = new Image(); t.onerror = () => { v.cover = v.fb; if (document.querySelector('.cinema, .vt, .reels')) route(); }; t.src = v.cover;
 });
 /* ---------- hover-to-play record audio ---------- */
 const players = {}; let hovId = null;

@@ -137,6 +137,19 @@ window.SITE = {
 
   /* ---------- หน้า Editor ---------- */
   editor: {
+    /* Video edits: แบ่งเป็นหมวด  ref:0 = ใช้คลิปที่ videos[0]  ส่วนอื่นใส่ title / url (ลิงก์เต็ม /video/ตัวเลข) / cover (รูปปก) / fb (รูปสำรองถ้ายังไม่มีไฟล์ cover) */
+    reelGroups: [
+      { title: 'A-roll Editing', clips: [
+        { ref: 0 },
+        { title: 'A-roll 02', url: 'https://www.tiktok.com/@scrumpgelateria/video/7605191703833857301', cover: 'images/cover/cover-02.png', fb: 'images/color/color-04.jpg' },
+        { title: 'A-roll 03', url: 'https://www.tiktok.com/@scrumpgelateria/video/7596193413217766664', cover: 'images/cover/cover-03.png', fb: 'images/color/color-07.jpg' }
+      ] },
+      { title: 'Storytelling', clips: [
+        { title: 'Storytelling 01', url: 'https://www.tiktok.com/@outsidezitys/video/7451968719418314005', cover: 'images/cover/cover-04.png', fb: 'images/bw/bw-01.jpg' },
+        { title: 'Storytelling 02', url: 'https://www.tiktok.com/@outsidezitys/video/7573684263279693063', cover: 'images/cover/cover-05.png', fb: 'images/bw/bw-05.jpg' },
+        { title: 'Storytelling 03', url: 'https://www.tiktok.com/@outsidezitys/video/7634158954964192533', cover: 'images/cover/cover-06.png', fb: 'images/color/color-09.jpg' }
+      ] }
+    ],
     lead: '(ตัวอย่าง) รีทัชภาพ เกรดสี และตัดต่อวิดีโอสั้น ตั้งแต่ไฟล์ดิบจนถึงไฟล์ส่งมอบ',
     steps: [
       { t: 'Ingest', d: '(ตัวอย่าง) รับไฟล์ ตั้งชื่อ สำรองข้อมูล' },
