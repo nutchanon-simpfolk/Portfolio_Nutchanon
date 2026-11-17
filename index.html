@@ -1,3 +1,8 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Simpfolk Portfolio</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <meta name="description" content="Simpfolk — photographer, editor and videographer portfolio.">
@@ -52,6 +57,62 @@ h1,h2,h3,p{margin:0}
 .h-m{font-size:clamp(24px,3vw,34px);font-weight:600;letter-spacing:-.02em;line-height:1.12}
 .lead{font-size:clamp(19px,2.2vw,26px);line-height:1.3;color:var(--mute);font-weight:500;letter-spacing:-.01em;max-width:34ch}
 .mono{font-family:var(--mono);font-size:12px;letter-spacing:.04em}
+
+/* photographer v2 (px-) */
+.px-bar{position:sticky;top:calc(env(safe-area-inset-top,0px) + 49px);z-index:40;background:var(--glass);-webkit-backdrop-filter:saturate(180%) blur(20px);backdrop-filter:saturate(180%) blur(20px);border-bottom:1px solid var(--line)}
+.px-bar-in{min-height:56px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;padding-block:8px}
+.px-cats{display:flex;gap:6px;flex-wrap:wrap}
+.px-cats button{border:0;background:transparent;padding:7px 16px;border-radius:999px;font-size:14px;font-weight:500;color:var(--mute);cursor:pointer;transition:background .2s,color .2s}
+.px-cats button:hover{color:var(--fg)}
+.px-cats button[aria-pressed="true"]{background:var(--fg);color:var(--bg)}
+.px-seg{display:inline-flex;background:var(--surface);border-radius:999px;padding:3px}
+.px-seg button{border:0;background:transparent;padding:6px 16px;border-radius:999px;font-size:14px;font-weight:500;color:var(--mute);cursor:pointer;transition:background .2s,color .2s}
+.px-seg button[aria-pressed="true"]{background:var(--bg);color:var(--fg);box-shadow:0 1px 4px var(--shadow)}
+@media (max-width:560px){.px-bar-in{justify-content:center}.px-cats button{padding:7px 12px}}
+.px-sec{--u:clamp(104px,13.4vw,176px);--gap:10px;--px-off:118px;padding-top:clamp(48px,8vw,96px);scroll-margin-top:var(--px-off)}
+@media (max-width:560px){.px-sec{--px-off:168px}}
+.px-mono{font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--mute)}
+.px-crate{display:grid;grid-template-columns:1.15fr 1fr;gap:clamp(24px,5vw,72px);align-items:center;background:var(--surface);border-radius:28px;padding:clamp(22px,4vw,56px);overflow:hidden}
+.px-art{position:relative;container-type:inline-size;aspect-ratio:1.28/1}
+.px-disc{position:absolute;left:34cqw;top:50%;width:64cqw;aspect-ratio:1;margin-top:-32cqw;border-radius:50%;background:repeating-radial-gradient(circle,#0c0c0d 0 1.2px,#1c1c1e 1.2px 2.6px);box-shadow:0 12px 40px var(--shadow);animation:pxspin 9s linear infinite}
+.px-disc::before{content:"";position:absolute;inset:0;border-radius:50%;background:conic-gradient(from 20deg,transparent 0 8%,rgba(255,255,255,.14) 14%,transparent 22% 58%,rgba(255,255,255,.1) 66%,transparent 74%)}
+.px-disc-l{position:absolute;inset:32%;border-radius:50%;overflow:hidden;border:2px solid #111}
+.px-disc-l img{width:100%;height:100%;object-fit:cover}
+.px-disc-l::after{content:"";position:absolute;left:50%;top:50%;width:11%;aspect-ratio:1;border-radius:50%;background:#e9e9ec;transform:translate(-50%,-50%)}
+@keyframes pxspin{to{transform:rotate(360deg)}}
+.px-sleeve{position:absolute;left:0;top:50%;width:54cqw;aspect-ratio:4/5;margin-top:-34cqw;border:0;padding:0;border-radius:6px;overflow:hidden;background:#222;cursor:pointer;box-shadow:0 18px 48px var(--shadow);transition:transform .35s}
+.px-sleeve:hover{transform:translateY(-6px) rotate(-1deg)}
+.px-sleeve img{width:100%;height:100%;object-fit:cover;object-position:50% 25%}
+.px-info .h-l{margin-top:8px}
+.px-blurb{color:var(--mute);margin-top:14px;max-width:36ch}
+.px-info .px-mono+.px-mono{margin-top:10px}
+.px-counts{display:flex;gap:8px;flex-wrap:wrap;margin:18px 0 24px}
+.px-chip{font-size:13px;padding:5px 12px;border-radius:999px;border:1px solid var(--line);color:var(--mute)}
+@media (max-width:760px){.px-crate{grid-template-columns:1fr;border-radius:22px}.px-art{max-width:520px}}
+.px-mag{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));grid-auto-rows:var(--u);gap:var(--gap);margin-top:var(--gap)}
+.px-tile{position:relative;overflow:hidden;border:0;padding:0;border-radius:14px;background:var(--surface);cursor:pointer;grid-column:span 3;grid-row:span 2;opacity:0;transform:translateY(14px);animation:pxrise .6s cubic-bezier(.2,.7,.2,1) forwards;animation-delay:calc(var(--i)*45ms)}
+@keyframes pxrise{to{opacity:1;transform:none}}
+.px-tile.f,.px-tile.h2{grid-column:span 6;grid-row:span 4}
+.px-tile.q3{grid-column:span 4;grid-row:span 3}
+.px-tile.q4{grid-column:span 3;grid-row:span 3}
+.px-tile img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 22%;transition:transform .7s cubic-bezier(.2,.7,.2,1)}
+.px-tile:hover img{transform:scale(1.04)}
+.px-cap{position:absolute;left:0;right:0;bottom:0;padding:36px 14px 12px;text-align:left;color:#fff;font-size:13px;line-height:1.35;background:linear-gradient(transparent,rgba(0,0,0,.72));opacity:0;transform:translateY(6px);transition:opacity .3s,transform .3s}
+.px-tile.f .px-cap{opacity:1;transform:none;font-size:15px;padding:56px 20px 18px}
+.px-tile:hover .px-cap,.px-tile:focus-visible .px-cap{opacity:1;transform:none}
+.px-cap b{display:block;font-weight:600}
+.px-cap span{opacity:.82}
+.px-tag{position:absolute;top:10px;left:10px;font:600 10px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;padding:5px 8px;border-radius:999px;background:rgba(0,0,0,.55);color:#fff;-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+@media (max-width:700px){
+  .px-sec{--u:36vw;--gap:8px}
+  .px-mag{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .px-tile,.px-tile.q3,.px-tile.q4,.px-tile.h2{grid-column:span 1;grid-row:span 2}
+  .px-tile.f{grid-column:span 2;grid-row:span 3}
+  .px-tile.last-odd{grid-column:span 2}
+  .px-cap{opacity:1;transform:none;font-size:12px;padding:30px 10px 9px}
+  .px-tile:not(.f) .px-cap span{display:none}
+}
+@media (prefers-reduced-motion:reduce){.px-disc{animation:none}.px-tile{opacity:1;transform:none;animation:none}}
 
 /* buttons */
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:0 22px;border-radius:980px;border:1px solid transparent;background:var(--btn-bg);color:var(--btn-fg);font-size:15px;font-weight:500;cursor:pointer;transition:opacity .2s,transform .2s}
@@ -362,6 +423,8 @@ h1,h2,h3,p{margin:0}
   *,*::before,*::after{animation:none!important;transition:none!important}
 }
 </style>
+</head>
+<body>
 
 <div class="mock"><b>Mock-up</b> · ข้อความและข้อมูลที่ขึ้นต้นด้วย “(ตัวอย่าง)” หรือ 20XX เป็นข้อมูลตัวอย่างสำหรับดูโครงหน้า</div>
 
@@ -427,9 +490,14 @@ const IC = (() => {
 /* ---------- normalize data ---------- */
 S.galleries.forEach(g => {
   g.photos = g.photos.map(p => typeof p === 'string' ? { f: p } : p);
-  g.photos.forEach((p, i) => { p.n = i + 1; p.src = g.folder + p.f; p.gt = g.title; p.gid = g.id; p.cap = g.caption || ''; });
+  g.photos.forEach((p, i) => { p.n = i + 1; p.src = g.folder + p.f; p.gt = g.title; p.gid = g.id; p.cat = p.cat || p.t || 'portrait'; p.artist = p.artist || ''; p.event = p.event || ''; p.gcap = g.caption || ''; p.cap = [[p.artist, p.event].filter(Boolean).join(' · '), g.caption || ''].filter(Boolean).join(' · '); });
 });
 const ALL = S.galleries.flatMap(g => g.photos);
+const CATDEF = (S.categories && S.categories.length) ? S.categories : [{ id: 'portrait', title: 'Portrait' }, { id: 'candid', title: 'Candid' }, { id: 'landscape', title: 'Landscape' }];
+CATDEF.forEach(c => { c.items = ALL.filter(p => p.cat === c.id); });
+ALL.forEach(p => { const c = CATDEF.find(x => x.id === p.cat); p.catTitle = c ? c.title : p.cat; });
+const CATS = CATDEF.filter(c => c.items.length);
+const AUDIOMAP = {}; S.galleries.forEach(g => { AUDIOMAP[g.id] = g.audio || ''; }); CATDEF.forEach(c => { AUDIOMAP[c.id] = c.audio || ''; });
 const RECORDS = [
   ...S.galleries.map(g => ({ id: g.id, title: g.title, blurb: g.blurb, audio: g.audio || '', items: g.photos }))
 ].filter(r => r.items.length);
@@ -614,69 +682,96 @@ function editorView() {
   </section>`;
 }
 
-/* photographer: two records (Color, Black & White) shown together */
-const recState = {}; let recFocus = null;
-const rs = id => recState[id] || (recState[id] = { i: 0, open: false });
+/* photographer: All (Portrait / Candid / Landscape) or Color mode (Color / B&W); record cover + magazine grid */
+let pxMode = 'all', recFocus = null, pxLists = {}, pxIo = null;
+const ARR_D = '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M6 13l6 6 6-6"/></svg>';
 function photographerView() {
   return `
   <section class="wrap page-head">
     <p class="eyebrow">Photographer</p>
     <h1 class="h-xl" style="margin-top:10px">Frames,<br>on record.</h1>
-    <p class="lead">Two records: Color and Black &amp; White. Flip through the frames, or open the whole crate.</p>
+    <p class="lead">Portrait, Candid, Landscape — กดหมวดเพื่อเลื่อนไปดู และสลับ Color mode เพื่อดูแยกภาพสี/ขาวดำ</p>
   </section>
-  ${RECORDS.map((R, ri) => `
-  <section class="wrap rec-sec" id="rec-${esc(R.id)}" data-aud="${esc(R.id)}" data-ri="${ri}">
-    <div class="card rec"></div>
-    <div class="all"><div><div class="all-in"><div class="sec-head"><h2 class="h-l all-t"></h2><span class="mono all-c" style="color:var(--mute)"></span></div><div class="cols all-cols"></div></div></div></div>
-  </section>`).join('')}`;
+  <div class="px-bar"><div class="wrap px-bar-in">
+    <div class="px-cats" id="px-cats" role="group" aria-label="Sections"></div>
+    <div class="px-seg" id="px-seg" role="group" aria-label="View mode"></div>
+  </div></div>
+  <div class="wrap" id="px-root"></div>`;
 }
-const MINI = [['0cqw', '4cqw', '-9deg'], ['2cqw', '22cqw', '-4deg'], ['0cqw', '40cqw', '5deg'], ['3cqw', '58cqw', '10deg']];
-function paintRecord(sec) {
-  const ri = +sec.dataset.ri, R = RECORDS[ri], st = rs(R.id), n = R.items.length, it = R.items[st.i];
-  const minis = [1, 2, 3, 4].filter(k => k < n).map((k, j) => ({ p: R.items[(st.i + k) % n], at: (st.i + k) % n, m: MINI[j] }));
-  sec.querySelector('.rec').innerHTML = `
-    <div class="rec-art">
-      ${minis.map(m => `<button class="mini" type="button" data-pick="${m.at}" style="--x:${m.m[0]};--y:${m.m[1]};--r:${m.m[2]}" aria-label="Show frame ${m.p.n}: ${esc(m.p.alt)}"><img src="${esc(m.p.src)}" alt="" loading="lazy"></button>`).join('')}
-      <div class="disc" aria-hidden="true"><div class="disc-l"><img src="${esc(it.src)}" alt=""></div></div>
-      <button class="sleeve" type="button" data-open="${st.i}" aria-label="Open frame ${it.n} full size"><img src="${esc(it.src)}" alt="${esc(it.alt)}"></button>
-    </div>
-    <div class="rec-info">
-      <p class="mono">Record ${pad(ri + 1)} / ${pad(RECORDS.length)}</p>
-      <h2 class="h-l">${esc(R.title)}</h2>
-      <p class="blurb">${esc(R.blurb)}</p>
-      ${R.audio ? '<p class="mono" style="color:var(--mute)">♪ Hover the record to play its track</p>' : ''}
-      <p class="cap"><b style="color:var(--fg);font-weight:600">Frame ${pad(st.i + 1)} / ${pad(n)}</b><br>${esc(it.cap || it.alt)}</p>
-      <div class="rec-ctrl">
-        <button class="round" type="button" data-step="-1" aria-label="Previous frame">${ARR_L}</button>
-        <button class="round" type="button" data-step="1" aria-label="Next frame">${ARR_R}</button>
-        <button class="btn all-btn" type="button" aria-expanded="${st.open}">${st.open ? 'Hide all frames' : 'View all ' + n + ' frames'}</button>
+/* magazine layout: blocks of 5 (1 feature + 4) on a 12x4 grid, mirrored every other block; remainder fills evenly */
+function pxLayout(list) {
+  const out = []; let k = 0, b = 0;
+  while (list.length - k >= 5) {
+    const [F, a, c, d, e] = list.slice(k, k + 5).map((p, j) => ({ p, idx: k + j }));
+    (b % 2 ? [a, c, { ...F, cls: 'f' }, d, e] : [{ ...F, cls: 'f' }, a, c, d, e]).forEach(x => out.push(x)); k += 5; b++;
+  }
+  const r = list.length - k, cls = r === 1 || r === 2 ? 'h2' : r === 3 ? 'q3' : r === 4 ? 'q4' : '';
+  for (let j = 0; j < r; j++) out.push({ p: list[k + j], idx: k + j, cls });
+  if (out.length % 2) out[out.length - 1].last = true;
+  return out;
+}
+function pxSections() {
+  if (pxMode === 'all') return CATS.map(c => { const nC = c.items.filter(p => p.gid === 'color').length;
+    return { id: c.id, title: c.title, blurb: c.blurb || '', items: c.items, tag: 'gal', chips: [`${c.items.length} frames`, `Color ${nC}`, `B&W ${c.items.length - nC}`] }; });
+  return S.galleries.filter(g => g.photos.length).map(g => ({ id: g.id, title: g.title, blurb: g.blurb || '', items: g.photos, tag: 'cat',
+    chips: [`${g.photos.length} frames`, ...CATS.map(c => [c.title, g.photos.filter(p => p.cat === c.id).length]).filter(x => x[1]).map(x => `${x[0]} ${x[1]}`)] }));
+}
+function pxSection(s, ri, total) {
+  const cv = esc(s.items[0].src);
+  return `
+  <section class="px-sec" id="px-${esc(s.id)}" data-aud="${esc(s.id)}" aria-label="${esc(s.title)}">
+    <div class="px-crate">
+      <div class="px-art">
+        <div class="px-disc" aria-hidden="true"><div class="px-disc-l"><img src="${cv}" alt=""></div></div>
+        <button class="px-sleeve" type="button" data-cover aria-label="Open ${esc(s.title)} frames"><img src="${cv}" alt=""></button>
       </div>
-    </div>`;
+      <div class="px-info">
+        <p class="px-mono">Record ${pad(ri + 1)} / ${pad(total)}</p>
+        <h2 class="h-l">${esc(s.title)}</h2>
+        <p class="px-blurb">${esc(s.blurb)}</p>
+        ${AUDIOMAP[s.id] ? '<p class="px-mono">♪ Hover to play its track</p>' : ''}
+        <div class="px-counts">${s.chips.map(c => `<span class="px-chip">${esc(c)}</span>`).join('')}</div>
+        <a class="btn" href="#px-${esc(s.id)}-grid" data-go>Scroll to frames ${ARR_D}</a>
+      </div>
+    </div>
+    <div class="px-mag" id="px-${esc(s.id)}-grid">${pxLayout(s.items).map((t, j) => `
+      <button class="px-tile ${t.cls || ''}${t.last ? ' last-odd' : ''}" type="button" style="--i:${Math.min(j, 12)}" data-i="${t.idx}" aria-label="Open frame: ${esc(t.p.alt || t.p.cap)}">
+        <img src="${esc(t.p.src)}" alt="${esc(t.p.alt)}" loading="lazy">
+        <span class="px-tag">${esc(s.tag === 'cat' ? t.p.catTitle : (t.p.gid === 'bw' ? 'B&W' : 'Color'))}</span>
+        <span class="px-cap">${(t.p.artist || t.p.event) ? `<b>${esc([t.p.artist, t.p.event].filter(Boolean).join(' · '))}</b>` : ''}<span>${esc(t.p.gcap || t.p.alt)}</span></span>
+      </button>`).join('')}</div>
+  </section>`;
 }
-function paintAll(sec) {
-  const R = RECORDS[+sec.dataset.ri], st = rs(R.id);
-  sec.querySelector('.all-t').textContent = R.title + ' · all frames';
-  sec.querySelector('.all-c').textContent = R.items.length + ' frames';
-  sec.querySelector('.all-cols').innerHTML = R.items.map((p, i) => `<button class="tile" type="button" data-open="${i}" style="--ar:${p.w || 2} / ${p.h || 3};--i:${Math.min(i, 14)}" aria-label="Open frame ${p.n}: ${esc(p.alt)}"><img src="${esc(p.src)}" alt="" loading="lazy" ${p.w ? '' : 'onload="this.parentNode.style.setProperty(\'--ar\',this.naturalWidth+\' / \'+this.naturalHeight)"'}></button>`).join('');
-  sec.querySelector('.all').classList.toggle('open', st.open);
+function pxRender() {
+  const secs = pxSections(); pxLists = {}; secs.forEach(s => { pxLists[s.id] = s.items; });
+  $('#px-root').innerHTML = secs.map((s, i) => pxSection(s, i, secs.length)).join('');
+  $('#px-cats').innerHTML = secs.map(s => `<button type="button" data-c="${esc(s.id)}" aria-pressed="false">${s.id === 'bw' ? 'B&amp;W' : esc(s.title)}</button>`).join('');
+  document.querySelectorAll('#px-seg button').forEach(x => x.setAttribute('aria-pressed', String(x.dataset.m === pxMode)));
+  pxIo.disconnect(); document.querySelectorAll('.px-sec').forEach(s => pxIo.observe(s));
 }
 function bindPhotographer() {
-  document.querySelectorAll('.rec-sec').forEach(sec => {
-    paintRecord(sec); paintAll(sec);
-    const R = RECORDS[+sec.dataset.ri], st = rs(R.id);
-    sec.addEventListener('click', e => {
-      const m = e.target.closest('[data-pick]'), s = e.target.closest('[data-step]'), o = e.target.closest('[data-open]'), a = e.target.closest('.all-btn');
-      if (m) { st.i = +m.dataset.pick; paintRecord(sec); }
-      else if (s) { st.i = (st.i + +s.dataset.step + R.items.length) % R.items.length; paintRecord(sec); }
-      else if (o) openLB(R.items.map(lbItem), +o.dataset.open, o);
-      else if (a) {
-        st.open = !st.open; sec.querySelector('.all').classList.toggle('open', st.open);
-        a.setAttribute('aria-expanded', String(st.open)); a.textContent = st.open ? 'Hide all frames' : 'View all ' + R.items.length + ' frames';
-        if (st.open) setTimeout(() => sec.querySelector('.all').scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' }), 120);
-      }
-    });
+  if (pxIo) pxIo.disconnect();
+  pxIo = new IntersectionObserver(es => es.forEach(en => { if (en.isIntersecting) document.querySelectorAll('#px-cats button').forEach(x => x.setAttribute('aria-pressed', String('px-' + x.dataset.c === en.target.id))); }), { rootMargin: '-40% 0px -55% 0px' });
+  $('#px-seg').innerHTML = [['all', 'All'], ['color', 'Color mode']].map(([v, l]) => `<button type="button" data-m="${v}" aria-pressed="${v === pxMode}">${l}</button>`).join('');
+  pxRender();
+  $('#px-seg').addEventListener('click', e => {
+    const t = e.target.closest('[data-m]'); if (!t || t.dataset.m === pxMode) return;
+    pxMode = t.dataset.m; recLeave(true); pxRender();
+    const y = $('#px-root').getBoundingClientRect().top + scrollY - 150; if (scrollY > y) scrollTo({ top: y, behavior: reduce ? 'auto' : 'smooth' });
   });
-  if (recFocus) { const f = $('#rec-' + recFocus); recFocus = null; if (f) setTimeout(() => f.scrollIntoView({ behavior: 'auto', block: 'start' }), 60); }
+  $('#px-cats').addEventListener('click', e => {
+    const c = e.target.closest('[data-c]'); if (!c) return;
+    const el = document.getElementById('px-' + c.dataset.c); if (el) el.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });
+  });
+  $('#px-root').addEventListener('click', e => {
+    const go = e.target.closest('[data-go]');
+    if (go) { e.preventDefault(); const el = document.getElementById(go.getAttribute('href').slice(1)); if (el) el.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' }); return; }
+    const t = e.target.closest('.px-tile'), s = e.target.closest('[data-cover]'), sec = e.target.closest('.px-sec');
+    if (!sec) return;
+    const list = pxLists[sec.dataset.aud]; if (!list || !list.length) return;
+    if (t) openLB(list.map(lbItem), +t.dataset.i, t); else if (s) openLB(list.map(lbItem), 0, s);
+  });
+  if (recFocus) { const f = document.getElementById('px-' + recFocus); recFocus = null; if (f) setTimeout(() => f.scrollIntoView({ behavior: 'auto', block: 'start' }), 60); }
 }
 
 /* videographer: ScreenX */
@@ -779,8 +874,8 @@ S.videos.forEach(v => {
 /* ---------- hover-to-play record audio ---------- */
 const players = {}; let hovId = null;
 function audioFor(id) {
-  const r = RECORDS.find(x => x.id === id); if (!r || !r.audio) return null;
-  if (!players[id]) { const a = new Audio(encodeURI(r.audio)); a.loop = true; a.preload = 'none'; a.volume = 0; players[id] = a; }
+  const src = AUDIOMAP[id]; if (!src) return null;
+  if (!players[id]) { const a = new Audio(encodeURI(src)); a.loop = true; a.preload = 'none'; a.volume = 0; players[id] = a; }
   return players[id];
 }
 function fade(a, to, ms, done) {
@@ -817,7 +912,7 @@ route();
 /* ---------- in-page (non-route) links ---------- */
 document.addEventListener('click', e => {
   const gp = e.target.closest('[data-goto-photo]');
-  if (gp) { const [gid, i] = gp.dataset.gotoPhoto.split(':'); if (RECORDS.some(r => r.id === gid)) { recState[gid] = { i: +i, open: false }; recFocus = gid; } return; }
+  if (gp) { const [gid, i] = gp.dataset.gotoPhoto.split(':'); if (RECORDS.some(r => r.id === gid)) { pxMode = 'color'; recFocus = gid; } return; }
   const gv = e.target.closest('[data-goto-vid]');
   if (gv) { vid = +gv.dataset.gotoVid; return; }
   const a = e.target.closest('a[href^="#"]'); if (!a) return;
@@ -832,7 +927,7 @@ document.addEventListener('click', e => {
 /* ---------- lightbox ---------- */
 const lb = $('#lb'), lbImg = $('#lb-img');
 let cur = { list: [], i: 0, opener: null };
-const lbItem = p => ({ src: p.src, alt: p.alt || '', cap: p.cap || '', label: p.gt || '', n: p.n, t: p.t || '' });
+const lbItem = p => ({ src: p.src, alt: p.alt || '', cap: p.cap || '', label: p.catTitle || p.gt || '', n: p.n, t: p.gt || p.t || '' });
 function show() {
   const it = cur.list[cur.i];
   $('#lb-count').innerHTML = esc(it.label) + ' · <b>' + pad(it.n) + '</b> · ' + (cur.i + 1) + ' / ' + cur.list.length + (it.t ? ' · ' + esc(it.t) : '');
@@ -862,3 +957,5 @@ let sx = null;
 $('#lb-stage').addEventListener('pointerdown', e => { sx = e.clientX; });
 $('#lb-stage').addEventListener('pointerup', e => { if (sx === null) return; const dx = e.clientX - sx; sx = null; if (Math.abs(dx) > 50) step(dx < 0 ? 1 : -1); });
 </script>
+</body>
+</html>

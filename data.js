@@ -72,37 +72,45 @@ window.SITE = {
      รูปวางไว้ที่ images/<id>/  แล้วเพิ่มชื่อไฟล์ในรายการ photos
      w,h = ขนาดพิกเซลของรูป (ไม่บังคับ)  t = 'portrait' หรือ 'candid' (ไม่บังคับ)  */
   hero: { src: 'images/color/color-02.jpg', alt: 'Model in a black leather jacket kneeling in a white spotlight on a red backdrop' },
+  /* หมวดภาพหน้า Photographer: id ต้องตรงกับ cat ของแต่ละภาพ  audio = เพลงตอนเลื่อนเมาส์ไปที่หมวดนั้น (เว้นว่าง = ไม่มีเสียง) */
+  categories: [
+    { id: 'portrait',  title: 'Portrait',  blurb: 'ภาพบุคคลที่จัดแสงและวางท่า เน้นสีหน้า เงา และคาแรกเตอร์ของคนในภาพ', audio: 'audio/Song_BIRDS OF A FEATHER .mp3' },
+    { id: 'candid',    title: 'Candid',    blurb: 'ช่วงเวลาไม่ได้จัด ระหว่างเตรียมงานและเบื้องหลัง จับจังหวะที่เป็นธรรมชาติ', audio: 'audio/Song_505.mp3' },
+    { id: 'landscape', title: 'Landscape', blurb: 'ภาพกว้างที่เห็นทั้งฉากและบรรยากาศ (ตอนนี้ใช้ภาพแนวนอนตัวอย่างแทนไปก่อน)', audio: 'audio/Song_BIRDS OF A FEATHER .mp3' }
+  ],
+  /* galleries = โฟลเดอร์รูปสี / ขาวดำ (ใช้กับ Color mode และแผ่นเสียงหน้า Home)
+     แต่ละภาพ: cat = portrait | candid | landscape (ถ้าไม่ใส่ จะใช้ค่า t)  artist / event = ตัวอย่าง ให้แทนที่ด้วยของจริง */
   galleries: [
     { id: 'color', title: 'Color', folder: 'images/color/', caption: 'ปี 2026 @cosdent', audio: 'audio/Song_BIRDS OF A FEATHER .mp3', /* เพลงตอนเลื่อนเมาส์ไปที่แผ่น (เว้นว่าง = ไม่มีเสียง) */
       blurb: 'Red sweeps, denim, white backdrops and silhouettes cut out by a single light.',
       photos: [
-        { f:'color-01.jpg', w:1333, h:2000, t:'candid',   alt:'Woman in a blue denim set smiling, long hair falling across the foreground' },
-        { f:'color-02.jpg', w:1333, h:2000, t:'portrait', alt:'Model in a black leather jacket and stockings kneeling in a white spotlight on a red backdrop' },
-        { f:'color-03.jpg', w:2000, h:1333, t:'candid',   alt:'Man in a black suit with his back to the camera facing a woman in black, white studio backdrop' },
-        { f:'color-04.jpg', w:1333, h:2000, t:'portrait', alt:'Two women in denim and lace tops embracing against a white backdrop' },
-        { f:'color-05.jpg', w:1333, h:2000, t:'portrait', alt:'Silhouette of a person with a high ponytail, hands together, against a red backdrop' },
-        { f:'color-06.jpg', w:2000, h:1333, t:'portrait', alt:'Two women standing close in light blue and white outfits on a white backdrop' },
-        { f:'color-07.jpg', w:1333, h:2000, t:'portrait', alt:'Model in a leather jacket with a hand raised to her face, seated in a spotlight on red' },
-        { f:'color-08.jpg', w:2000, h:1333, t:'candid',   alt:'Two women with long hair looking out through a narrow gap between dark panels' },
-        { f:'color-09.jpg', w:1333, h:2000, t:'portrait', alt:'Silhouette of a person with a ponytail looking upward against a red backdrop' },
-        { f:'color-10.jpg', w:2000, h:1333, t:'candid',   alt:'Five people in black and white outfits standing in a row between studio lights' }
+        { f:'color-01.jpg', artist:'Artist A', event:'Event 01', w:1333, h:2000, t:'candid',   alt:'Woman in a blue denim set smiling, long hair falling across the foreground' },
+        { f:'color-02.jpg', artist:'Artist B', event:'Event 02', w:1333, h:2000, t:'portrait', alt:'Model in a black leather jacket and stockings kneeling in a white spotlight on a red backdrop' },
+        { f:'color-03.jpg', cat:'landscape', artist:'Artist C', event:'Event 03', w:2000, h:1333, t:'candid',   alt:'Man in a black suit with his back to the camera facing a woman in black, white studio backdrop' },
+        { f:'color-04.jpg', artist:'Artist D', event:'Event 01', w:1333, h:2000, t:'portrait', alt:'Two women in denim and lace tops embracing against a white backdrop' },
+        { f:'color-05.jpg', artist:'Artist A', event:'Event 02', w:1333, h:2000, t:'portrait', alt:'Silhouette of a person with a high ponytail, hands together, against a red backdrop' },
+        { f:'color-06.jpg', cat:'landscape', artist:'Artist B', event:'Event 03', w:2000, h:1333, t:'portrait', alt:'Two women standing close in light blue and white outfits on a white backdrop' },
+        { f:'color-07.jpg', artist:'Artist C', event:'Event 01', w:1333, h:2000, t:'portrait', alt:'Model in a leather jacket with a hand raised to her face, seated in a spotlight on red' },
+        { f:'color-08.jpg', artist:'Artist D', event:'Event 02', w:2000, h:1333, t:'candid',   alt:'Two women with long hair looking out through a narrow gap between dark panels' },
+        { f:'color-09.jpg', artist:'Artist A', event:'Event 03', w:1333, h:2000, t:'portrait', alt:'Silhouette of a person with a ponytail looking upward against a red backdrop' },
+        { f:'color-10.jpg', cat:'landscape', artist:'Artist B', event:'Event 01', w:2000, h:1333, t:'candid',   alt:'Five people in black and white outfits standing in a row between studio lights' }
       ]},
     { id: 'bw', title: 'Black & White', folder: 'images/bw/', caption: 'ปี 2026 @cosdent', audio: 'audio/Song_505.mp3',
       blurb: 'Tuxedos, spotlights and long shadows. Contrast first, grain left in.',
       photos: [
-        { f:'bw-01.jpg', w:1333, h:2000, t:'portrait', alt:'Man in a tuxedo and bow tie lit by a hard spotlight, shadow on the wall' },
-        { f:'bw-02.jpg', w:1333, h:2000, t:'portrait', alt:'Standing portrait of a man in a tuxedo and bow tie against a spotlit backdrop' },
-        { f:'bw-03.jpg', w:1333, h:2000, t:'candid',   alt:'Woman in black having her makeup touched up, a brush at her face' },
-        { f:'bw-04.jpg', w:1333, h:2000, t:'portrait', alt:'Figure in a long coat with arms spread inside a pool of light, shadow behind' },
-        { f:'bw-05.jpg', w:1333, h:2000, t:'portrait', alt:'Woman in a black dress in profile with studio lights behind her' },
-        { f:'bw-06.jpg', w:1333, h:2000, t:'portrait', alt:'Two women in black leaning close together' },
-        { f:'bw-07.jpg', w:1333, h:2000, t:'portrait', alt:'Model crouched in a leather jacket and heels inside a white spotlight circle' },
-        { f:'bw-08.jpg', w:1333, h:2000, t:'candid',   alt:'Model in a leather jacket touching her face in a spotlight, crew in the dark beside her' },
-        { f:'bw-09.jpg', w:1333, h:2000, t:'portrait', alt:'Man in a dark suit in profile, hand at his collar' },
-        { f:'bw-10.jpg', w:1333, h:2000, t:'portrait', alt:'Man in a tuxedo standing in a spotlight with a long shadow behind him' },
-        { f:'bw-11.jpg', w:1333, h:2000, t:'portrait', alt:'Woman in a black dress in profile, studio equipment behind her' },
-        { f:'bw-12.jpg', w:1333, h:2000, t:'portrait', alt:'Two women in denim and lace tops embracing on a bright high-key backdrop' },
-        { f:'bw-13.jpg', w:1333, h:2000, t:'candid',   alt:'Man in a suit standing among studio stands and equipment' }
+        { f:'bw-01.jpg', artist:'Artist C', event:'Event 02', w:1333, h:2000, t:'portrait', alt:'Man in a tuxedo and bow tie lit by a hard spotlight, shadow on the wall' },
+        { f:'bw-02.jpg', artist:'Artist D', event:'Event 03', w:1333, h:2000, t:'portrait', alt:'Standing portrait of a man in a tuxedo and bow tie against a spotlit backdrop' },
+        { f:'bw-03.jpg', artist:'Artist A', event:'Event 01', w:1333, h:2000, t:'candid',   alt:'Woman in black having her makeup touched up, a brush at her face' },
+        { f:'bw-04.jpg', artist:'Artist B', event:'Event 02', w:1333, h:2000, t:'portrait', alt:'Figure in a long coat with arms spread inside a pool of light, shadow behind' },
+        { f:'bw-05.jpg', artist:'Artist C', event:'Event 03', w:1333, h:2000, t:'portrait', alt:'Woman in a black dress in profile with studio lights behind her' },
+        { f:'bw-06.jpg', artist:'Artist D', event:'Event 01', w:1333, h:2000, t:'portrait', alt:'Two women in black leaning close together' },
+        { f:'bw-07.jpg', artist:'Artist A', event:'Event 02', w:1333, h:2000, t:'portrait', alt:'Model crouched in a leather jacket and heels inside a white spotlight circle' },
+        { f:'bw-08.jpg', artist:'Artist B', event:'Event 03', w:1333, h:2000, t:'candid',   alt:'Model in a leather jacket touching her face in a spotlight, crew in the dark beside her' },
+        { f:'bw-09.jpg', artist:'Artist C', event:'Event 01', w:1333, h:2000, t:'portrait', alt:'Man in a dark suit in profile, hand at his collar' },
+        { f:'bw-10.jpg', artist:'Artist D', event:'Event 02', w:1333, h:2000, t:'portrait', alt:'Man in a tuxedo standing in a spotlight with a long shadow behind him' },
+        { f:'bw-11.jpg', artist:'Artist A', event:'Event 03', w:1333, h:2000, t:'portrait', alt:'Woman in a black dress in profile, studio equipment behind her' },
+        { f:'bw-12.jpg', artist:'Artist B', event:'Event 01', w:1333, h:2000, t:'portrait', alt:'Two women in denim and lace tops embracing on a bright high-key backdrop' },
+        { f:'bw-13.jpg', artist:'Artist C', event:'Event 02', w:1333, h:2000, t:'candid',   alt:'Man in a suit standing among studio stands and equipment' }
       ]}
   ],
   /* แผ่นเสียงเพิ่มเติมที่คัดจากรูปทั้งหมดตามประเภท (t) */
