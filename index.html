@@ -368,9 +368,8 @@ h1,h2,h3,p{margin:0}
 @keyframes shine{to{transform:translateX(120%)}}
 .scr-c .play{background:rgba(255,255,255,.9)}
 .scr-c .note{position:absolute;left:12px;right:12px;bottom:14px;padding:10px 12px;border-radius:12px;background:rgba(0,0,0,.65);backdrop-filter:blur(8px);font-size:13px;line-height:1.35;text-align:center}
-.scr-c.emb{overflow:auto;background:#000}
-.scr-c.emb blockquote{margin:0 auto!important}
-.scr-c.emb iframe{display:block;max-width:100%;border:0}
+.scr-c.emb{background:#000}
+.scr-c.emb iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
 .floor{height:46px;margin-inline:-8%;background:radial-gradient(ellipse at 50% 0,rgba(255,255,255,.16),transparent 65%)}
 .cin-bar{display:flex;align-items:center;justify-content:space-between;gap:14px 24px;flex-wrap:wrap;padding-block:6px 4px}
 .cin-bar h2{font-size:clamp(22px,2.6vw,30px);font-weight:700;letter-spacing:-.02em}
@@ -788,17 +787,18 @@ function bindPhotographer() {
 
 /* videographer: ScreenX */
 let vid = 0;
-const ttFrame = (id, title, url) => `<blockquote class="tiktok-embed" cite="${esc(url)}" data-video-id="${id}" style="max-width:605px;min-width:0;margin:0"><section><a target="_blank" rel="noopener" href="${esc(url)}">${esc(title)}</a></section></blockquote>`;
-/* TikTok's official embed.js turns the blockquote into the player; re-load it after inserting one */
-function ttLoad() { document.querySelectorAll('script[data-tt]').forEach(s => s.remove()); const s = document.createElement('script'); s.async = true; s.dataset.tt = '1'; s.src = 'https://www.tiktok.com/embed.js'; document.body.appendChild(s); }
+/* TikTok official Player (player/v1): autoplay + loop; viewer unmutes / pauses with the player's own controls */
+const ttSrc = id => `https://www.tiktok.com/player/v1/${id}?autoplay=1&muted=1&loop=1&rel=0&controls=1&progress_bar=1&music_info=0&description=0`;
+const ttFrame = (id, title) => `<iframe src="${ttSrc(id)}" title="${esc(title)}" allow="autoplay; fullscreen; encrypted-media" allowfullscreen loading="eager"></iframe>`;
+function ttLoad() {}
 /* autoplay (muted) when a clip scrolls into view; the viewer unmutes / pauses with the player controls */
-const AUTO = false; /* embed/v2 cannot autoplay, so clips are not pre-loaded on scroll */
 /* clip mode: 'embed' = play inside the page, 'card' = cover + button that opens TikTok in a new tab, 'auto' (default) = card inside a preview frame, embed on the real site */
 const CARD = S.clipMode === 'card' || (S.clipMode !== 'embed' && window.top !== window.self);
+const AUTO = !CARD; /* clips start muted when scrolled into view (browser rule); no autoplay in card mode */
 const openClip = u => { if (u) window.open(u, '_blank', 'noopener'); };
 let autoIo = null, cinVis = false;
 const ytId = u => { const m = /(?:youtube\.com\/(?:shorts|embed)\/|youtu\.be\/|[?&]v=)([\w-]{11})/.exec(u || ''); return m && m[1]; };
-const ytFrame = (id, title) => `<iframe src="https://www.youtube.com/embed/${id}?autoplay=1&playsinline=1&rel=0&modestbranding=1" title="${esc(title)}" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe>`;
+const ytFrame = (id, title) => `<iframe src="https://www.youtube.com/embed/${id}?autoplay=1&mute=1&loop=1&playlist=${id}&playsinline=1&rel=0&modestbranding=1" title="${esc(title)}" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe>`;
 const tiktokId = u => { const m = /\/video\/(\d+)/.exec(u || ''); return m && m[1]; };
 function videographerView() {
   return `
@@ -819,14 +819,13 @@ function videographerView() {
   </section>`;
 }
 function paintVideo(playing, manual) {
-  setTimeout(() => { if (document.querySelector('.scr-c .tiktok-embed')) ttLoad(); }, 0);
   const N = S.videos.length, v = S.videos[vid], id = tiktokId(v.url);
   const pv = S.videos[(vid - 1 + N) % N], nx = S.videos[(vid + 1) % N];
   $('#ambient').style.backgroundImage = `url("${v.cover}")`;
   $('#screens').innerHTML = `
     <button class="scr scr-s scr-l" type="button" data-vs="-1" aria-label="Previous clip: ${esc(pv.title)}"><img src="${esc(pv.cover)}" alt=""><span class="shine"></span><span class="sx-cap"><small>← Previous</small>${esc(pv.title)}</span></button>
     <div class="scr scr-c${playing && id && !CARD ? ' emb' : ''}">
-      ${playing && id ? ttFrame(id, v.title, v.url)
+      ${playing && id ? ttFrame(id, v.title)
         : `<img src="${esc(v.cover)}" alt="${esc(v.title)} cover"><span class="shine"></span>
            <button class="play" type="button" id="v-play" aria-label="Play ${esc(v.title)}" style="border:0;cursor:pointer">${PLAY}</button>
            ${manual && !id ? '<p class="note">ยังไม่ได้ใส่ลิงก์ TikTok ของคลิปนี้ (ใส่ที่ data.js)</p>' : ''}`}
@@ -888,12 +887,12 @@ function route() {
   view.innerHTML = { home: homeView, info: infoView, editor: editorView, photographer: photographerView, videographer: videographerView, other: otherView }[r]();
   if (r === 'editor') {
     const ba = $('#ba'); $('#ba-r').addEventListener('input', e => ba.style.setProperty('--p', e.target.value));
-    document.querySelectorAll('.reel[data-tt]').forEach(el => { el._orig = el.innerHTML; });
-    const playReel = el => { if (!el || el.classList.contains('playing')) return; if (el.dataset.yt) { el.classList.add('playing', 'yt'); el.innerHTML = ytFrame(el.dataset.yt, 'Edit reel'); return; } if (!el.dataset.tt) return; if (CARD) { openClip(el.dataset.url); return; } el.classList.add('playing'); el.innerHTML = ttFrame(el.dataset.tt, 'Edit reel', el.dataset.url); ttLoad(); };
-    const stopReel = el => { if (!el.classList.contains('playing')) return; el.classList.remove('playing'); el.innerHTML = el._orig; };
+    document.querySelectorAll('.reel[data-tt],.reel[data-yt]').forEach(el => { el._orig = el.innerHTML; });
+    const playReel = el => { if (!el || el.classList.contains('playing')) return; if (el.dataset.yt) { el.classList.add('playing', 'yt'); el.innerHTML = ytFrame(el.dataset.yt, 'Edit reel'); return; } if (!el.dataset.tt) return; if (CARD) { openClip(el.dataset.url); return; } el.classList.add('playing', 'yt'); el.innerHTML = ttFrame(el.dataset.tt, 'Edit reel'); };
+    const stopReel = el => { if (!el.classList.contains('playing')) return; el.classList.remove('playing', 'yt'); el.innerHTML = el._orig; };
     if (AUTO) {
       autoIo = new IntersectionObserver(es => es.forEach(en => { if (en.intersectionRatio >= .6) playReel(en.target); else if (en.intersectionRatio < .15) stopReel(en.target); }), { threshold: [0, .15, .6] });
-      document.querySelectorAll('.reel[data-tt]').forEach(el => autoIo.observe(el));
+      document.querySelectorAll('.reel[data-tt],.reel[data-yt]').forEach(el => autoIo.observe(el));
     }
     document.querySelectorAll('.reels').forEach(rl => {
       rl.addEventListener('click', e => playReel(e.target.closest('.reel')));
