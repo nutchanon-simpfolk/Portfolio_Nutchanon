@@ -660,7 +660,7 @@ function editorView() {
   const E = S.editor;
   const demo = ALL.find(p => p.f === 'color-10.jpg') || ALL[0];
   const groups = reelGroups().length ? reelGroups() : [{ title: '', clips: S.videos.slice(0, 3) }];
-  const reelCard = v => { const id = tiktokId(v.url); return `<div class="reel rv${id ? ' can-play' : ''}"${id ? ` data-tt="${id}" role="button" tabindex="0" aria-label="Play ${esc(v.title)}"` : ''}><img src="${esc(v.cover)}" alt="" loading="lazy"><span class="play" aria-hidden="true">${PLAY}</span><span>Edit reel · ${esc(v.title)}</span></div>`; };
+  const reelCard = v => { const id = tiktokId(v.url); return `<div class="reel rv${id ? ' can-play' : ''}"${id ? ` data-tt="${id}" data-url="${esc(v.url)}" role="button" tabindex="0" aria-label="${CARD ? 'Open on TikTok: ' : 'Play '}${esc(v.title)}"` : ''}><img src="${esc(v.cover)}" alt="" loading="lazy"><span class="play" aria-hidden="true">${PLAY}</span><span>Edit reel · ${esc(v.title)}</span></div>`; };
   const reels = groups.map(g => `${g.title ? `<h3 class="h-m reel-h">${esc(g.title)}</h3>` : ''}<div class="reels">${g.clips.map(reelCard).join('')}</div>`).join('');
   return `
   <section class="wrap page-head">
@@ -782,10 +782,13 @@ function bindPhotographer() {
 
 /* videographer: ScreenX */
 let vid = 0;
-const ttSrc = id => `https://www.tiktok.com/player/v1/${id}?autoplay=1&muted=1&controls=1&play_button=1&volume_control=1&progress_bar=1&fullscreen_button=1&rel=0&loop=1&music_info=0&description=0`;
-const ttFrame = (id, title) => `<iframe src="${ttSrc(id)}" allow="autoplay; fullscreen; encrypted-media" allowfullscreen title="${esc(title)}"></iframe>`;
+const ttSrc = id => `https://www.tiktok.com/embed/v2/${id}`;
+const ttFrame = (id, title) => `<iframe src="${ttSrc(id)}" allow="fullscreen; encrypted-media" allowfullscreen title="${esc(title)}"></iframe>`;
 /* autoplay (muted) when a clip scrolls into view; the viewer unmutes / pauses with the player controls */
-const AUTO = !reduce && !(navigator.connection && navigator.connection.saveData);
+const AUTO = false; /* embed/v2 cannot autoplay, so clips are not pre-loaded on scroll */
+/* clip mode: 'embed' = play inside the page, 'card' = cover + button that opens TikTok in a new tab, 'auto' (default) = card inside a preview frame, embed on the real site */
+const CARD = S.clipMode === 'card' || (S.clipMode !== 'embed' && window.top !== window.self);
+const openClip = u => { if (u) window.open(u, '_blank', 'noopener'); };
 let autoIo = null, cinVis = false;
 const tiktokId = u => { const m = /\/video\/(\d+)/.exec(u || ''); return m && m[1]; };
 function videographerView() {
@@ -838,7 +841,7 @@ function bindVideographer() {
     const t = e.target.closest('[data-v]'), s = e.target.closest('[data-vs]'), p = e.target.closest('#v-play');
     if (t) { vid = +t.dataset.v; paintVideo(cinVis); t.scrollIntoView({ inline: 'center', block: 'nearest', behavior: reduce ? 'auto' : 'smooth' }); }
     else if (s) { vid = (vid + +s.dataset.vs + S.videos.length) % S.videos.length; paintVideo(cinVis); }
-    else if (p) paintVideo(true, true);
+    else if (p) { const u = S.videos[vid].url; if (CARD && u) openClip(u); else paintVideo(true, true); }
   });
 }
 
@@ -876,7 +879,7 @@ function route() {
   if (r === 'editor') {
     const ba = $('#ba'); $('#ba-r').addEventListener('input', e => ba.style.setProperty('--p', e.target.value));
     document.querySelectorAll('.reel[data-tt]').forEach(el => { el._orig = el.innerHTML; });
-    const playReel = el => { if (!el || !el.dataset.tt || el.classList.contains('playing')) return; el.classList.add('playing'); el.innerHTML = ttFrame(el.dataset.tt, 'Edit reel'); };
+    const playReel = el => { if (!el || !el.dataset.tt || el.classList.contains('playing')) return; if (CARD) { openClip(el.dataset.url); return; } el.classList.add('playing'); el.innerHTML = ttFrame(el.dataset.tt, 'Edit reel'); };
     const stopReel = el => { if (!el.classList.contains('playing')) return; el.classList.remove('playing'); el.innerHTML = el._orig; };
     if (AUTO) {
       autoIo = new IntersectionObserver(es => es.forEach(en => { if (en.intersectionRatio >= .6) playReel(en.target); else if (en.intersectionRatio < .15) stopReel(en.target); }), { threshold: [0, .15, .6] });
