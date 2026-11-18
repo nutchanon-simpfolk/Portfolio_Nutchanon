@@ -139,10 +139,10 @@ window.SITE = {
 
   /* ---------- หน้า Editor ---------- */
   editor: {
-    /* Video edits: แบ่งเป็นหมวด  ref:0 = ใช้คลิปที่ videos[0]  ส่วนอื่นใส่ title / url (ลิงก์เต็ม /video/ตัวเลข) / cover (รูปปก) / fb (รูปสำรองถ้ายังไม่มีไฟล์ cover) */
+    /* Video edits: แบ่งเป็นหมวด  คลิปในหน้านี้แยกจากหน้า Videographer (แก้แยกกันได้)  ใส่ title / url (ลิงก์เต็ม /video/ตัวเลข) / cover (รูปปก) / fb (รูปสำรองถ้ายังไม่มีไฟล์ cover) */
     reelGroups: [
       { title: 'A-roll Editing', clips: [
-        { ref: 0 },
+        { title: 'A-roll 01', url: 'https://www.tiktok.com/@scrumpgelateria/video/7598813310141713672', cover: 'images/cover/cover-01.png', fb: 'images/color/color-02.jpg' },
         { title: 'A-roll 02', url: 'https://www.tiktok.com/@scrumpgelateria/video/7605191703833857301', cover: 'images/cover/cover-02.png', fb: 'images/color/color-04.jpg' },
         { title: 'A-roll 03', url: 'https://www.tiktok.com/@scrumpgelateria/video/7596193413217766664', cover: 'images/cover/cover-03.png', fb: 'images/color/color-07.jpg' }
       ] },
