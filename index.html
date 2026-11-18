@@ -269,7 +269,7 @@ h1,h2,h3,p{margin:0}
 /* editor */
 .ba{--p:50;position:relative;border-radius:var(--r);overflow:hidden;aspect-ratio:3/2;background:var(--surface-2);user-select:none;touch-action:pan-y}
 .ba img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
-.ba .before{filter:grayscale(.4) contrast(.78) brightness(1.08) saturate(.6)}
+@media (max-width:640px){.ba{max-height:70vh}}
 .ba .after-l{position:absolute;inset:0;clip-path:inset(0 0 0 calc(var(--p)*1%))}
 .ba .bar{position:absolute;top:0;bottom:0;left:calc(var(--p)*1%);width:2px;background:#fff;box-shadow:0 0 12px rgba(0,0,0,.4);pointer-events:none}
 .ba .bar::after{content:"";position:absolute;top:50%;left:50%;width:44px;height:44px;margin:-22px;border-radius:50%;background:#fff;box-shadow:0 2px 12px rgba(0,0,0,.35)}
@@ -663,7 +663,7 @@ function infoView() {
 function reelGroups() { return ((S.editor && S.editor.reelGroups) || []).map(g => ({ title: g.title, clips: g.clips.map(c => c.ref != null ? S.videos[c.ref] : c).filter(Boolean) })); }
 function editorView() {
   const E = S.editor;
-  const demo = ALL.find(p => p.f === 'color-10.jpg') || ALL[0];
+  const cmp = E.compare || {};
   const groups = reelGroups().length ? reelGroups() : [{ title: '', clips: S.videos.slice(0, 3) }];
   const reelCard = v => { const yid = ytId(v.url), id = yid ? null : tiktokId(v.url), any = yid || id; return `<div class="reel rv${any ? ' can-play' : ''}"${yid ? ` data-yt="${yid}" data-url="${esc(v.url)}" role="button" tabindex="0" aria-label="Play ${esc(v.title)}"` : ''}${id ? ` data-tt="${id}" data-url="${esc(v.url)}" role="button" tabindex="0" aria-label="${CARD ? 'Open on TikTok: ' : 'Play '}${esc(v.title)}"` : ''}><img src="${esc(v.cover)}" alt="" loading="lazy"><span class="play" aria-hidden="true">${PLAY}</span><span>Edit reel · ${esc(v.title)}</span></div>`; };
   const reels = groups.map(g => `${g.title ? `<h3 class="h-m reel-h">${esc(g.title)}</h3>` : ''}<div class="reels">${g.clips.map(reelCard).join('')}</div>`).join('');
@@ -675,13 +675,12 @@ function editorView() {
   </section>
   <section class="wrap">
     <div class="ba rv" id="ba">
-      <img class="before" src="${esc(demo.src)}" alt="Before: flat, ungraded version of the photo">
-      <div class="after-l"><img src="${esc(demo.src)}" alt="After: graded version of the photo"></div>
+      <img src="${esc(cmp.before)}" alt="${esc(cmp.altBefore || 'Before')}">
+      <div class="after-l"><img src="${esc(cmp.after)}" alt="${esc(cmp.altAfter || 'After')}"></div>
       <span class="tag l">Before</span><span class="tag r">After</span>
       <div class="bar"></div>
       <input type="range" min="0" max="100" value="50" id="ba-r" aria-label="Before and after comparison">
     </div>
-    <p class="mono" style="color:var(--mute);margin-top:12px">Mock-up · ภาพ Before จำลองด้วยฟิลเตอร์ ให้แทนด้วยรูปก่อน/หลังรีทัชจริง</p>
   </section>
   <section class="wrap section">
     <div class="sec-head rv"><h2 class="h-l">Video edits</h2></div>

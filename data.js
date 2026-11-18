@@ -139,6 +139,8 @@ window.SITE = {
 
   /* ---------- หน้า Editor ---------- */
   editor: {
+    /* Before/After: ภาพจริง 2 ภาพ (ครอปและสัดส่วนเดียวกัน) */
+    compare: { before: 'images/editor/before.jpg', after: 'images/editor/after.jpg', altBefore: 'ภาพต้นฉบับก่อนแต่งสี', altAfter: 'ภาพหลังเกรดสี' },
     /* Video edits: แบ่งเป็นหมวด  คลิปในหน้านี้แยกจากหน้า Videographer (แก้แยกกันได้)  ใส่ title / url (ลิงก์เต็ม /video/ตัวเลข) / cover (รูปปก) / fb (รูปสำรองถ้ายังไม่มีไฟล์ cover) */
     reelGroups: [
       { title: 'A-roll Editing', clips: [
