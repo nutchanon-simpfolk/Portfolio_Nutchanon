@@ -4,7 +4,7 @@
    ============================================================ */
 window.SITE = {
   /* วิธีเล่นคลิป TikTok: 'embed' = เล่นในหน้าเว็บ, 'card' = การ์ดปกคลิป กดแล้วเปิด TikTok ในแท็บใหม่, 'auto' = พรีวิวใช้การ์ด เว็บจริงใช้ embed  (ถ้า embed ขึ้น error ให้ใช้ 'card') */
-  clipMode: 'card',
+  clipMode: 'embed',
   name: 'Simpfolk',
   roles: ['Photographer', 'Editor', 'Videographer'],
   tagline: 'ช่างภาพ ตัดต่อ และผู้ผลิตวิดีโอ',
