@@ -289,6 +289,8 @@ h1,h2,h3,p{margin:0}
 .reel.playing{aspect-ratio:auto;min-height:100%;display:block;overflow:visible;background:var(--surface-2)}
 .reel.playing blockquote{margin:0!important}
 .reel.playing iframe{display:block;max-width:100%;border:0;border-radius:var(--r)}
+.reel.playing.yt{aspect-ratio:9/16;min-height:0;overflow:hidden;background:#000}
+.reel.playing.yt iframe{position:absolute;inset:0;width:100%;height:100%;border-radius:0}
 .reel span{position:relative;font-weight:600;font-size:15px}
 .play{position:absolute;top:50%;left:50%;width:56px;height:56px;margin:-28px;border-radius:50%;background:rgba(255,255,255,.88);display:grid;place-items:center;color:#1d1d1f}
 .play svg{width:22px;height:22px;margin-left:3px}
@@ -664,7 +666,7 @@ function editorView() {
   const E = S.editor;
   const demo = ALL.find(p => p.f === 'color-10.jpg') || ALL[0];
   const groups = reelGroups().length ? reelGroups() : [{ title: '', clips: S.videos.slice(0, 3) }];
-  const reelCard = v => { const id = tiktokId(v.url); return `<div class="reel rv${id ? ' can-play' : ''}"${id ? ` data-tt="${id}" data-url="${esc(v.url)}" role="button" tabindex="0" aria-label="${CARD ? 'Open on TikTok: ' : 'Play '}${esc(v.title)}"` : ''}><img src="${esc(v.cover)}" alt="" loading="lazy"><span class="play" aria-hidden="true">${PLAY}</span><span>Edit reel · ${esc(v.title)}</span></div>`; };
+  const reelCard = v => { const yid = ytId(v.url), id = yid ? null : tiktokId(v.url), any = yid || id; return `<div class="reel rv${any ? ' can-play' : ''}"${yid ? ` data-yt="${yid}" data-url="${esc(v.url)}" role="button" tabindex="0" aria-label="Play ${esc(v.title)}"` : ''}${id ? ` data-tt="${id}" data-url="${esc(v.url)}" role="button" tabindex="0" aria-label="${CARD ? 'Open on TikTok: ' : 'Play '}${esc(v.title)}"` : ''}><img src="${esc(v.cover)}" alt="" loading="lazy"><span class="play" aria-hidden="true">${PLAY}</span><span>Edit reel · ${esc(v.title)}</span></div>`; };
   const reels = groups.map(g => `${g.title ? `<h3 class="h-m reel-h">${esc(g.title)}</h3>` : ''}<div class="reels">${g.clips.map(reelCard).join('')}</div>`).join('');
   return `
   <section class="wrap page-head">
@@ -795,6 +797,8 @@ const AUTO = false; /* embed/v2 cannot autoplay, so clips are not pre-loaded on 
 const CARD = S.clipMode === 'card' || (S.clipMode !== 'embed' && window.top !== window.self);
 const openClip = u => { if (u) window.open(u, '_blank', 'noopener'); };
 let autoIo = null, cinVis = false;
+const ytId = u => { const m = /(?:youtube\.com\/(?:shorts|embed)\/|youtu\.be\/|[?&]v=)([\w-]{11})/.exec(u || ''); return m && m[1]; };
+const ytFrame = (id, title) => `<iframe src="https://www.youtube.com/embed/${id}?autoplay=1&playsinline=1&rel=0&modestbranding=1" title="${esc(title)}" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe>`;
 const tiktokId = u => { const m = /\/video\/(\d+)/.exec(u || ''); return m && m[1]; };
 function videographerView() {
   return `
@@ -885,7 +889,7 @@ function route() {
   if (r === 'editor') {
     const ba = $('#ba'); $('#ba-r').addEventListener('input', e => ba.style.setProperty('--p', e.target.value));
     document.querySelectorAll('.reel[data-tt]').forEach(el => { el._orig = el.innerHTML; });
-    const playReel = el => { if (!el || !el.dataset.tt || el.classList.contains('playing')) return; if (CARD) { openClip(el.dataset.url); return; } el.classList.add('playing'); el.innerHTML = ttFrame(el.dataset.tt, 'Edit reel', el.dataset.url); ttLoad(); };
+    const playReel = el => { if (!el || el.classList.contains('playing')) return; if (el.dataset.yt) { el.classList.add('playing', 'yt'); el.innerHTML = ytFrame(el.dataset.yt, 'Edit reel'); return; } if (!el.dataset.tt) return; if (CARD) { openClip(el.dataset.url); return; } el.classList.add('playing'); el.innerHTML = ttFrame(el.dataset.tt, 'Edit reel', el.dataset.url); ttLoad(); };
     const stopReel = el => { if (!el.classList.contains('playing')) return; el.classList.remove('playing'); el.innerHTML = el._orig; };
     if (AUTO) {
       autoIo = new IntersectionObserver(es => es.forEach(en => { if (en.intersectionRatio >= .6) playReel(en.target); else if (en.intersectionRatio < .15) stopReel(en.target); }), { threshold: [0, .15, .6] });
@@ -893,7 +897,7 @@ function route() {
     }
     document.querySelectorAll('.reels').forEach(rl => {
       rl.addEventListener('click', e => playReel(e.target.closest('.reel')));
-      rl.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { const el = e.target.closest('.reel'); if (el && el.dataset.tt) { e.preventDefault(); playReel(el); } } });
+      rl.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { const el = e.target.closest('.reel'); if (el && (el.dataset.tt || el.dataset.yt)) { e.preventDefault(); playReel(el); } } });
     });
   }
   if (r === 'photographer') bindPhotographer();

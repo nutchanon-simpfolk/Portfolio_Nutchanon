@@ -147,9 +147,9 @@ window.SITE = {
         { title: 'A-roll 03', url: 'https://www.tiktok.com/@scrumpgelateria/video/7596193413217766664', cover: 'images/cover/cover-03.png', fb: 'images/color/color-07.jpg' }
       ] },
       { title: 'Storytelling', clips: [
-        { title: 'Storytelling 01', url: 'https://www.tiktok.com/@outsidezitys/video/7451968719418314005', cover: 'images/cover/cover-04.png', fb: 'images/bw/bw-01.jpg' },
-        { title: 'Storytelling 02', url: 'https://www.tiktok.com/@outsidezitys/video/7573684263279693063', cover: 'images/cover/cover-05.png', fb: 'images/bw/bw-05.jpg' },
-        { title: 'Storytelling 03', url: 'https://www.tiktok.com/@outsidezitys/video/7634158954964192533', cover: 'images/cover/cover-06.png', fb: 'images/color/color-09.jpg' }
+        { title: 'Storytelling 01', url: 'https://www.youtube.com/shorts/kYauhuUBqt0', cover: 'images/cover/cover-04.png', fb: 'images/bw/bw-01.jpg' },
+        { title: 'Storytelling 02', url: 'https://www.youtube.com/shorts/sBeK5mTBSk8', cover: 'images/cover/cover-05.png', fb: 'images/bw/bw-05.jpg' },
+        { title: 'Storytelling 03', url: 'https://www.youtube.com/shorts/FBRC4rA_XQo', cover: 'images/cover/cover-06.png', fb: 'images/color/color-09.jpg' }
       ] }
     ],
     lead: '(ตัวอย่าง) รีทัชภาพ เกรดสี และตัดต่อวิดีโอสั้น ตั้งแต่ไฟล์ดิบจนถึงไฟล์ส่งมอบ',
