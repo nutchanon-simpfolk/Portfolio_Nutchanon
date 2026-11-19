@@ -60,8 +60,8 @@ window.SITE = {
       { group: 'Photography', items: ['Portrait', 'Candid', 'Studio lighting', 'Production'] },
       { group: 'Streaming', items: ['Switcher', 'Sound Engineer', 'Moderator'] },
       { group: 'Software', items: ['CapCut', 'Premiere Pro', 'Photoshop', 'OBS'] },
-      { group: 'Equipment · Canon', items: ['R5', 'R8', 'Mark IV', '800D'] },
-      { group: 'Equipment · Nikon', items: ['6D'] }
+      /* Equipment: กลุ่มเดียว แบ่งเป็นบรรทัดตามยี่ห้อ (ใช้ lines แทน items) */
+      { group: 'Equipment', lines: [{ label: 'Canon', items: ['R5', 'R8', 'Mark IV', '800D'] }, { label: 'Nikon', items: ['6D'] }] }
     ],
     soft: [
       { title: 'Communication', detail: '(ตัวอย่าง) ตัวอย่างสั้น ๆ ที่แสดงว่าทำได้จริง' },
