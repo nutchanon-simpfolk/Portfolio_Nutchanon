@@ -442,12 +442,12 @@ h1,h2,h3,p{margin:0}
 .chan-k{display:inline-flex;align-items:center;gap:8px;width:124px;color:var(--mute)}
 .chan-k [data-ic]{display:inline-flex}
 .ic{width:18px;height:18px;flex:none}
-.r-contact{margin-top:clamp(28px,4vw,48px);padding-top:clamp(24px,3vw,36px);border-top:1px solid var(--line)}
-.r-contact .chan{margin-top:0}
-.r-contact .chan-r{padding-block:10px;gap:8px 12px}
-.r-contact .chan-k{width:108px;font-size:12px}
-.r-contact .email{font-size:15px;font-weight:500;flex:1 1 160px}
-.r-contact .btn{min-height:28px;padding:0 13px;font-size:13px}
+.r-contact{margin-top:clamp(20px,3vw,32px)}
+.r-contact .r-h{padding-bottom:6px;border-bottom:1.5px solid var(--fg);color:var(--fg)}
+.r-ct{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:9px;font-size:14px}
+.r-ct a,.r-ct span{display:inline-flex;align-items:center;gap:10px;color:var(--fg);overflow-wrap:anywhere;min-width:0}
+.r-ct a:hover{color:var(--mute)}
+.r-ct .ic{flex:none;width:16px;height:16px}
 .r-meta span{display:inline-flex;align-items:center;gap:7px}
 .chan-r .email{flex:1 1 200px;min-width:0}
 .email{font-size:clamp(17px,2vw,22px);font-weight:500;overflow-wrap:anywhere;user-select:all}
@@ -671,7 +671,6 @@ function infoView() {
   const photo = P.photo
     ? `<img src="${esc(P.photo)}" alt="Portrait of ${esc(P.fullName || S.name)}">`
     : `<div class="ph" role="img" aria-label="Profile photo placeholder"><span>${esc(S.name.charAt(0))}</span><small class="mono">Photo placeholder</small></div>`;
-  const meta = P.address ? `<span>${IC.pin}${esc(P.address)}</span>` : '';
   return `
   <section class="wrap resume-wrap">
     <article class="resume" aria-label="Resume">
@@ -683,7 +682,6 @@ function infoView() {
           ${P.fullName ? `<p class="r-full">Nickname · ${esc(S.name)}</p>` : ''}
           <p class="r-title">${esc(P.title || S.roles.join(' · '))}</p>
           <p class="r-sum">${esc(I.summary)}</p>
-          <div class="r-meta">${meta}</div>
           <div class="hero-actions">
             <a class="btn" href="#contact">Contact</a>
             ${S.cv ? `<a class="btn btn-ghost" href="${esc(S.cv)}" target="_blank" rel="noopener">Download CV</a>` : ''}
@@ -691,22 +689,24 @@ function infoView() {
         </div>
       </div>
       <div class="r-cols">
-        <section><h2 class="r-h">Education</h2>${I.education.map(e => `<div class="r-i"><b>${esc(e.title)}</b><span>${esc(e.detail)}</span>${e.period ? `<span>${esc(e.period)}</span>` : ''}</div>`).join('')}</section>
+        <section><h2 class="r-h">Education</h2>${I.education.map(e => `<div class="r-i"><b>${esc(e.title)}</b><span>${esc(e.detail)}</span>${e.period ? `<span>${esc(e.period)}</span>` : ''}</div>`).join('')}
+          <div class="r-contact" id="r-contact">
+            <h2 class="r-h">Contact</h2>
+            <ul class="r-ct">
+              ${tel ? `<li><a href="tel:${esc(tel.replace(/[^\d+]/g, ''))}">${IC.phone}${esc(telFmt)}</a></li>` : ''}
+              <li><a href="mailto:${esc(S.contact.email)}?subject=Inquiry">${IC.mail}${esc(S.contact.email)}</a></li>
+              ${lineId ? `<li><a target="_blank" rel="noopener" href="${lineId.startsWith('@') ? 'https://line.me/R/ti/p/%40' + encodeURIComponent(lineId.replace(/^@/, '')) : 'https://line.me/ti/p/~' + encodeURIComponent(lineId)}">${IC.chat}LINE ${esc(lineId)}</a></li>` : ''}
+              ${igs.map(h => `<li><a target="_blank" rel="noopener" href="https://instagram.com/${encodeURIComponent(h)}">${IC.camera}@${esc(h)}</a></li>`).join('')}
+              ${P.address ? `<li><span>${IC.pin}${esc(P.address)}</span></li>` : ''}
+            </ul>
+            ${S.contact.tiktok ? `<div class="row" style="margin-top:14px"><a class="chip" target="_blank" rel="noopener" href="https://www.tiktok.com/@${esc(S.contact.tiktok.replace(/^@/, ''))}">TikTok</a></div>` : ''}
+          </div>
+        </section>
         <section><h2 class="r-h">Experience</h2><div class="tl">${I.experience.map(e => `<div class="tl-i"><span class="tl-p">${esc(e.period)}</span><b>${esc(e.title || e.org)}</b>${e.title && e.org ? `<span>${esc(e.org)}</span>` : ''}${(e.points || []).map(p => `<span>${esc(p)}</span>`).join('')}${(e.links || []).length ? `<div class="tl-links">${e.links.map(l => `<a class="btn btn-ghost" href="${esc(l.url)}" target="_blank" rel="noopener">${esc(l.label)}</a>`).join('')}</div>` : ''}</div>`).join('')}</div></section>
         <section><h2 class="r-h">Skills</h2>
           ${I.hard.map(h => `<div class="r-sk"><small>${esc(h.group)}</small><div class="chips">${h.items.map(i => `<span class="chip">${esc(i)}</span>`).join('')}</div></div>`).join('')}
           <div class="r-sk"><small>Soft skills</small><div class="chips">${I.soft.map(s => `<span class="chip">${esc(s.title)}</span>`).join('')}</div></div>
         </section>
-      </div>
-      <div class="r-contact" id="r-contact">
-        <h2 class="r-h">Contact</h2>
-        <div class="chan">
-          <div class="chan-r"><span class="mono chan-k">${IC.mail}Email</span><span class="email" id="rc-email">${esc(S.contact.email)}</span><button class="btn" type="button" data-copy="rc-email">Copy email</button><a class="btn btn-ghost" href="mailto:${esc(S.contact.email)}?subject=Inquiry">Send email</a></div>
-          ${lineId ? `<div class="chan-r"><span class="mono chan-k">${IC.chat}LINE</span><span class="email" id="rc-line">${esc(lineId)}</span><button class="btn" type="button" data-copy="rc-line">Copy ID</button><a class="btn btn-ghost" target="_blank" rel="noopener" href="${lineId.startsWith('@') ? 'https://line.me/R/ti/p/%40' + encodeURIComponent(lineId.replace(/^@/, '')) : 'https://line.me/ti/p/~' + encodeURIComponent(lineId)}">Add on LINE</a></div>` : ''}
-          ${igs.length ? `<div class="chan-r"><span class="mono chan-k">${IC.camera}Instagram</span><span class="email">${igs.map(h => '@' + esc(h)).join('  ·  ')}</span>${igs.map((h, i) => `<a class="btn${i ? ' btn-ghost' : ''}" target="_blank" rel="noopener" href="https://instagram.com/${encodeURIComponent(h)}">Open @${esc(h)}</a>`).join('')}</div>` : ''}
-          ${tel ? `<div class="chan-r"><span class="mono chan-k">${IC.phone}Tel</span><span class="email" id="rc-tel">${esc(telFmt)}</span><button class="btn" type="button" data-copy="rc-tel" data-text="${esc(tel)}">Copy number</button><a class="btn btn-ghost" href="tel:${esc(tel.replace(/[^\d+]/g, ''))}">Call</a></div>` : ''}
-        </div>
-        ${S.contact.tiktok ? `<div class="row" style="margin-top:18px"><a class="chip" target="_blank" rel="noopener" href="https://www.tiktok.com/@${esc(S.contact.tiktok.replace(/^@/, ''))}">TikTok</a></div>` : ''}
       </div>
     </article>
   </section>
