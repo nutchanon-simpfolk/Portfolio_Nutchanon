@@ -182,7 +182,7 @@ window.SITE = {
   other: {
     events: {
       title: 'Events',
-      lead: '(ตัวอย่าง) ถ่ายภาพและวิดีโออีเวนต์ ตั้งแต่เปิดงานจนปิดงาน ส่งไฮไลต์ได้เร็ว',
+      lead: 'ประสบการณ์ทำอีเวนต์',
       items: ['Event photo & video coverage', 'Highlight reel', 'Same-day edit', 'Backstage & candid moments'],
       /* งานอีเวนต์ที่เคยร่วม: date = 'ปี-เดือน' ใช้เรียง (ใหม่ขึ้นก่อนอัตโนมัติ)  label = ข้อความที่แสดง  roles = บทบาท */
       list: [
