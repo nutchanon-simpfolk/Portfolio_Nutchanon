@@ -57,11 +57,11 @@ window.SITE = {
         ] }
     ],
     hard: [
-      { group: 'Photography', items: ['Portrait', 'Candid', 'Studio lighting', 'Product', 'Production'] },
-      { group: 'Editing', items: ['Video editing'] },
+      { group: 'Photography', items: ['Portrait', 'Candid', 'Studio lighting', 'Production'] },
       { group: 'Streaming', items: ['Switcher', 'Sound Engineer', 'Moderator'] },
-      { group: 'Software', items: ['CapCut', 'Premiere Pro', 'Photoshop', 'Meitu AI'] },
-      { group: 'Equipment', items: ['Canon R5', 'Canon R8', 'Canon Mark IV', 'Canon 800D', 'Nikon 6D'] }
+      { group: 'Software', items: ['CapCut', 'Premiere Pro', 'Photoshop', 'OBS'] },
+      { group: 'Equipment · Canon', items: ['R5', 'R8', 'Mark IV', '800D'] },
+      { group: 'Equipment · Nikon', items: ['6D'] }
     ],
     soft: [
       { title: 'Communication', detail: '(ตัวอย่าง) ตัวอย่างสั้น ๆ ที่แสดงว่าทำได้จริง' },
