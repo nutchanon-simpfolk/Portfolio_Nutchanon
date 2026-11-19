@@ -267,7 +267,9 @@ h1,h2,h3,p{margin:0}
 @media (max-width:760px){.r-top{grid-template-columns:1fr}.r-photo{max-width:240px}.r-cols{grid-template-columns:1fr}}
 
 /* editor */
-.ba{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1.7fr);align-items:center;gap:clamp(10px,2.4vw,28px)}
+.ba-box{background:var(--surface);border:1px solid var(--line);border-radius:calc(var(--r) + 8px);padding:clamp(18px,3.5vw,40px)}
+.ba-box .sec-head{margin-bottom:clamp(16px,2.5vw,28px)}
+.ba{max-width:min(100%,720px);margin-inline:auto;display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1.7fr);align-items:center;gap:clamp(10px,2.4vw,28px)}
 .ba figure{margin:0;position:relative;border-radius:var(--r);overflow:hidden;aspect-ratio:2/3;background:var(--surface-2)}
 .ba img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
 .ba .tag{position:absolute;top:12px;left:12px;padding:6px 12px;border-radius:980px;background:rgba(0,0,0,.55);color:#fff;font-size:12px;font-weight:600;backdrop-filter:blur(8px)}
@@ -672,11 +674,14 @@ function editorView() {
     <p class="lead">${esc(E.lead)}</p>
   </section>
   <section class="wrap">
-    <div class="ba rv" id="ba">
+   <div class="ba-box rv">
+    <div class="sec-head"><h2 class="h-l">Before / After</h2></div>
+    <div class="ba" id="ba">
       <figure><img src="${esc(cmp.before)}" alt="${esc(cmp.altBefore || 'Before')}"><span class="tag">Before</span></figure>
       <span class="arr" aria-hidden="true">${ARR_R}</span>
       <figure><img src="${esc(cmp.after)}" alt="${esc(cmp.altAfter || 'After')}"><span class="tag">After</span></figure>
     </div>
+   </div>
   </section>
   <section class="wrap section">
     <div class="sec-head rv"><h2 class="h-l">Video edits</h2></div>
