@@ -674,6 +674,10 @@ function editorView() {
     <p class="lead">${esc(E.lead)}</p>
   </section>
   <section class="wrap">
+    <div class="sec-head rv"><h2 class="h-l">Video edits</h2></div>
+    ${reels}
+  </section>
+  <section class="wrap section">
    <div class="ba-box rv">
     <div class="sec-head"><h2 class="h-l">Before / After</h2></div>
     <div class="ba" id="ba">
@@ -682,10 +686,6 @@ function editorView() {
       <figure><img src="${esc(cmp.after)}" alt="${esc(cmp.altAfter || 'After')}"><span class="tag">After</span></figure>
     </div>
    </div>
-  </section>
-  <section class="wrap section">
-    <div class="sec-head rv"><h2 class="h-l">Video edits</h2></div>
-    ${reels}
   </section>
   <section class="wrap section" style="padding-top:0">
     <div class="sec-head rv"><h2 class="h-l">Workflow</h2></div>
