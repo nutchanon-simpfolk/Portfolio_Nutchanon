@@ -183,7 +183,12 @@ window.SITE = {
     events: {
       title: 'Events',
       lead: '(ตัวอย่าง) ถ่ายภาพและวิดีโออีเวนต์ ตั้งแต่เปิดงานจนปิดงาน ส่งไฮไลต์ได้เร็ว',
-      items: ['Event photo & video coverage', 'Highlight reel', 'Same-day edit', 'Backstage & candid moments']
+      items: ['Event photo & video coverage', 'Highlight reel', 'Same-day edit', 'Backstage & candid moments'],
+      /* งานอีเวนต์ที่เคยร่วม: date = 'ปี-เดือน' ใช้เรียง (ใหม่ขึ้นก่อนอัตโนมัติ)  label = ข้อความที่แสดง  roles = บทบาท */
+      list: [
+        { title: 'TOA 3X3 Basketball', date: '2024-07', label: 'July 2024', roles: ['Content Creator'] },
+        { title: 'CP innovation @true digital park', date: '2025-09', label: 'September 2025', roles: ['Staff', 'Coordinator'] }
+      ]
     },
     kol: {
       title: 'KOL Sourcing',
