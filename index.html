@@ -725,7 +725,7 @@ function editorView() {
 }
 
 /* photographer: All (Portrait / Candid / Landscape) or Color mode (Color / B&W); record cover + magazine grid */
-let pxMode = 'all', recFocus = null, pxLists = {}, pxIo = null;
+let pxArtist = false, pxMode = 'all', recFocus = null, pxLists = {}, pxIo = null;
 const ARR_D = '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M6 13l6 6 6-6"/></svg>';
 function photographerView() {
   return `
@@ -808,23 +808,30 @@ function artistsSection() {
 }
 function pxRender() {
   const secs = pxSections(); pxLists = {}; secs.forEach(s => { pxLists[s.id] = s.items; });
-  $('#px-root').innerHTML = artistsSection() + secs.map((s, i) => pxSection(s, i, secs.length)).join('');
-  $('#px-cats').innerHTML = (S.artists && S.artists.length ? '<button type="button" class="gold" data-c="artists" aria-pressed="false">Artist</button>' : '') + secs.map(s => `<button type="button" data-c="${esc(s.id)}" aria-pressed="false">${s.id === 'bw' ? 'B&amp;W' : esc(s.title)}</button>`).join('');
+  $('#px-root').innerHTML = pxArtist ? artistsSection() : secs.map((s, i) => pxSection(s, i, secs.length)).join('');
+  $('#px-cats').innerHTML = (S.artists && S.artists.length ? '<button type="button" class="gold" data-c="artists" aria-pressed="' + pxArtist + '">Artist</button>' : '') + secs.map(s => `<button type="button" data-c="${esc(s.id)}" aria-pressed="false">${s.id === 'bw' ? 'B&amp;W' : esc(s.title)}</button>`).join('');
   document.querySelectorAll('#px-seg button').forEach(x => x.setAttribute('aria-pressed', String(x.dataset.m === pxMode)));
   pxIo.disconnect(); document.querySelectorAll('.px-sec').forEach(s => pxIo.observe(s));
 }
 function bindPhotographer() {
+  pxArtist = false;
   if (pxIo) pxIo.disconnect();
   pxIo = new IntersectionObserver(es => es.forEach(en => { if (en.isIntersecting) document.querySelectorAll('#px-cats button').forEach(x => x.setAttribute('aria-pressed', String('px-' + x.dataset.c === en.target.id))); }), { rootMargin: '-40% 0px -55% 0px' });
   $('#px-seg').innerHTML = [['all', 'All'], ['color', 'Color mode']].map(([v, l]) => `<button type="button" data-m="${v}" aria-pressed="${v === pxMode}">${l}</button>`).join('');
   pxRender();
   $('#px-seg').addEventListener('click', e => {
-    const t = e.target.closest('[data-m]'); if (!t || t.dataset.m === pxMode) return;
-    pxMode = t.dataset.m; recLeave(true); pxRender();
+    const t = e.target.closest('[data-m]'); if (!t || (t.dataset.m === pxMode && !pxArtist)) return;
+    pxMode = t.dataset.m; pxArtist = false; recLeave(true); pxRender();
     const y = $('#px-root').getBoundingClientRect().top + scrollY - 150; if (scrollY > y) scrollTo({ top: y, behavior: reduce ? 'auto' : 'smooth' });
   });
   $('#px-cats').addEventListener('click', e => {
     const c = e.target.closest('[data-c]'); if (!c) return;
+    if (c.dataset.c === 'artists') {  /* gold button: toggle the Artist-only view */
+      pxArtist = !pxArtist; recLeave(true); pxRender();
+      const y = $('#px-root').getBoundingClientRect().top + scrollY - 150; if (scrollY > y) scrollTo({ top: y, behavior: 'auto' });
+      return;
+    }
+    if (pxArtist) { pxArtist = false; recLeave(true); pxRender(); }
     const el = document.getElementById('px-' + c.dataset.c); if (el) el.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });
   });
   $('#px-root').addEventListener('click', e => {
