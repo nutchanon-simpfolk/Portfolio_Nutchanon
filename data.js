@@ -180,6 +180,12 @@ window.SITE = {
         { t: 'Produce',  d: 'ดูแลการถ่ายทำและคอนเทนต์' },
         { t: 'Report',   d: 'สรุปผลหลังจบแคมเปญ' }
       ]
-    }
+    },
+    /* หนังสั้น (Short films): url = ลิงก์ YouTube  เล่นพรีวิวอัตโนมัติ (ปิดเสียง) เมื่อเลื่อนถึง  roles = บทบาทของคุณ */
+    films: [
+      { title: 'DELIRIUM AMANT', roles: ['ผู้ช่วยตากล้อง', 'โลเคชัน'], detail: 'หนังสั้นประกวดตอนมหาวิทยาลัย', concept: 'ความทรงจำที่ปวดร้าวจนก่อกำเนิดบุคลิกใหม่', url: 'https://youtu.be/5G3MFsJqRSs' },
+      { title: '6 KINGS', roles: ['นักแสดง', 'โลเคชัน'], detail: 'หนังสั้นถ่ายแบบจำกัดเวลา 3 ชั่วโมง', concept: 'การดวลกันของเซียนพนัน', url: 'https://www.youtube.com/watch?v=yPkoxP4Oa-M' },
+      { title: 'เส้นทางของฉัน ความฝันของเธอ', roles: ['Creative writing'], detail: 'สอนนักเรียนมัธยมทำหนัง ทั้งการแสดงและการใช้อุปกรณ์', concept: 'การเดินตามความฝัน', url: 'https://www.youtube.com/watch?v=iDL2yUQS8AM' }
+    ]
   }
 };

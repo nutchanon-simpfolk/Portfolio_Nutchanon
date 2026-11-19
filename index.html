@@ -382,6 +382,19 @@ h1,h2,h3,p{margin:0}
 .ticket img{width:100%;height:100%;object-fit:cover}
 
 /* other */
+.films{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+@media (max-width:900px){.films{grid-template-columns:minmax(0,1fr)}}
+.film{background:var(--surface);border-radius:var(--r);overflow:hidden;display:flex;flex-direction:column}
+.film-v{position:relative;aspect-ratio:16/9;background:#000;color:#fff;overflow:hidden}
+.film-v.can-play{cursor:pointer}
+.film-v img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.film-v iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.film-b{padding:20px 22px 24px;display:flex;flex-direction:column;gap:10px}
+.film-b h3{font-size:22px;font-weight:700;letter-spacing:-.02em}
+.film-b p{color:var(--mute);font-size:15px;line-height:1.5}
+.film-b p b{color:var(--fg);font-weight:600}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chips span{padding:4px 11px;border-radius:980px;border:1px solid var(--line);font-size:12px;font-weight:600}
 .big2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
 @media (max-width:860px){.big2{grid-template-columns:1fr}}
 .feat{border-radius:var(--r);padding:clamp(28px,4vw,56px);display:flex;flex-direction:column;gap:18px;min-height:clamp(360px,46vw,560px)}
@@ -870,6 +883,10 @@ function otherView() {
     <div class="sec-head rv"><h2 class="h-l">How KOL sourcing works</h2></div>
     <div class="steps">${O.kol.steps.map((s, i) => `<div class="card step rv"><b>${pad(i + 1)}</b><h3>${esc(s.t)}</h3><p>${esc(s.d)}</p></div>`).join('')}</div>
   </section>
+  ${(O.films || []).length ? `<section class="wrap section">
+    <div class="sec-head rv"><h2 class="h-l">Short films</h2></div>
+    <div class="films">${O.films.map(f => { const id = ytId(f.url); return `<article class="film rv"><div class="film-v${id ? ' can-play' : ''}"${id ? ` data-yt="${id}" data-url="${esc(f.url)}" data-title="${esc(f.title)}" role="button" tabindex="0" aria-label="Play ${esc(f.title)}"` : ''}>${id ? `<img src="https://i.ytimg.com/vi/${id}/hqdefault.jpg" alt="" loading="lazy"><span class="play" aria-hidden="true">${PLAY}</span>` : ''}</div><div class="film-b"><div class="chips">${(f.roles || []).map(r => `<span>${esc(r)}</span>`).join('')}</div><h3>${esc(f.title)}</h3><p><b>Detail</b> · ${esc(f.detail)}</p><p><b>Concept</b> · ${esc(f.concept)}</p></div></article>`; }).join('')}</div>
+  </section>` : ''}
   <section class="wrap section" style="padding-top:0">
     <div class="card rv" style="display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap">
       <div><h2 class="h-m">Have an event or a campaign brief?</h2><p style="color:var(--mute);margin-top:6px">Send the date, place and goal. We’ll reply with a plan.</p></div>
@@ -897,6 +914,17 @@ function route() {
       rl.addEventListener('click', e => playReel(e.target.closest('.reel')));
       rl.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { const el = e.target.closest('.reel'); if (el && (el.dataset.tt || el.dataset.yt)) { e.preventDefault(); playReel(el); } } });
     });
+  }
+  if (r === 'other') {
+    const fv = [...document.querySelectorAll('.film-v[data-yt]')];
+    fv.forEach(el => { el._orig = el.innerHTML; });
+    const on = el => { if (el.classList.contains('on')) return; if (CARD) { openClip(el.dataset.url); return; } el.classList.add('on'); el.innerHTML = ytFrame(el.dataset.yt, el.dataset.title); };
+    const off = el => { if (!el.classList.contains('on')) return; el.classList.remove('on'); el.innerHTML = el._orig; };
+    if (AUTO) {
+      autoIo = new IntersectionObserver(es => es.forEach(en => { if (en.intersectionRatio >= .6) on(en.target); else if (en.intersectionRatio < .15) off(en.target); }), { threshold: [0, .15, .6] });
+      fv.forEach(el => autoIo.observe(el));
+    }
+    fv.forEach(el => { el.addEventListener('click', () => on(el)); el.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); on(el); } }); });
   }
   if (r === 'photographer') bindPhotographer();
   if (r === 'videographer') bindVideographer();
