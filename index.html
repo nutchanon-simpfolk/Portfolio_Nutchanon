@@ -283,8 +283,8 @@ h1,h2,h3,p{margin:0}
 .r-h{font-size:13px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--mute);margin-bottom:12px}
 .r-i{padding-block:10px;border-top:1px solid var(--line)}
 .r-i:first-of-type{border-top:0;padding-top:0}
-.r-i b{display:block;font-weight:600;font-size:15px;line-height:1.35}
-.r-i span{display:block;font-size:13px;color:var(--mute);line-height:1.4}
+.r-i b{display:block;font-weight:600;font-size:19px;line-height:1.3}
+.r-i span{display:block;font-size:16px;color:var(--mute);line-height:1.45;margin-top:2px}
 .r-sk{margin-bottom:12px}
 .r-sk small{display:block;font-size:12px;color:var(--mute);margin-bottom:6px}
 .r-sk .chips{margin-top:0;gap:6px}
@@ -681,7 +681,6 @@ function infoView() {
           <h1 class="h-xl r-name">${esc(P.fullName || S.name)}</h1>
           ${P.fullName ? `<p class="r-full">Nickname · ${esc(S.name)}</p>` : ''}
           <p class="r-title">${esc(P.title || S.roles.join(' · '))}</p>
-          <p class="r-sum">${esc(I.summary)}</p>
           <div class="hero-actions">
             <a class="btn" href="#contact">Contact</a>
             ${S.cv ? `<a class="btn btn-ghost" href="${esc(S.cv)}" target="_blank" rel="noopener">Download CV</a>` : ''}
