@@ -69,19 +69,21 @@ h1,h2,h3,p{margin:0}
 .px-cats button.gold:hover{color:var(--gold)}
 .px-cats button.gold[aria-pressed="true"]{background:var(--gold);color:var(--gold-fg);box-shadow:none}
 .px-artists .px-blurb{margin-top:10px;max-width:60ch}
-.ig-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,300px),1fr));gap:14px;margin-top:28px}
-.ig{background:var(--surface);border-radius:var(--r);padding:18px 18px 14px}
+.ig-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;margin-top:28px}
+@media (max-width:640px){.ig-grid{grid-template-columns:minmax(0,1fr)}}
+.ig{background:var(--surface);border-radius:var(--r);padding:clamp(16px,2.4vw,26px)}
 .ig-top{display:flex;align-items:center;gap:14px}
-.ig-av{flex:none;width:74px;height:74px;border-radius:50%;padding:3px;background:conic-gradient(var(--gold),#fff3c4,var(--gold),#8a6508,var(--gold))}
+.ig-av{flex:none;width:88px;height:88px;border-radius:50%;padding:3px;background:conic-gradient(var(--gold),#fff3c4,var(--gold),#8a6508,var(--gold))}
 .ig-av img{width:100%;height:100%;border-radius:50%;object-fit:cover;object-position:center 22%;border:3px solid var(--surface);display:block}
 .ig-id{min-width:0;display:flex;flex-direction:column;gap:3px}
-.ig-id b{font-size:16px;font-weight:700;letter-spacing:-.01em;overflow-wrap:anywhere}
+.ig-id b{font-size:18px;font-weight:700;letter-spacing:-.01em;overflow-wrap:anywhere}
 .ig-id span{font-size:13px;color:var(--mute)}
 .ig-btn{margin-top:6px;align-self:flex-start;font-size:13px;font-weight:600;padding:5px 14px;border-radius:999px;border:1.5px solid var(--gold);color:var(--gold);text-decoration:none;transition:background .2s,color .2s}
 .ig-btn:hover,.ig-btn:focus-visible{background:var(--gold);color:var(--gold-fg)}
-.ig-posts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:3px;margin-top:16px;border-radius:12px;overflow:hidden}
-.ig-posts button{padding:0;border:0;background:var(--surface-2);aspect-ratio:1;cursor:pointer;display:block}
-.ig-posts img{width:100%;height:100%;object-fit:cover;display:block;transition:opacity .2s}
+.ig-posts{display:grid;grid-template-columns:2fr 1fr;grid-template-rows:1fr 1fr;aspect-ratio:6/5;gap:4px;margin-top:18px;border-radius:14px;overflow:hidden}
+.ig-posts button:first-child{grid-row:span 2}
+.ig-posts button{padding:0;border:0;background:var(--surface-2);min-height:0;cursor:pointer;display:block}
+.ig-posts img{width:100%;height:100%;min-height:0;object-fit:cover;display:block;transition:opacity .2s}
 .ig-posts button:hover img{opacity:.82}
 .px-seg{display:inline-flex;background:var(--surface);border-radius:999px;padding:3px}
 .px-seg button{border:0;background:transparent;padding:6px 16px;border-radius:999px;font-size:14px;font-weight:500;color:var(--mute);cursor:pointer;transition:background .2s,color .2s}
