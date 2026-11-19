@@ -78,8 +78,8 @@ window.SITE = {
   /* Artists (หน้า Photographer): handle = ชื่อ Instagram (ไม่ต้องใส่ @) ลิงก์ไป instagram.com/handle
      photos = ชื่อไฟล์รูปของ artist คนนั้น (ตอนนี้เป็นภาพตัวอย่าง mock-up) ภาพแรกใช้เป็นรูปโปรไฟล์ */
   artists: [
-      { handle: 'fay_riezz', photos: ['color-01.jpg', 'color-08.jpg', 'bw-05.jpg'] },
-      { handle: 'maywyda', photos: ['color-04.jpg', 'bw-01.jpg', 'bw-08.jpg'] },
+      /* คู่ (ภาพคู่): ใช้ handles = [คนที่ 1, คนที่ 2] จะเป็นกรอบใหญ่เต็มแถว มีโปรไฟล์ IG ของแต่ละคน */
+      { handles: ['fay_riezz', 'maywyda'], photos: ['color-04.jpg', 'color-01.jpg', 'bw-01.jpg'] },
       { handle: 'dj.luna222', photos: ['color-07.jpg', 'bw-04.jpg', 'bw-11.jpg'] },
       { handle: '4moze', photos: ['color-10.jpg', 'bw-07.jpg', 'color-01.jpg'] },
       { handle: 'chompu_konbai', photos: ['bw-03.jpg', 'bw-10.jpg', 'color-04.jpg'] },

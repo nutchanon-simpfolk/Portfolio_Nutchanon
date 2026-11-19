@@ -72,6 +72,12 @@ h1,h2,h3,p{margin:0}
 .ig-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;margin-top:28px}
 @media (max-width:640px){.ig-grid{grid-template-columns:minmax(0,1fr)}}
 .ig{background:var(--surface);border-radius:var(--r);padding:clamp(16px,2.4vw,26px)}
+.ig-tops{display:grid;grid-template-columns:minmax(0,1fr);gap:16px}
+.ig.wide{grid-column:1/-1}
+.ig.wide .ig-tops{grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+.ig.wide .ig-posts{aspect-ratio:8/5}
+.ig.wide .ig-posts img{object-position:center 15%}
+@media (max-width:640px){.ig.wide .ig-tops{grid-template-columns:minmax(0,1fr)}.ig.wide .ig-posts{aspect-ratio:6/5}}
 .ig-top{display:flex;align-items:center;gap:14px}
 .ig-av{flex:none;width:88px;height:88px;border-radius:50%;padding:3px;background:conic-gradient(var(--gold),#fff3c4,var(--gold),#8a6508,var(--gold))}
 .ig-av img{width:100%;height:100%;border-radius:50%;object-fit:cover;object-position:center 22%;border:3px solid var(--surface);display:block}
@@ -788,22 +794,24 @@ function pxSection(s, ri, total) {
 }
 const igIcon = '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" style="vertical-align:-2px;margin-right:6px"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".6" fill="currentColor"/></svg>';
 function artistList(a) { return (a.photos || []).map(f => ALL.find(p => p.f === f)).filter(Boolean); }
+const artistKey = a => (a.handles || [a.handle]).join('+');
 function artistsSection() {
-  const arts = (S.artists || []).map(a => ({ ...a, list: artistList(a) })).filter(a => a.list.length);
+  const arts = (S.artists || []).map(a => ({ ...a, hs: a.handles || [a.handle], list: artistList(a) })).filter(a => a.list.length);
   if (!arts.length) return '';
+  const prof = (h, a) => `<div class="ig-top">
+          <div class="ig-av"><img src="${esc(a.list[0].src)}" alt="" loading="lazy"></div>
+          <div class="ig-id"><b>@${esc(h)}</b><span>Artist${a.hs.length < 2 ? ` · ${a.list.length} frames` : ''}</span>
+            <a class="ig-btn" href="https://www.instagram.com/${encodeURIComponent(h)}/" target="_blank" rel="noopener">${igIcon}Instagram</a></div>
+        </div>`;
   return `
   <section class="px-sec px-artists" id="px-artists" aria-label="Artists">
     <p class="px-mono">Artists</p>
     <h2 class="h-l" style="margin-top:6px">Artists</h2>
     <p class="px-blurb">ศิลปินที่ได้ร่วมงานด้วย ใช้ชื่อเดียวกับ Instagram กดชื่อหรือปุ่มเพื่อไปที่โปรไฟล์ หรือกดภาพเพื่อดูผลงาน</p>
     <div class="ig-grid">${arts.map(a => `
-      <article class="ig">
-        <div class="ig-top">
-          <div class="ig-av"><img src="${esc(a.list[0].src)}" alt="" loading="lazy"></div>
-          <div class="ig-id"><b>@${esc(a.handle)}</b><span>Artist · ${a.list.length} frames</span>
-            <a class="ig-btn" href="https://www.instagram.com/${encodeURIComponent(a.handle)}/" target="_blank" rel="noopener">${igIcon}Instagram</a></div>
-        </div>
-        <div class="ig-posts">${a.list.map((p, i) => `<button type="button" data-at="${esc(a.handle)}" data-i="${i}" aria-label="Open frame ${i + 1} of @${esc(a.handle)}"><img src="${esc(p.src)}" alt="${esc(p.alt || '')}" loading="lazy"></button>`).join('')}</div>
+      <article class="ig${a.hs.length > 1 ? ' wide' : ''}">
+        <div class="ig-tops">${a.hs.map(h => prof(h, a)).join('')}</div>
+        <div class="ig-posts">${a.list.map((p, i) => `<button type="button" data-at="${esc(artistKey(a))}" data-i="${i}" aria-label="Open frame ${i + 1} of ${esc(a.hs.map(h => '@' + h).join(' & '))}"><img src="${esc(p.src)}" alt="${esc(p.alt || '')}" loading="lazy"></button>`).join('')}</div>
       </article>`).join('')}</div>
     <p class="mono" style="color:var(--mute);margin-top:14px">Mock-up · ภาพตัวอย่าง ใส่ภาพจริงของแต่ละคนที่ <code>artists</code> ใน data.js</p>
   </section>`;
@@ -838,7 +846,7 @@ function bindPhotographer() {
   });
   $('#px-root').addEventListener('click', e => {
     const at = e.target.closest('[data-at]');
-    if (at) { const a = (S.artists || []).find(x => x.handle === at.dataset.at); if (a) openLB(artistList(a).map(p => ({ ...lbItem(p), label: '@' + a.handle })), +at.dataset.i, at); return; }
+    if (at) { const a = (S.artists || []).find(x => artistKey(x) === at.dataset.at); if (a) openLB(artistList(a).map(p => ({ ...lbItem(p), label: (a.handles || [a.handle]).map(h => '@' + h).join(' × ') })), +at.dataset.i, at); return; }
     const go = e.target.closest('[data-go]');
     if (go) { e.preventDefault(); const el = document.getElementById(go.getAttribute('href').slice(1)); if (el) el.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' }); return; }
     const t = e.target.closest('.px-tile'), s = e.target.closest('[data-cover]'), sec = e.target.closest('.px-sec');
