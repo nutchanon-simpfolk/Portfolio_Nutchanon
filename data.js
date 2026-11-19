@@ -75,6 +75,20 @@ window.SITE = {
      w,h = ขนาดพิกเซลของรูป (ไม่บังคับ)  t = 'portrait' หรือ 'candid' (ไม่บังคับ)  */
   hero: { src: 'images/color/color-02.jpg', alt: 'Model in a black leather jacket kneeling in a white spotlight on a red backdrop' },
   /* หมวดภาพหน้า Photographer: id ต้องตรงกับ cat ของแต่ละภาพ  audio = เพลงตอนเลื่อนเมาส์ไปที่หมวดนั้น (เว้นว่าง = ไม่มีเสียง) */
+  /* Artists (หน้า Photographer): handle = ชื่อ Instagram (ไม่ต้องใส่ @) ลิงก์ไป instagram.com/handle
+     photos = ชื่อไฟล์รูปของ artist คนนั้น (ตอนนี้เป็นภาพตัวอย่าง mock-up) ภาพแรกใช้เป็นรูปโปรไฟล์ */
+  artists: [
+      { handle: 'fay_riezz', photos: ['color-01.jpg', 'color-08.jpg', 'bw-05.jpg'] },
+      { handle: 'maywyda', photos: ['color-04.jpg', 'bw-01.jpg', 'bw-08.jpg'] },
+      { handle: 'dj.luna222', photos: ['color-07.jpg', 'bw-04.jpg', 'bw-11.jpg'] },
+      { handle: '4moze', photos: ['color-10.jpg', 'bw-07.jpg', 'color-01.jpg'] },
+      { handle: 'chompu_konbai', photos: ['bw-03.jpg', 'bw-10.jpg', 'color-04.jpg'] },
+      { handle: 'ppanward', photos: ['bw-06.jpg', 'bw-13.jpg', 'color-07.jpg'] },
+      { handle: 'pai_makeup', photos: ['bw-09.jpg', 'color-03.jpg', 'color-10.jpg'] },
+      { handle: 'babarabeer_makeup', photos: ['bw-12.jpg', 'color-06.jpg', 'bw-03.jpg'] },
+      { handle: 'zanizina', photos: ['color-02.jpg', 'color-09.jpg', 'bw-06.jpg'] },
+      { handle: 'glufkanawut', photos: ['color-05.jpg', 'bw-02.jpg', 'bw-09.jpg'] }
+  ],
   categories: [
     { id: 'portrait',  title: 'Portrait',  blurb: 'ภาพบุคคลที่จัดแสงและวางท่า เน้นสีหน้า เงา และคาแรกเตอร์ของคนในภาพ', audio: 'audio/Song_BIRDS OF A FEATHER .mp3' },
     { id: 'candid',    title: 'Candid',    blurb: 'ช่วงเวลาไม่ได้จัด ระหว่างเตรียมงานและเบื้องหลัง จับจังหวะที่เป็นธรรมชาติ', audio: 'audio/Song_505.mp3' },
