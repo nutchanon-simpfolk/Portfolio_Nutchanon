@@ -870,12 +870,7 @@ function bindVideographer() {
 function otherView() {
   const O = S.other;
   return `
-  <section class="wrap page-head">
-    <p class="eyebrow">Other</p>
-    <h1 class="h-xl" style="margin-top:10px">Events &amp;<br>KOL.</h1>
-    <p class="lead">Beyond the camera: covering events and finding the right creators for a brand.</p>
-  </section>
-  ${(O.films || []).length ? `<section class="wrap">
+  ${(O.films || []).length ? `<section class="wrap page-head">
     <div class="sec-head rv"><h2 class="h-l">Short films</h2></div>
     <div class="films">${O.films.map(f => { const id = ytId(f.url); return `<article class="film rv"><div class="film-v${id ? ' can-play' : ''}"${id ? ` data-yt="${id}" data-url="${esc(f.url)}" data-title="${esc(f.title)}" role="button" tabindex="0" aria-label="Play ${esc(f.title)}"` : ''}>${id ? `<img src="https://i.ytimg.com/vi/${id}/hqdefault.jpg" alt="" loading="lazy"><span class="play" aria-hidden="true">${PLAY}</span>` : ''}</div><div class="film-b"><div class="chips">${(f.roles || []).map(r => `<span>${esc(r)}</span>`).join('')}</div><h3>${esc(f.title)}</h3><p><b>Detail</b> · ${esc(f.detail)}</p><p><b>Concept</b> · ${esc(f.concept)}</p></div></article>`; }).join('')}</div>
   </section>` : ''}
