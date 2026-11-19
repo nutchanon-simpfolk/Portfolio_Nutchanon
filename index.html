@@ -267,15 +267,13 @@ h1,h2,h3,p{margin:0}
 @media (max-width:760px){.r-top{grid-template-columns:1fr}.r-photo{max-width:240px}.r-cols{grid-template-columns:1fr}}
 
 /* editor */
-.ba{--p:50;position:relative;border-radius:var(--r);overflow:hidden;aspect-ratio:3/2;background:var(--surface-2);user-select:none;touch-action:pan-y}
-.ba img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
-@media (max-width:640px),(max-height:520px){.ba{max-height:80vh}}
-.ba .after-l{position:absolute;inset:0;clip-path:inset(0 0 0 calc(var(--p)*1%))}
-.ba .bar{position:absolute;top:0;bottom:0;left:calc(var(--p)*1%);width:2px;background:#fff;box-shadow:0 0 12px rgba(0,0,0,.4);pointer-events:none}
-.ba .bar::after{content:"";position:absolute;top:50%;left:50%;width:44px;height:44px;margin:-22px;border-radius:50%;background:#fff;box-shadow:0 2px 12px rgba(0,0,0,.35)}
-.ba .tag{position:absolute;top:16px;padding:6px 12px;border-radius:980px;background:rgba(0,0,0,.55);color:#fff;font-size:12px;font-weight:600;backdrop-filter:blur(8px)}
-.ba .tag.l{left:16px}.ba .tag.r{right:16px}
-.ba input{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:ew-resize;margin:0}
+.ba{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1.7fr);align-items:center;gap:clamp(10px,2.4vw,28px)}
+.ba figure{margin:0;position:relative;border-radius:var(--r);overflow:hidden;aspect-ratio:2/3;background:var(--surface-2)}
+.ba img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+.ba .tag{position:absolute;top:12px;left:12px;padding:6px 12px;border-radius:980px;background:rgba(0,0,0,.55);color:#fff;font-size:12px;font-weight:600;backdrop-filter:blur(8px)}
+.ba .arr{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;background:var(--fg);color:var(--bg)}
+.ba .arr svg{width:22px;height:22px}
+@media (max-width:640px){.ba{grid-template-columns:minmax(0,1fr) auto minmax(0,1.6fr);gap:8px}.ba .arr{width:30px;height:30px}.ba .arr svg{width:16px;height:16px}.ba .tag{top:8px;left:8px;padding:4px 9px;font-size:11px}}
 .reels{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
 @media (max-width:640px){.reels{grid-template-columns:repeat(2,minmax(0,1fr))}}
 .reel{position:relative;aspect-ratio:9/16;border-radius:var(--r);overflow:hidden;background:var(--surface-2);color:#fff;display:flex;align-items:flex-end;padding:18px}
@@ -675,11 +673,9 @@ function editorView() {
   </section>
   <section class="wrap">
     <div class="ba rv" id="ba">
-      <img src="${esc(cmp.before)}" alt="${esc(cmp.altBefore || 'Before')}">
-      <div class="after-l"><img src="${esc(cmp.after)}" alt="${esc(cmp.altAfter || 'After')}"></div>
-      <span class="tag l">Before</span><span class="tag r">After</span>
-      <div class="bar"></div>
-      <input type="range" min="0" max="100" value="50" id="ba-r" aria-label="Before and after comparison">
+      <figure><img src="${esc(cmp.before)}" alt="${esc(cmp.altBefore || 'Before')}"><span class="tag">Before</span></figure>
+      <span class="arr" aria-hidden="true">${ARR_R}</span>
+      <figure><img src="${esc(cmp.after)}" alt="${esc(cmp.altAfter || 'After')}"><span class="tag">After</span></figure>
     </div>
   </section>
   <section class="wrap section">
@@ -885,7 +881,6 @@ function route() {
   if (autoIo) { autoIo.disconnect(); autoIo = null; }
   view.innerHTML = { home: homeView, info: infoView, editor: editorView, photographer: photographerView, videographer: videographerView, other: otherView }[r]();
   if (r === 'editor') {
-    const ba = $('#ba'); $('#ba-r').addEventListener('input', e => ba.style.setProperty('--p', e.target.value));
     document.querySelectorAll('.reel[data-tt],.reel[data-yt]').forEach(el => { el._orig = el.innerHTML; });
     const playReel = el => { if (!el || el.classList.contains('playing')) return; if (el.dataset.yt) { el.classList.add('playing', 'yt'); el.innerHTML = ytFrame(el.dataset.yt, 'Edit reel'); return; } if (!el.dataset.tt) return; if (CARD) { openClip(el.dataset.url); return; } el.classList.add('playing', 'yt'); el.innerHTML = ttFrame(el.dataset.tt, 'Edit reel'); };
     const stopReel = el => { if (!el.classList.contains('playing')) return; el.classList.remove('playing', 'yt'); el.innerHTML = el._orig; };
