@@ -86,9 +86,11 @@ h1,h2,h3,p{margin:0}
 .ig-btn:hover,.ig-btn:focus-visible{background:var(--gold);color:var(--gold-fg)}
 .ig-posts{display:flex;flex-wrap:wrap;gap:4px;margin-top:18px}
 .ig-posts::after{content:'';flex-grow:100000}
+.ig.wide .ig-posts::after{display:none}
 .ig-posts button{padding:0;border:0;background:var(--surface-2);min-width:0;cursor:pointer;display:block;position:relative;border-radius:8px;overflow:hidden}
 .ig-posts img{width:100%;height:auto;display:block;transition:opacity .2s}
 .ig-posts button:hover img{opacity:.82}
+.ig-more{position:absolute;inset:0;display:grid;place-items:center;background:rgba(0,0,0,.45);color:#fff;font-size:clamp(22px,3.2vw,34px);font-weight:600}
 .px-seg{display:inline-flex;background:var(--surface);border-radius:999px;padding:3px}
 .px-seg button{border:0;background:transparent;padding:6px 16px;border-radius:999px;font-size:14px;font-weight:500;color:var(--mute);cursor:pointer;transition:background .2s,color .2s}
 .px-seg button[aria-pressed="true"]{background:var(--bg);color:var(--fg);box-shadow:0 1px 4px var(--shadow)}
@@ -816,6 +818,12 @@ function pxSection(s, ri, total) {
 const igIcon = '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" style="vertical-align:-2px;margin-right:6px"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".6" fill="currentColor"/></svg>';
 function artistList(a) { return (a.photos || []).map(f => ALL.find(p => p.f === f)).filter(Boolean); }
 const artistKey = a => (a.handles || [a.handle]).join('+');
+/* preview of a big set: 2 vertical + 2 horizontal frames, the last one carries "+N" (the rest open in the lightbox) */
+function previewIdx(list) {
+  if (list.length <= 4) return list.map((_, i) => i);
+  const v = [], h = []; list.forEach((p, i) => (p.w >= p.h ? h : v).push(i));
+  return v.length >= 2 && h.length >= 2 ? [v[0], v[1], h[0], h[1]] : [0, 1, 2, 3];
+}
 function artistsSection() {
   const arts = (S.artists || []).map(a => { const list = artistList(a); return { ...a, hs: a.handles || [a.handle], list, avatarPhoto: a.avatar ? ALL.find(p => p.f === a.avatar) : null }; }).filter(a => a.list.length);
   if (!arts.length) return '';
@@ -832,7 +840,7 @@ function artistsSection() {
     <div class="ig-grid">${arts.map(a => `
       <article class="ig${a.hs.length > 1 ? ' wide' : ''}">
         <div class="ig-tops">${tops(a)}</div>
-        <div class="ig-posts">${a.list.map((p, i) => { const ar = (p.w && p.h) ? p.w / p.h : 0.75; return `<button type="button" style="flex:${(ar * 100).toFixed(1)} 1 ${Math.round(ar * 200)}px" data-at="${esc(artistKey(a))}" data-i="${i}" aria-label="Open frame ${i + 1} of ${esc(a.hs.map(h => '@' + h).join(' & '))}"><img src="${esc(p.src)}" alt="${esc(p.alt || '')}" width="${p.w || 400}" height="${p.h || 533}" loading="lazy"></button>`; }).join('')}</div>
+        <div class="ig-posts">${previewIdx(a.list).map((i, k, arr) => { const p = a.list[i], ar = (p.w && p.h) ? p.w / p.h : 0.75; return `<button type="button" style="flex:${(ar * 100).toFixed(1)} 1 ${Math.round(ar * 200)}px" data-at="${esc(artistKey(a))}" data-i="${i}" aria-label="Open frame ${i + 1} of ${esc(a.hs.map(h => '@' + h).join(' & '))}"><img src="${esc(p.src)}" alt="${esc(p.alt || '')}" width="${p.w || 400}" height="${p.h || 533}" loading="lazy">${k === arr.length - 1 && a.list.length > arr.length ? `<span class="ig-more">+${a.list.length - arr.length}</span>` : ''}</button>`; }).join('')}</div>
       </article>`).join('')}</div>
     <p class="mono" style="color:var(--mute);margin-top:14px">Mock-up · ภาพตัวอย่าง ใส่ภาพจริงของแต่ละคนที่ <code>artists</code> ใน data.js</p>
   </section>`;
