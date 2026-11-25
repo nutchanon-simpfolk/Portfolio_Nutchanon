@@ -75,9 +75,7 @@ h1,h2,h3,p{margin:0}
 .ig-tops{display:grid;grid-template-columns:minmax(0,1fr);gap:16px}
 .ig.wide{grid-column:1/-1}
 .ig.wide .ig-tops{display:flex;flex-wrap:wrap;gap:16px clamp(24px,4vw,56px)}
-.ig.wide .ig-posts{aspect-ratio:8/5}
-.ig.wide .ig-posts img{object-position:center 15%}
-@media (max-width:640px){.ig.wide .ig-tops{flex-direction:column}.ig.wide .ig-posts{aspect-ratio:6/5}}
+@media (max-width:640px){.ig.wide .ig-tops{flex-direction:column}}
 .ig-top{display:flex;align-items:center;gap:14px}
 .ig-av{flex:none;width:88px;height:88px;border-radius:50%;padding:3px;background:conic-gradient(var(--gold),#fff3c4,var(--gold),#8a6508,var(--gold))}
 .ig-av img{width:100%;height:100%;border-radius:50%;object-fit:cover;object-position:center 22%;border:3px solid var(--surface);display:block}
@@ -86,13 +84,11 @@ h1,h2,h3,p{margin:0}
 .ig-id span{font-size:13px;color:var(--mute)}
 .ig-btn{margin-top:6px;align-self:flex-start;font-size:13px;font-weight:600;padding:5px 14px;border-radius:999px;border:1.5px solid var(--gold);color:var(--gold);text-decoration:none;transition:background .2s,color .2s}
 .ig-btn:hover,.ig-btn:focus-visible{background:var(--gold);color:var(--gold-fg)}
-.ig-posts{display:grid;grid-template-columns:2fr 1fr;grid-template-rows:1fr 1fr;aspect-ratio:6/5;gap:4px;margin-top:18px;border-radius:14px;overflow:hidden}
-.ig-posts button:first-child{grid-row:span 2}
-.ig-posts button{padding:0;border:0;background:var(--surface-2);min-height:0;cursor:pointer;display:block}
-.ig-posts img{width:100%;height:100%;min-height:0;object-fit:cover;display:block;transition:opacity .2s}
+.ig-posts{display:flex;flex-wrap:wrap;gap:4px;margin-top:18px}
+.ig-posts::after{content:'';flex-grow:100000}
+.ig-posts button{padding:0;border:0;background:var(--surface-2);min-width:0;cursor:pointer;display:block;position:relative;border-radius:8px;overflow:hidden}
+.ig-posts img{width:100%;height:auto;display:block;transition:opacity .2s}
 .ig-posts button:hover img{opacity:.82}
-.ig-posts button{position:relative}
-.ig-more{position:absolute;inset:0;display:grid;place-items:center;background:rgba(0,0,0,.45);color:#fff;font-size:clamp(20px,3vw,30px);font-weight:600}
 .px-seg{display:inline-flex;background:var(--surface);border-radius:999px;padding:3px}
 .px-seg button{border:0;background:transparent;padding:6px 16px;border-radius:999px;font-size:14px;font-weight:500;color:var(--mute);cursor:pointer;transition:background .2s,color .2s}
 .px-seg button[aria-pressed="true"]{background:var(--bg);color:var(--fg);box-shadow:0 1px 4px var(--shadow)}
@@ -836,7 +832,7 @@ function artistsSection() {
     <div class="ig-grid">${arts.map(a => `
       <article class="ig${a.hs.length > 1 ? ' wide' : ''}">
         <div class="ig-tops">${a.hs.map(h => prof(h, a)).join('')}</div>
-        <div class="ig-posts">${a.list.slice(0, 3).map((p, i) => `<button type="button" data-at="${esc(artistKey(a))}" data-i="${i}" aria-label="Open frame ${i + 1} of ${esc(a.hs.map(h => '@' + h).join(' & '))}"><img src="${esc(p.src)}" alt="${esc(p.alt || '')}" loading="lazy">${i === 2 && a.list.length > 3 ? `<span class="ig-more">+${a.list.length - 3}</span>` : ''}</button>`).join('')}</div>
+        <div class="ig-posts">${a.list.map((p, i) => { const ar = (p.w && p.h) ? p.w / p.h : 0.75; return `<button type="button" style="flex:${(ar * 100).toFixed(1)} 1 ${Math.round(ar * 200)}px" data-at="${esc(artistKey(a))}" data-i="${i}" aria-label="Open frame ${i + 1} of ${esc(a.hs.map(h => '@' + h).join(' & '))}"><img src="${esc(p.src)}" alt="${esc(p.alt || '')}" width="${p.w || 400}" height="${p.h || 533}" loading="lazy"></button>`; }).join('')}</div>
       </article>`).join('')}</div>
     <p class="mono" style="color:var(--mute);margin-top:14px">Mock-up · ภาพตัวอย่าง ใส่ภาพจริงของแต่ละคนที่ <code>artists</code> ใน data.js</p>
   </section>`;
