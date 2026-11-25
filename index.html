@@ -87,6 +87,21 @@ h1,h2,h3,p{margin:0}
 .ig-posts{display:flex;flex-wrap:wrap;gap:4px;margin-top:18px}
 .ig-posts::after{content:'';flex-grow:100000}
 .ig.wide .ig-posts::after{display:none}
+/* 2 large vertical frames + 2 horizontal frames stacked in two tiers */
+.ig-posts.mix{display:grid;grid-template-columns:1fr 1fr 1.125fr;grid-template-rows:1fr 1fr;aspect-ratio:2.08/1}
+.ig-posts.mix::after{display:none}
+.ig-posts.mix button:nth-child(1){grid-area:1/1/3/2}
+.ig-posts.mix button:nth-child(2){grid-area:1/2/3/3}
+.ig-posts.mix button:nth-child(3){grid-area:1/3/2/4}
+.ig-posts.mix button:nth-child(4){grid-area:2/3/3/4}
+.ig-posts.mix img{width:100%;height:100%;object-fit:cover}
+@media (max-width:640px){
+  .ig-posts.mix{grid-template-columns:1fr 1fr;grid-template-rows:none;aspect-ratio:auto}
+  .ig-posts.mix button:nth-child(1){grid-area:1/1;aspect-ratio:2/3}
+  .ig-posts.mix button:nth-child(2){grid-area:1/2;aspect-ratio:2/3}
+  .ig-posts.mix button:nth-child(3){grid-area:2/1/3/3;aspect-ratio:3/2}
+  .ig-posts.mix button:nth-child(4){grid-area:3/1/4/3;aspect-ratio:3/2}
+}
 .ig-posts button{padding:0;border:0;background:var(--surface-2);min-width:0;cursor:pointer;display:block;position:relative;border-radius:8px;overflow:hidden}
 .ig-posts img{width:100%;height:auto;display:block;transition:opacity .2s}
 .ig-posts button:hover img{opacity:.82}
@@ -822,7 +837,8 @@ const artistKey = a => (a.handles || [a.handle]).join('+');
 function previewIdx(list) {
   if (list.length <= 4) return list.map((_, i) => i);
   const v = [], h = []; list.forEach((p, i) => (p.w >= p.h ? h : v).push(i));
-  return v.length >= 2 && h.length >= 2 ? [v[0], v[1], h[0], h[1]] : [0, 1, 2, 3];
+  if (v.length >= 2 && h.length >= 2) { const r = [v[0], v[1], h[0], h[1]]; r.mix = true; return r; }
+  return [0, 1, 2, 3];
 }
 function artistsSection() {
   const arts = (S.artists || []).map(a => { const list = artistList(a); return { ...a, hs: a.handles || [a.handle], list, avatarPhoto: a.avatar ? ALL.find(p => p.f === a.avatar) : null }; }).filter(a => a.list.length);
@@ -840,7 +856,7 @@ function artistsSection() {
     <div class="ig-grid">${arts.map(a => `
       <article class="ig${a.hs.length > 1 ? ' wide' : ''}">
         <div class="ig-tops">${tops(a)}</div>
-        <div class="ig-posts">${previewIdx(a.list).map((i, k, arr) => { const p = a.list[i], ar = (p.w && p.h) ? p.w / p.h : 0.75; return `<button type="button" style="flex:${(ar * 100).toFixed(1)} 1 ${Math.round(ar * 200)}px" data-at="${esc(artistKey(a))}" data-i="${i}" aria-label="Open frame ${i + 1} of ${esc(a.hs.map(h => '@' + h).join(' & '))}"><img src="${esc(p.src)}" alt="${esc(p.alt || '')}" width="${p.w || 400}" height="${p.h || 533}" loading="lazy">${k === arr.length - 1 && a.list.length > arr.length ? `<span class="ig-more">+${a.list.length - arr.length}</span>` : ''}</button>`; }).join('')}</div>
+        <div class="ig-posts${previewIdx(a.list).mix ? ' mix' : ''}">${previewIdx(a.list).map((i, k, arr) => { const p = a.list[i], ar = (p.w && p.h) ? p.w / p.h : 0.75; return `<button type="button" style="flex:${(ar * 100).toFixed(1)} 1 ${Math.round(ar * 200)}px" data-at="${esc(artistKey(a))}" data-i="${i}" aria-label="Open frame ${i + 1} of ${esc(a.hs.map(h => '@' + h).join(' & '))}"><img src="${esc(p.src)}" alt="${esc(p.alt || '')}" width="${p.w || 400}" height="${p.h || 533}" loading="lazy">${k === arr.length - 1 && a.list.length > arr.length ? `<span class="ig-more">+${a.list.length - arr.length}</span>` : ''}</button>`; }).join('')}</div>
       </article>`).join('')}</div>
     <p class="mono" style="color:var(--mute);margin-top:14px">Mock-up · ภาพตัวอย่าง ใส่ภาพจริงของแต่ละคนที่ <code>artists</code> ใน data.js</p>
   </section>`;
