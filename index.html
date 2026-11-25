@@ -91,6 +91,8 @@ h1,h2,h3,p{margin:0}
 .ig-posts button{padding:0;border:0;background:var(--surface-2);min-height:0;cursor:pointer;display:block}
 .ig-posts img{width:100%;height:100%;min-height:0;object-fit:cover;display:block;transition:opacity .2s}
 .ig-posts button:hover img{opacity:.82}
+.ig-posts button{position:relative}
+.ig-more{position:absolute;inset:0;display:grid;place-items:center;background:rgba(0,0,0,.45);color:#fff;font-size:clamp(20px,3vw,30px);font-weight:600}
 .px-seg{display:inline-flex;background:var(--surface);border-radius:999px;padding:3px}
 .px-seg button{border:0;background:transparent;padding:6px 16px;border-radius:999px;font-size:14px;font-weight:500;color:var(--mute);cursor:pointer;transition:background .2s,color .2s}
 .px-seg button[aria-pressed="true"]{background:var(--bg);color:var(--fg);box-shadow:0 1px 4px var(--shadow)}
@@ -550,7 +552,7 @@ const IC = (() => {
 /* ---------- normalize data ---------- */
 S.galleries.forEach(g => {
   g.photos = g.photos.map(p => typeof p === 'string' ? { f: p } : p);
-  g.photos.forEach((p, i) => { p.n = i + 1; p.src = g.folder + p.f; p.gt = g.title; p.gid = g.id; p.cat = p.cat || p.t || 'portrait'; p.artist = p.artist || ''; p.event = p.event || ''; p.gcap = g.caption || ''; p.cap = [[p.artist, p.event].filter(Boolean).join(' · '), g.caption || ''].filter(Boolean).join(' · '); });
+  g.photos.forEach((p, i) => { p.n = i + 1; p.src = p.src || g.folder + p.f; p.gt = g.title; p.gid = g.id; p.cat = p.cat || p.t || 'portrait'; p.artist = p.artist || ''; p.event = p.event || ''; p.gcap = g.caption || ''; p.cap = [[p.artist, p.event].filter(Boolean).join(' · '), g.caption || ''].filter(Boolean).join(' · '); });
 });
 const ALL = S.galleries.flatMap(g => g.photos);
 const CATDEF = (S.categories && S.categories.length) ? S.categories : [{ id: 'portrait', title: 'Portrait' }, { id: 'candid', title: 'Candid' }, { id: 'landscape', title: 'Landscape' }];
@@ -834,7 +836,7 @@ function artistsSection() {
     <div class="ig-grid">${arts.map(a => `
       <article class="ig${a.hs.length > 1 ? ' wide' : ''}">
         <div class="ig-tops">${a.hs.map(h => prof(h, a)).join('')}</div>
-        <div class="ig-posts">${a.list.map((p, i) => `<button type="button" data-at="${esc(artistKey(a))}" data-i="${i}" aria-label="Open frame ${i + 1} of ${esc(a.hs.map(h => '@' + h).join(' & '))}"><img src="${esc(p.src)}" alt="${esc(p.alt || '')}" loading="lazy"></button>`).join('')}</div>
+        <div class="ig-posts">${a.list.slice(0, 3).map((p, i) => `<button type="button" data-at="${esc(artistKey(a))}" data-i="${i}" aria-label="Open frame ${i + 1} of ${esc(a.hs.map(h => '@' + h).join(' & '))}"><img src="${esc(p.src)}" alt="${esc(p.alt || '')}" loading="lazy">${i === 2 && a.list.length > 3 ? `<span class="ig-more">+${a.list.length - 3}</span>` : ''}</button>`).join('')}</div>
       </article>`).join('')}</div>
     <p class="mono" style="color:var(--mute);margin-top:14px">Mock-up · ภาพตัวอย่าง ใส่ภาพจริงของแต่ละคนที่ <code>artists</code> ใน data.js</p>
   </section>`;

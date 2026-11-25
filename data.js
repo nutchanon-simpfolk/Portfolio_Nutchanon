@@ -80,7 +80,7 @@ window.SITE = {
      photos = ชื่อไฟล์รูปของ artist คนนั้น (ตอนนี้เป็นภาพตัวอย่าง mock-up) ภาพแรกใช้เป็นรูปโปรไฟล์ */
   artists: [
       /* คู่ (ภาพคู่): ใช้ handles = [คนที่ 1, คนที่ 2] จะเป็นกรอบใหญ่เต็มแถว มีโปรไฟล์ IG ของแต่ละคน */
-      { handles: ['fay_riezz', 'maywyda'], photos: ['color-04.jpg', 'color-01.jpg', 'bw-01.jpg'] },
+      { handles: ['fay_riezz', 'maywyda'], photos: ['faymay2.jpg', 'faymay1.jpg', 'faymay3.jpg', 'faymay4.jpg', 'faymay5.jpg', 'faymay6.jpg', 'faymay7.jpg', 'faymay8.jpg'] },
       { handle: 'dj.luna222', photos: ['color-07.jpg', 'bw-04.jpg', 'bw-11.jpg'] },
       { handle: '4moze', photos: ['color-10.jpg', 'bw-07.jpg', 'color-01.jpg'] },
       { handle: 'chompu_konbai', photos: ['bw-03.jpg', 'bw-10.jpg', 'color-04.jpg'] },
@@ -110,7 +110,16 @@ window.SITE = {
         { f:'color-07.jpg', artist:'Artist C', event:'Event 01', w:1333, h:2000, t:'portrait', alt:'Model in a leather jacket with a hand raised to her face, seated in a spotlight on red' },
         { f:'color-08.jpg', artist:'Artist D', event:'Event 02', w:2000, h:1333, t:'candid',   alt:'Two women with long hair looking out through a narrow gap between dark panels' },
         { f:'color-09.jpg', artist:'Artist A', event:'Event 03', w:1333, h:2000, t:'portrait', alt:'Silhouette of a person with a ponytail looking upward against a red backdrop' },
-        { f:'color-10.jpg', cat:'landscape', artist:'Artist B', event:'Event 01', w:2000, h:1333, t:'candid',   alt:'Five people in black and white outfits standing in a row between studio lights' }
+        { f:'color-10.jpg', cat:'landscape', artist:'Artist B', event:'Event 01', w:2000, h:1333, t:'candid',   alt:'Five people in black and white outfits standing in a row between studio lights' },
+        /* ภาพจริง: fay_riezz & maywyda (images/faymay/)  ระบุ src เมื่อไฟล์อยู่นอกโฟลเดอร์ของหมวด */
+        { f:'faymay1.jpg', src:'images/faymay/faymay1.jpg', artist:'fay_riezz & maywyda', event:'', w:1024, h:1536, t:'candid', alt:'Two women on a floral sofa, one reading a book while the other lies across her lap' },
+        { f:'faymay2.jpg', src:'images/faymay/faymay2.jpg', artist:'fay_riezz & maywyda', event:'', w:1535, h:1024, t:'portrait', alt:'Two women smiling, wrapped together in one striped blanket against a blue wall' },
+        { f:'faymay3.jpg', src:'images/faymay/faymay3.jpg', artist:'fay_riezz & maywyda', event:'', w:1447, h:1087, t:'candid', alt:'Two women on a floral sofa, one lying down laughing while the other looks at her book' },
+        { f:'faymay4.jpg', src:'images/faymay/faymay4.jpg', artist:'fay_riezz & maywyda', event:'', w:2000, h:1333, t:'candid', alt:'Two women laughing together on a floral sofa, one turned away from the camera' },
+        { f:'faymay5.jpg', src:'images/faymay/faymay5.jpg', artist:'fay_riezz & maywyda', event:'', w:1333, h:2000, t:'candid', alt:'Woman in a striped shirt reading while another lies across her lap on a floral sofa' },
+        { f:'faymay6.jpg', src:'images/faymay/faymay6.jpg', artist:'fay_riezz & maywyda', event:'', w:1333, h:2000, t:'portrait', alt:'Two women smiling close to the camera, one resting her head on the other' },
+        { f:'faymay7.jpg', src:'images/faymay/faymay7.jpg', artist:'fay_riezz & maywyda', event:'', w:1333, h:2000, t:'portrait', alt:'Two women hugging and smiling on an armchair in a sunlit blue room' },
+        { f:'faymay8.jpg', src:'images/faymay/faymay8.jpg', artist:'fay_riezz & maywyda', event:'', w:1333, h:2000, t:'portrait', alt:'Two women in a tight hug, laughing, in a bright blue room' }
       ]},
     { id: 'bw', title: 'Black & White', folder: 'images/bw/', caption: 'ปี 2026 @cosdent', audio: 'audio/Song_505.mp3',
       blurb: 'Tuxedos, spotlights and long shadows. Contrast first, grain left in.',
