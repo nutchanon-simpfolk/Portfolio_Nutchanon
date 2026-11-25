@@ -80,7 +80,7 @@ window.SITE = {
      photos = ชื่อไฟล์รูปของ artist คนนั้น (ตอนนี้เป็นภาพตัวอย่าง mock-up) ภาพแรกใช้เป็นรูปโปรไฟล์ */
   artists: [
       /* คู่ (ภาพคู่): ใช้ handles = [คนที่ 1, คนที่ 2] จะเป็นกรอบใหญ่เต็มแถว มีโปรไฟล์ IG ของแต่ละคน */
-      { handles: ['fay_riezz', 'maywyda'], photos: ['faymay6.jpg', 'faymay8.jpg', 'faymay4.jpg', 'faymay5.jpg', 'faymay7.jpg', 'faymay1.jpg', 'faymay2.jpg', 'faymay3.jpg'] },
+      { handles: ['fay_riezz', 'maywyda'], avatar: 'faymay2.jpg', photos: ['faymay6.jpg', 'faymay8.jpg', 'faymay4.jpg', 'faymay5.jpg', 'faymay7.jpg', 'faymay1.jpg', 'faymay2.jpg', 'faymay3.jpg'] },
       { handle: 'dj.luna222', photos: ['color-07.jpg', 'bw-04.jpg', 'bw-11.jpg'] },
       { handle: '4moze', photos: ['color-10.jpg', 'bw-07.jpg', 'color-01.jpg'] },
       { handle: 'chompu_konbai', photos: ['bw-03.jpg', 'bw-10.jpg', 'color-04.jpg'] },
