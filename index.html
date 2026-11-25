@@ -657,6 +657,7 @@ function homeView() {
     </a>`).join('');
   const vids = ((H.videos && H.videos.length) ? H.videos : [0, 1, 2, 3]).map(i => ({ v: S.videos[i], i })).filter(x => x.v).slice(0, 4);
   const meta = metaHtml();
+  const homeArtists = artistCards(3);
   return `
   <section class="wrap home-hero">
     <div>
@@ -674,9 +675,8 @@ function homeView() {
     <div class="hh-photo">${photo}</div>
   </section>
   <section class="wrap section">
-    <div class="sec-head rv"><div><p class="eyebrow">Selected work</p><h2 class="h-l" style="margin-top:6px">Photography</h2></div><a class="btn" href="#photographer">View all photos</a></div>
-    ${RECORDS.some(r => r.audio) ? '<p class="mono" style="color:var(--mute);margin:-8px 0 14px">♪ Hover a record to play its track</p>' : ''}
-    <div class="hrecs rv">${recCards}</div>
+    <div class="sec-head rv"><div><p class="eyebrow">Selected work</p><h2 class="h-l" style="margin-top:6px">Photography</h2></div><a class="btn" href="#photographer" data-goto-artist>View all artists</a></div>
+    ${homeArtists ? `<div class="home-artists rv">${homeArtists}</div>` : `${RECORDS.some(r => r.audio) ? '<p class="mono" style="color:var(--mute);margin:-8px 0 14px">♪ Hover a record to play its track</p>' : ''}<div class="hrecs rv">${recCards}</div>`}
   </section>
   <section class="wrap section" style="padding-top:0">
     <div class="vt rv">
@@ -771,7 +771,7 @@ function editorView() {
 }
 
 /* photographer: All (Portrait / Candid / Landscape) or Color mode (Color / B&W); record cover + magazine grid */
-let pxArtist = false, pxMode = 'all', recFocus = null, pxLists = {}, pxIo = null;
+let goArtist = false, pxArtist = false, pxMode = 'all', recFocus = null, pxLists = {}, pxIo = null;
 const ARR_D = '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M6 13l6 6 6-6"/></svg>';
 function photographerView() {
   return `
@@ -840,24 +840,29 @@ function previewIdx(list) {
   if (v.length >= 2 && h.length >= 2) { const r = [v[0], v[1], h[0], h[1]]; r.mix = true; return r; }
   return [0, 1, 2, 3];
 }
-function artistsSection() {
+function artistCards(limit) {
   const arts = (S.artists || []).map(a => { const list = artistList(a); return { ...a, hs: a.handles || [a.handle], list, avatarPhoto: a.avatar ? ALL.find(p => p.f === a.avatar) : null }; }).filter(a => a.list.length);
   if (!arts.length) return '';
+  const shown = limit ? arts.slice(0, limit) : arts;
   const av = a => `<div class="ig-av"><img src="${esc((a.avatarPhoto || a.list[0]).src)}" alt="" loading="lazy"></div>`;
   const idb = (h, a) => `<div class="ig-id"><b>@${esc(h)}</b><span>Artist${a.hs.length < 2 ? ` · ${a.list.length} frames` : ''}</span>
             <a class="ig-btn" href="https://www.instagram.com/${encodeURIComponent(h)}/" target="_blank" rel="noopener">${igIcon}Instagram</a></div>`;
   const prof = (h, a) => `<div class="ig-top">${av(a)}${idb(h, a)}</div>`;
   const tops = a => a.hs.length > 1 ? `<div class="ig-top">${av(a)}<div class="ig-ids">${a.hs.map(h => idb(h, a)).join('')}</div></div>` : prof(a.hs[0], a);
+  return `<div class="ig-grid">${shown.map(a => `
+      <article class="ig${a.hs.length > 1 ? ' wide' : ''}">
+        <div class="ig-tops">${tops(a)}</div>
+        <div class="ig-posts${previewIdx(a.list).mix ? ' mix' : ''}">${previewIdx(a.list).map((i, k, arr) => { const p = a.list[i], ar = (p.w && p.h) ? p.w / p.h : 0.75; return `<button type="button" style="flex:${(ar * 100).toFixed(1)} 1 ${Math.round(ar * 200)}px" data-at="${esc(artistKey(a))}" data-i="${i}" aria-label="Open frame ${i + 1} of ${esc(a.hs.map(h => '@' + h).join(' & '))}"><img src="${esc(p.src)}" alt="${esc(p.alt || '')}" width="${p.w || 400}" height="${p.h || 533}" loading="lazy">${k === arr.length - 1 && a.list.length > arr.length ? `<span class="ig-more">+${a.list.length - arr.length}</span>` : ''}</button>`; }).join('')}</div>
+      </article>`).join('')}</div>`;
+}
+function artistsSection() {
+  const cards = artistCards(); if (!cards) return '';
   return `
   <section class="px-sec px-artists" id="px-artists" aria-label="Artists">
     <p class="px-mono">Artists</p>
     <h2 class="h-l" style="margin-top:6px">Artists</h2>
     <p class="px-blurb">ศิลปินที่ได้ร่วมงานด้วย ใช้ชื่อเดียวกับ Instagram กดชื่อหรือปุ่มเพื่อไปที่โปรไฟล์ หรือกดภาพเพื่อดูผลงาน</p>
-    <div class="ig-grid">${arts.map(a => `
-      <article class="ig${a.hs.length > 1 ? ' wide' : ''}">
-        <div class="ig-tops">${tops(a)}</div>
-        <div class="ig-posts${previewIdx(a.list).mix ? ' mix' : ''}">${previewIdx(a.list).map((i, k, arr) => { const p = a.list[i], ar = (p.w && p.h) ? p.w / p.h : 0.75; return `<button type="button" style="flex:${(ar * 100).toFixed(1)} 1 ${Math.round(ar * 200)}px" data-at="${esc(artistKey(a))}" data-i="${i}" aria-label="Open frame ${i + 1} of ${esc(a.hs.map(h => '@' + h).join(' & '))}"><img src="${esc(p.src)}" alt="${esc(p.alt || '')}" width="${p.w || 400}" height="${p.h || 533}" loading="lazy">${k === arr.length - 1 && a.list.length > arr.length ? `<span class="ig-more">+${a.list.length - arr.length}</span>` : ''}</button>`; }).join('')}</div>
-      </article>`).join('')}</div>
+    ${cards}
     <p class="mono" style="color:var(--mute);margin-top:14px">Mock-up · ภาพตัวอย่าง ใส่ภาพจริงของแต่ละคนที่ <code>artists</code> ใน data.js</p>
   </section>`;
 }
@@ -869,7 +874,7 @@ function pxRender() {
   pxIo.disconnect(); document.querySelectorAll('.px-sec').forEach(s => pxIo.observe(s));
 }
 function bindPhotographer() {
-  pxArtist = false;
+  pxArtist = goArtist; goArtist = false;
   if (pxIo) pxIo.disconnect();
   pxIo = new IntersectionObserver(es => es.forEach(en => { if (en.isIntersecting) document.querySelectorAll('#px-cats button').forEach(x => x.setAttribute('aria-pressed', String('px-' + x.dataset.c === en.target.id))); }), { rootMargin: '-40% 0px -55% 0px' });
   $('#px-seg').innerHTML = [['all', 'All'], ['color', 'Color mode']].map(([v, l]) => `<button type="button" data-m="${v}" aria-pressed="${v === pxMode}">${l}</button>`).join('');
@@ -1078,6 +1083,7 @@ route();
 
 /* ---------- in-page (non-route) links ---------- */
 document.addEventListener('click', e => {
+  if (e.target.closest('.home-artists [data-at], [data-goto-artist]') && !e.target.closest('.ig-btn')) { goArtist = true; if (location.hash !== '#photographer') location.hash = '#photographer'; return; }
   const gp = e.target.closest('[data-goto-photo]');
   if (gp) { const [gid, i] = gp.dataset.gotoPhoto.split(':'); if (RECORDS.some(r => r.id === gid)) { pxMode = 'color'; recFocus = gid; } return; }
   const gv = e.target.closest('[data-goto-vid]');
