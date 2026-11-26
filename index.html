@@ -838,7 +838,7 @@ function previewIdx(list) {
   if (list.length <= 4) return list.map((_, i) => i);
   const v = [], h = []; list.forEach((p, i) => (p.w >= p.h ? h : v).push(i));
   if (v.length >= 2 && h.length >= 2) { const r = [v[0], v[1], h[0], h[1]]; r.mix = true; return r; }
-  return [0, 1, 2, 3];
+  return [0, 1, 2];
 }
 function artistCards(limit) {
   const arts = (S.artists || []).map(a => { const list = artistList(a); return { ...a, hs: a.handles || [a.handle], list, avatarPhoto: a.avatar ? ALL.find(p => p.f === a.avatar) : null }; }).filter(a => a.list.length);

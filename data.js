@@ -81,12 +81,13 @@ window.SITE = {
   artists: [
       /* คู่ (ภาพคู่): ใช้ handles = [คนที่ 1, คนที่ 2] จะเป็นกรอบใหญ่เต็มแถว มีโปรไฟล์ IG ของแต่ละคน */
       { handles: ['fay_riezz', 'maywyda'], avatar: 'faymay2.jpg', photos: ['faymay6.jpg', 'faymay8.jpg', 'faymay4.jpg', 'faymay5.jpg', 'faymay7.jpg', 'faymay1.jpg', 'faymay2.jpg', 'faymay3.jpg'] },
-      { handle: 'dj.luna222', photos: ['color-07.jpg', 'bw-04.jpg', 'bw-11.jpg'] },
+      { handle: 'dj.luna222', photos: ['luna1.jpg', 'luna2.jpg', 'luna5.jpg', 'luna6.jpg'] },
       { handle: '4moze', photos: ['color-10.jpg', 'bw-07.jpg', 'color-01.jpg'] },
-      { handle: 'chompu_konbai', photos: ['bw-03.jpg', 'bw-10.jpg', 'color-04.jpg'] },
+      { handle: 'chompu_konbai', photos: ['chompoo2.jpg', 'chompoo1.jpg'] },
       { handle: 'ppanward', photos: ['bw-06.jpg', 'bw-13.jpg', 'color-07.jpg'] },
-      { handle: 'pai_makeup', photos: ['bw-09.jpg', 'color-03.jpg', 'color-10.jpg'] },
-      { handle: 'babarabeer_makeup', photos: ['bw-12.jpg', 'color-06.jpg', 'bw-03.jpg'] },
+      { handle: 'pai_makeup', photos: ['ply1.jpg', 'ply2.jpg', 'ply3.jpg'] },
+      { handle: 'babarabeer_makeup', photos: ['beer1.jpg', 'beer2.jpg'] },
+      { handle: 'boooon_20', photos: ['fah1.jpg', 'prangfah1.jpg', 'prangfah2.jpg', 'fah2.jpg', 'prangfah3.jpg', 'prangfah4.jpg', 'prangfah5.jpg', 'prangfah6.jpg'] },
       { handle: 'zanizina', photos: ['color-02.jpg', 'color-09.jpg', 'bw-06.jpg'] },
       { handle: 'glufkanawut', photos: ['color-05.jpg', 'bw-02.jpg', 'bw-09.jpg'] }
   ],
@@ -119,7 +120,14 @@ window.SITE = {
         { f:'faymay7.jpg', src:'images/faymay/faymay7.jpg', artist:'fay_riezz & maywyda', event:'', w:1333, h:2000, t:'portrait', alt:'Two women hugging and smiling on an armchair in a sunlit blue room' },
         { f:'faymay1.jpg', src:'images/faymay/faymay1.jpg', artist:'fay_riezz & maywyda', event:'', w:1024, h:1536, t:'candid', alt:'Two women on a floral sofa, one reading a book while the other lies across her lap' },
         { f:'faymay2.jpg', src:'images/faymay/faymay2.jpg', artist:'fay_riezz & maywyda', event:'', w:1535, h:1024, t:'portrait', alt:'Two women smiling, wrapped together in one striped blanket against a blue wall' },
-        { f:'faymay3.jpg', src:'images/faymay/faymay3.jpg', artist:'fay_riezz & maywyda', event:'', w:1447, h:1087, t:'candid', alt:'Two women on a floral sofa, one lying down laughing while the other looks at her book' }
+        { f:'faymay3.jpg', src:'images/faymay/faymay3.jpg', artist:'fay_riezz & maywyda', event:'', w:1447, h:1087, t:'candid', alt:'Two women on a floral sofa, one lying down laughing while the other looks at her book' },
+        /* ภาพจริงของ artist อื่น (images/luna, prangfah) */
+        { f:'luna1.jpg', src:'images/luna/luna1.jpg', artist:'dj.luna222', event:'', w:1246, h:1870, t:'portrait', alt:'Model in a black leather jacket seated in a white spotlight on a red backdrop' },
+        { f:'luna2.jpg', src:'images/luna/luna2.jpg', artist:'dj.luna222', event:'', w:1261, h:1893, t:'portrait', alt:'Model in a leather jacket leaning on the floor against a red backdrop' },
+        { f:'prangfah1.jpg', src:'images/prangfah/prangfah1.jpg', artist:'boooon_20', event:'', w:1333, h:2000, t:'portrait', alt:'Two women in denim and light blue tops standing close on a white backdrop' },
+        { f:'prangfah2.jpg', src:'images/prangfah/prangfah2.jpg', artist:'boooon_20', event:'', w:888, h:1333, t:'portrait', alt:'Two women in corset tops smiling at each other on a white backdrop' },
+        { f:'prangfah3.jpg', src:'images/prangfah/prangfah3.jpg', artist:'boooon_20', event:'', w:1150, h:1726, t:'candid', alt:'Woman in a light blue top smiling with arms crossed, another woman in the foreground' },
+        { f:'prangfah4.jpg', src:'images/prangfah/prangfah4.jpg', artist:'boooon_20', event:'', w:888, h:1333, t:'candid', alt:'Two women behind a dark panel, one resting her head on her arm' }
       ]},
     { id: 'bw', title: 'Black & White', folder: 'images/bw/', caption: 'ปี 2026 @cosdent', audio: 'audio/Song_505.mp3',
       blurb: 'Tuxedos, spotlights and long shadows. Contrast first, grain left in.',
@@ -136,7 +144,21 @@ window.SITE = {
         { f:'bw-10.jpg', artist:'Artist D', event:'Event 02', w:1333, h:2000, t:'portrait', alt:'Man in a tuxedo standing in a spotlight with a long shadow behind him' },
         { f:'bw-11.jpg', artist:'Artist A', event:'Event 03', w:1333, h:2000, t:'portrait', alt:'Woman in a black dress in profile, studio equipment behind her' },
         { f:'bw-12.jpg', artist:'Artist B', event:'Event 01', w:1333, h:2000, t:'portrait', alt:'Two women in denim and lace tops embracing on a bright high-key backdrop' },
-        { f:'bw-13.jpg', artist:'Artist C', event:'Event 02', w:1333, h:2000, t:'candid',   alt:'Man in a suit standing among studio stands and equipment' }
+        { f:'bw-13.jpg', artist:'Artist C', event:'Event 02', w:1333, h:2000, t:'candid',   alt:'Man in a suit standing among studio stands and equipment' },
+        /* ภาพจริงของ artist (images/luna, chompoo, ply, beer, fah, prangfah) */
+        { f:'luna5.jpg', src:'images/luna/luna5.jpg', artist:'dj.luna222', event:'', w:1333, h:2000, t:'portrait', alt:'Model in a leather jacket sitting in a pool of white light, black and white' },
+        { f:'luna6.jpg', src:'images/luna/luna6.jpg', artist:'dj.luna222', event:'', w:1333, h:2000, t:'candid', alt:'Behind the scenes: model in a spotlight while the crew works in the dark' },
+        { f:'chompoo1.jpg', src:'images/chompoo/chompoo1.jpg', artist:'chompu_konbai', event:'', w:1333, h:2000, t:'candid', alt:'Woman with long hair holding a makeup brush while a makeup artist works' },
+        { f:'chompoo2.jpg', src:'images/chompoo/chompoo2.jpg', artist:'chompu_konbai', event:'', w:1333, h:2000, t:'portrait', alt:'Dancer in a long coat posing in a spotlight with a long shadow' },
+        { f:'ply1.jpg', src:'images/ply/ply1.jpg', artist:'pai_makeup', event:'', w:1333, h:2000, t:'portrait', alt:'Man in a black suit and tie looking past the camera' },
+        { f:'ply2.jpg', src:'images/ply/ply2.jpg', artist:'pai_makeup', event:'', w:1333, h:2000, t:'portrait', alt:'Man in a suit in profile, adjusting his collar' },
+        { f:'ply3.jpg', src:'images/ply/ply3.jpg', artist:'pai_makeup', event:'', w:1333, h:2000, t:'candid', alt:'Man in a suit walking among studio stands and lights' },
+        { f:'beer1.jpg', src:'images/beer/beer1.jpg', artist:'babarabeer_makeup', event:'', w:1333, h:2000, t:'portrait', alt:'Man in a tuxedo with a bow tie smiling, arms open' },
+        { f:'beer2.jpg', src:'images/beer/beer2.jpg', artist:'babarabeer_makeup', event:'', w:1333, h:2000, t:'portrait', alt:'Man in a tuxedo standing in profile with shadows behind him' },
+        { f:'fah1.jpg', src:'images/fah/fah1.jpg', artist:'boooon_20', event:'', w:1333, h:2000, t:'portrait', alt:'Woman with long black hair in a backless dress, looking over her shoulder' },
+        { f:'fah2.jpg', src:'images/fah/fah2.jpg', artist:'boooon_20', event:'', w:1333, h:2000, t:'portrait', alt:'Woman with long black hair in profile, studio lights behind her' },
+        { f:'prangfah5.jpg', src:'images/prangfah/prangfah5.jpg', artist:'boooon_20', event:'', w:1333, h:2000, t:'portrait', alt:'Two women embracing in black and white' },
+        { f:'prangfah6.jpg', src:'images/prangfah/prangfah6.jpg', artist:'boooon_20', event:'', w:1333, h:2000, t:'portrait', alt:'Two women close together, one looking at the camera, black and white' }
       ]}
   ],
   /* แผ่นเสียงเพิ่มเติมที่คัดจากรูปทั้งหมดตามประเภท (t) */
