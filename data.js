@@ -84,7 +84,7 @@ window.SITE = {
       { handle: 'dj.luna222', photos: ['luna1.jpg', 'luna2.jpg', 'luna5.jpg', 'luna6.jpg'] },
       { handle: '4moze', photos: [] /* ยังไม่มีรูปจริง: ใส่ชื่อไฟล์ภาพแล้วการ์ดจะแสดงเอง */ },
       { handle: 'chompu_konbai', photos: ['chompoo2.jpg', 'chompoo1.jpg'] },
-      { handle: 'ppanward', photos: [] /* ยังไม่มีรูปจริง: ใส่ชื่อไฟล์ภาพแล้วการ์ดจะแสดงเอง */ },
+      { handle: 'ppanward', photos: ['ppanward1.jpg', 'ppanward4.jpg', 'ppanward2.jpg', 'ppanward3.jpg', 'ppanward5.jpg'] },
       { handle: 'pai_makeup', photos: ['ply1.jpg', 'ply2.jpg', 'ply3.jpg'] },
       { handle: 'babarabeer_makeup', photos: ['beer1.jpg', 'beer2.jpg'] },
       { handle: 'boooon_20', photos: ['fah1.jpg', 'prangfah1.jpg', 'prangfah2.jpg', 'fah2.jpg', 'prangfah3.jpg', 'prangfah4.jpg', 'prangfah5.jpg', 'prangfah6.jpg'] },
@@ -111,6 +111,12 @@ window.SITE = {
         { f:'faymay1.jpg', src:'images/faymay/faymay1.jpg', artist:'fay_riezz & maywyda', event:'', w:1024, h:1536, t:'candid', alt:'Two women on a floral sofa, one reading a book while the other lies across her lap' },
         { f:'faymay2.jpg', src:'images/faymay/faymay2.jpg', artist:'fay_riezz & maywyda', event:'', w:1535, h:1024, t:'portrait', alt:'Two women smiling, wrapped together in one striped blanket against a blue wall' },
         { f:'faymay3.jpg', src:'images/faymay/faymay3.jpg', artist:'fay_riezz & maywyda', event:'', w:1447, h:1087, t:'candid', alt:'Two women on a floral sofa, one lying down laughing while the other looks at her book' },
+        /* ภาพจริงของ ppanward (images/panward) */
+        { f:'ppanward1.jpg', src:'images/panward/ppanward1.jpg', artist:'ppanward', event:'', w:1357, h:2037, t:'portrait', alt:'Woman in a yellow dress sitting on the floor holding a paint palette beside a painted flower' },
+        { f:'ppanward2.jpg', src:'images/panward/ppanward2.jpg', artist:'ppanward', event:'', w:2407, h:1603, t:'candid', alt:'Woman in a yellow dress sitting cross-legged and painting pink flowers on a glass wall' },
+        { f:'ppanward3.jpg', src:'images/panward/ppanward3.jpg', artist:'ppanward', event:'', w:2375, h:1582, t:'candid', alt:'Woman in a yellow dress holding a paint palette and brush in front of pink flowers' },
+        { f:'ppanward4.jpg', src:'images/panward/ppanward4.jpg', artist:'ppanward', event:'', w:982, h:1475, t:'portrait', alt:'Woman in a yellow halter dress leaning back on the floor, smiling, with a paint palette' },
+        { f:'ppanward5.jpg', src:'images/panward/ppanward5.jpg', artist:'ppanward', event:'', w:1382, h:2075, t:'candid', alt:'Woman in a yellow dress seen through a dark blurred foreground, painting flowers' },
         /* ภาพจริงของ artist อื่น (images/luna, prangfah) */
         { f:'luna1.jpg', src:'images/luna/luna1.jpg', artist:'dj.luna222', event:'', w:1246, h:1870, t:'portrait', alt:'Model in a black leather jacket seated in a white spotlight on a red backdrop' },
         { f:'luna2.jpg', src:'images/luna/luna2.jpg', artist:'dj.luna222', event:'', w:1261, h:1893, t:'portrait', alt:'Model in a leather jacket leaning on the floor against a red backdrop' },
