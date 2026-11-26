@@ -760,6 +760,10 @@ function editorView() {
     ${reels}
   </section>
   <section class="wrap section">
+    <div class="sec-head rv"><h2 class="h-l">Workflow</h2></div>
+    <div class="steps">${E.steps.map((s, i) => `<div class="card step rv"><b>${pad(i + 1)}</b><h3>${esc(s.t)}</h3><p>${esc(s.d)}</p></div>`).join('')}</div>
+  </section>
+  <section class="wrap section" style="padding-top:0">
    <div class="ba-box rv">
     <div class="sec-head"><h2 class="h-l">Before / After</h2></div>
     <div class="ba" id="ba">
@@ -768,13 +772,6 @@ function editorView() {
       <figure><img src="${esc(cmp.after)}" alt="${esc(cmp.altAfter || 'After')}"><span class="tag">After</span></figure>
     </div>
    </div>
-  </section>
-  <section class="wrap section" style="padding-top:0">
-    <div class="sec-head rv"><h2 class="h-l">Workflow</h2></div>
-    <div class="steps">${E.steps.map((s, i) => `<div class="card step rv"><b>${pad(i + 1)}</b><h3>${esc(s.t)}</h3><p>${esc(s.d)}</p></div>`).join('')}</div>
-  </section>
-  <section class="wrap section" style="padding-top:0">
-    <p class="lead rv">${esc(E.lead)}</p>
   </section>`;
 }
 
