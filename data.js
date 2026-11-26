@@ -25,8 +25,8 @@ window.SITE = {
      videos = ลำดับคลิปใน videos ด้านล่าง (เริ่มนับที่ 0) */
   home: {
     records: [
-      { id: 'color', main: 'color-02.jpg', minis: ['color-05.jpg', 'color-07.jpg', 'color-01.jpg'] },
-      { id: 'bw',    main: 'bw-01.jpg',    minis: ['bw-07.jpg', 'bw-04.jpg', 'bw-09.jpg'] }
+      { id: 'color', main: 'luna1.jpg', minis: ['prangfah1.jpg', 'luna2.jpg', 'prangfah3.jpg'] },
+      { id: 'bw',    main: 'ply1.jpg',    minis: ['luna5.jpg', 'chompoo2.jpg', 'beer1.jpg'] }
     ],
     videos: [0, 1, 2, 3]
   },
@@ -74,7 +74,7 @@ window.SITE = {
   /* ---------- หน้า Photographer ----------
      รูปวางไว้ที่ images/<id>/  แล้วเพิ่มชื่อไฟล์ในรายการ photos
      w,h = ขนาดพิกเซลของรูป (ไม่บังคับ)  t = 'portrait' หรือ 'candid' (ไม่บังคับ)  */
-  hero: { src: 'images/color/color-02.jpg', alt: 'Model in a black leather jacket kneeling in a white spotlight on a red backdrop' },
+  hero: { src: 'images/luna/luna1.jpg', alt: 'Model in a black leather jacket kneeling in a white spotlight on a red backdrop' },
   /* หมวดภาพหน้า Photographer: id ต้องตรงกับ cat ของแต่ละภาพ  audio = เพลงตอนเลื่อนเมาส์ไปที่หมวดนั้น (เว้นว่าง = ไม่มีเสียง) */
   /* Artists (หน้า Photographer): handle = ชื่อ Instagram (ไม่ต้องใส่ @) ลิงก์ไป instagram.com/handle
      photos = ชื่อไฟล์รูปของ artist คนนั้น (ตอนนี้เป็นภาพตัวอย่าง mock-up) ภาพแรกใช้เป็นรูปโปรไฟล์ */
@@ -82,14 +82,14 @@ window.SITE = {
       /* คู่ (ภาพคู่): ใช้ handles = [คนที่ 1, คนที่ 2] จะเป็นกรอบใหญ่เต็มแถว มีโปรไฟล์ IG ของแต่ละคน */
       { handles: ['fay_riezz', 'maywyda'], avatar: 'faymay2.jpg', photos: ['faymay6.jpg', 'faymay8.jpg', 'faymay4.jpg', 'faymay5.jpg', 'faymay7.jpg', 'faymay1.jpg', 'faymay2.jpg', 'faymay3.jpg'] },
       { handle: 'dj.luna222', photos: ['luna1.jpg', 'luna2.jpg', 'luna5.jpg', 'luna6.jpg'] },
-      { handle: '4moze', photos: ['color-10.jpg', 'bw-07.jpg', 'color-01.jpg'] },
+      { handle: '4moze', photos: [] /* ยังไม่มีรูปจริง: ใส่ชื่อไฟล์ภาพแล้วการ์ดจะแสดงเอง */ },
       { handle: 'chompu_konbai', photos: ['chompoo2.jpg', 'chompoo1.jpg'] },
-      { handle: 'ppanward', photos: ['bw-06.jpg', 'bw-13.jpg', 'color-07.jpg'] },
+      { handle: 'ppanward', photos: [] /* ยังไม่มีรูปจริง: ใส่ชื่อไฟล์ภาพแล้วการ์ดจะแสดงเอง */ },
       { handle: 'pai_makeup', photos: ['ply1.jpg', 'ply2.jpg', 'ply3.jpg'] },
       { handle: 'babarabeer_makeup', photos: ['beer1.jpg', 'beer2.jpg'] },
       { handle: 'boooon_20', photos: ['fah1.jpg', 'prangfah1.jpg', 'prangfah2.jpg', 'fah2.jpg', 'prangfah3.jpg', 'prangfah4.jpg', 'prangfah5.jpg', 'prangfah6.jpg'] },
-      { handle: 'zanizina', photos: ['color-02.jpg', 'color-09.jpg', 'bw-06.jpg'] },
-      { handle: 'glufkanawut', photos: ['color-05.jpg', 'bw-02.jpg', 'bw-09.jpg'] }
+      { handle: 'zanizina', photos: [] /* ยังไม่มีรูปจริง: ใส่ชื่อไฟล์ภาพแล้วการ์ดจะแสดงเอง */ },
+      { handle: 'glufkanawut', photos: [] /* ยังไม่มีรูปจริง: ใส่ชื่อไฟล์ภาพแล้วการ์ดจะแสดงเอง */ }
   ],
   categories: [
     { id: 'portrait',  title: 'Portrait',  blurb: 'ภาพบุคคลที่จัดแสงและวางท่า เน้นสีหน้า เงา และคาแรกเตอร์ของคนในภาพ', audio: 'audio/Song_BIRDS OF A FEATHER .mp3' },
@@ -99,19 +99,9 @@ window.SITE = {
   /* galleries = โฟลเดอร์รูปสี / ขาวดำ (ใช้กับ Color mode และแผ่นเสียงหน้า Home)
      แต่ละภาพ: cat = portrait | candid | landscape (ถ้าไม่ใส่ จะใช้ค่า t)  artist / event = ตัวอย่าง ให้แทนที่ด้วยของจริง */
   galleries: [
-    { id: 'color', title: 'Color', folder: 'images/color/', caption: 'ปี 2026 @cosdent', audio: 'audio/Song_BIRDS OF A FEATHER .mp3', /* เพลงตอนเลื่อนเมาส์ไปที่แผ่น (เว้นว่าง = ไม่มีเสียง) */
+    { id: 'color', title: 'Color', folder: '', caption: 'ปี 2026 @cosdent', audio: 'audio/Song_BIRDS OF A FEATHER .mp3', /* เพลงตอนเลื่อนเมาส์ไปที่แผ่น (เว้นว่าง = ไม่มีเสียง) */
       blurb: 'Red sweeps, denim, white backdrops and silhouettes cut out by a single light.',
       photos: [
-        { f:'color-01.jpg', artist:'Artist A', event:'Event 01', w:1333, h:2000, t:'candid',   alt:'Woman in a blue denim set smiling, long hair falling across the foreground' },
-        { f:'color-02.jpg', artist:'Artist B', event:'Event 02', w:1333, h:2000, t:'portrait', alt:'Model in a black leather jacket and stockings kneeling in a white spotlight on a red backdrop' },
-        { f:'color-03.jpg', cat:'landscape', artist:'Artist C', event:'Event 03', w:2000, h:1333, t:'candid',   alt:'Man in a black suit with his back to the camera facing a woman in black, white studio backdrop' },
-        { f:'color-04.jpg', artist:'Artist D', event:'Event 01', w:1333, h:2000, t:'portrait', alt:'Two women in denim and lace tops embracing against a white backdrop' },
-        { f:'color-05.jpg', artist:'Artist A', event:'Event 02', w:1333, h:2000, t:'portrait', alt:'Silhouette of a person with a high ponytail, hands together, against a red backdrop' },
-        { f:'color-06.jpg', cat:'landscape', artist:'Artist B', event:'Event 03', w:2000, h:1333, t:'portrait', alt:'Two women standing close in light blue and white outfits on a white backdrop' },
-        { f:'color-07.jpg', artist:'Artist C', event:'Event 01', w:1333, h:2000, t:'portrait', alt:'Model in a leather jacket with a hand raised to her face, seated in a spotlight on red' },
-        { f:'color-08.jpg', artist:'Artist D', event:'Event 02', w:2000, h:1333, t:'candid',   alt:'Two women with long hair looking out through a narrow gap between dark panels' },
-        { f:'color-09.jpg', artist:'Artist A', event:'Event 03', w:1333, h:2000, t:'portrait', alt:'Silhouette of a person with a ponytail looking upward against a red backdrop' },
-        { f:'color-10.jpg', cat:'landscape', artist:'Artist B', event:'Event 01', w:2000, h:1333, t:'candid',   alt:'Five people in black and white outfits standing in a row between studio lights' },
         /* ภาพจริง: fay_riezz & maywyda (images/faymay/)  ระบุ src เมื่อไฟล์อยู่นอกโฟลเดอร์ของหมวด */
         { f:'faymay6.jpg', src:'images/faymay/faymay6.jpg', artist:'fay_riezz & maywyda', event:'', w:1333, h:2000, t:'portrait', alt:'Two women smiling close to the camera, one resting her head on the other' },
         { f:'faymay8.jpg', src:'images/faymay/faymay8.jpg', artist:'fay_riezz & maywyda', event:'', w:1333, h:2000, t:'portrait', alt:'Two women in a tight hug, laughing, in a bright blue room' },
@@ -129,22 +119,9 @@ window.SITE = {
         { f:'prangfah3.jpg', src:'images/prangfah/prangfah3.jpg', artist:'boooon_20', event:'', w:1150, h:1726, t:'candid', alt:'Woman in a light blue top smiling with arms crossed, another woman in the foreground' },
         { f:'prangfah4.jpg', src:'images/prangfah/prangfah4.jpg', artist:'boooon_20', event:'', w:888, h:1333, t:'candid', alt:'Two women behind a dark panel, one resting her head on her arm' }
       ]},
-    { id: 'bw', title: 'Black & White', folder: 'images/bw/', caption: 'ปี 2026 @cosdent', audio: 'audio/Song_505.mp3',
+    { id: 'bw', title: 'Black & White', folder: '', caption: 'ปี 2026 @cosdent', audio: 'audio/Song_505.mp3',
       blurb: 'Tuxedos, spotlights and long shadows. Contrast first, grain left in.',
       photos: [
-        { f:'bw-01.jpg', artist:'Artist C', event:'Event 02', w:1333, h:2000, t:'portrait', alt:'Man in a tuxedo and bow tie lit by a hard spotlight, shadow on the wall' },
-        { f:'bw-02.jpg', artist:'Artist D', event:'Event 03', w:1333, h:2000, t:'portrait', alt:'Standing portrait of a man in a tuxedo and bow tie against a spotlit backdrop' },
-        { f:'bw-03.jpg', artist:'Artist A', event:'Event 01', w:1333, h:2000, t:'candid',   alt:'Woman in black having her makeup touched up, a brush at her face' },
-        { f:'bw-04.jpg', artist:'Artist B', event:'Event 02', w:1333, h:2000, t:'portrait', alt:'Figure in a long coat with arms spread inside a pool of light, shadow behind' },
-        { f:'bw-05.jpg', artist:'Artist C', event:'Event 03', w:1333, h:2000, t:'portrait', alt:'Woman in a black dress in profile with studio lights behind her' },
-        { f:'bw-06.jpg', artist:'Artist D', event:'Event 01', w:1333, h:2000, t:'portrait', alt:'Two women in black leaning close together' },
-        { f:'bw-07.jpg', artist:'Artist A', event:'Event 02', w:1333, h:2000, t:'portrait', alt:'Model crouched in a leather jacket and heels inside a white spotlight circle' },
-        { f:'bw-08.jpg', artist:'Artist B', event:'Event 03', w:1333, h:2000, t:'candid',   alt:'Model in a leather jacket touching her face in a spotlight, crew in the dark beside her' },
-        { f:'bw-09.jpg', artist:'Artist C', event:'Event 01', w:1333, h:2000, t:'portrait', alt:'Man in a dark suit in profile, hand at his collar' },
-        { f:'bw-10.jpg', artist:'Artist D', event:'Event 02', w:1333, h:2000, t:'portrait', alt:'Man in a tuxedo standing in a spotlight with a long shadow behind him' },
-        { f:'bw-11.jpg', artist:'Artist A', event:'Event 03', w:1333, h:2000, t:'portrait', alt:'Woman in a black dress in profile, studio equipment behind her' },
-        { f:'bw-12.jpg', artist:'Artist B', event:'Event 01', w:1333, h:2000, t:'portrait', alt:'Two women in denim and lace tops embracing on a bright high-key backdrop' },
-        { f:'bw-13.jpg', artist:'Artist C', event:'Event 02', w:1333, h:2000, t:'candid',   alt:'Man in a suit standing among studio stands and equipment' },
         /* ภาพจริงของ artist (images/luna, chompoo, ply, beer, fah, prangfah) */
         { f:'luna5.jpg', src:'images/luna/luna5.jpg', artist:'dj.luna222', event:'', w:1333, h:2000, t:'portrait', alt:'Model in a leather jacket sitting in a pool of white light, black and white' },
         { f:'luna6.jpg', src:'images/luna/luna6.jpg', artist:'dj.luna222', event:'', w:1333, h:2000, t:'candid', alt:'Behind the scenes: model in a spotlight while the crew works in the dark' },
@@ -171,16 +148,16 @@ window.SITE = {
      url = ลิงก์ TikTok แบบเต็ม (…/video/ตัวเลข)   cover = รูปปก (วางไว้ใน images/video/ ได้)
      ตอนนี้เป็น mock-up: ใช้รูปถ่ายเป็นปกชั่วคราวและยังไม่มีลิงก์ */
   videos: [
-    { title: 'Video 01', url: 'https://www.tiktok.com/@scrumpgelateria/video/7598813310141713672', cover: 'images/cover/cover-01.png', fb: 'images/color/color-02.jpg' },
-    { title: 'Video 02', url: '', cover: 'images/bw/bw-01.jpg' },
-    { title: 'Video 03', url: '', cover: 'images/color/color-05.jpg' },
-    { title: 'Video 04', url: '', cover: 'images/bw/bw-07.jpg' },
-    { title: 'Video 05', url: '', cover: 'images/color/color-07.jpg' },
-    { title: 'Video 06', url: '', cover: 'images/bw/bw-04.jpg' },
-    { title: 'Video 07', url: '', cover: 'images/color/color-09.jpg' },
-    { title: 'Video 08', url: '', cover: 'images/bw/bw-09.jpg' },
-    { title: 'Video 09', url: '', cover: 'images/color/color-01.jpg' },
-    { title: 'Video 10', url: '', cover: 'images/bw/bw-12.jpg' }
+    { title: 'Video 01', url: 'https://www.tiktok.com/@scrumpgelateria/video/7598813310141713672', cover: 'images/cover/cover-01.png', fb: 'images/luna/luna1.jpg' },
+    { title: 'Video 02', url: '', cover: 'images/ply/ply1.jpg' },
+    { title: 'Video 03', url: '', cover: 'images/prangfah/prangfah1.jpg' },
+    { title: 'Video 04', url: '', cover: 'images/luna/luna5.jpg' },
+    { title: 'Video 05', url: '', cover: 'images/luna/luna2.jpg' },
+    { title: 'Video 06', url: '', cover: 'images/chompoo/chompoo2.jpg' },
+    { title: 'Video 07', url: '', cover: 'images/prangfah/prangfah3.jpg' },
+    { title: 'Video 08', url: '', cover: 'images/ply/ply2.jpg' },
+    { title: 'Video 09', url: '', cover: 'images/prangfah/prangfah2.jpg' },
+    { title: 'Video 10', url: '', cover: 'images/prangfah/prangfah5.jpg' }
   ],
 
   /* ---------- หน้า Editor ---------- */
@@ -190,14 +167,14 @@ window.SITE = {
     /* Video edits: แบ่งเป็นหมวด  คลิปในหน้านี้แยกจากหน้า Videographer (แก้แยกกันได้)  ใส่ title / url (ลิงก์เต็ม /video/ตัวเลข) / cover (รูปปก) / fb (รูปสำรองถ้ายังไม่มีไฟล์ cover) */
     reelGroups: [
       { title: 'A-roll Editing', clips: [
-        { title: 'A-roll 01', url: 'https://www.tiktok.com/@scrumpgelateria/video/7598813310141713672', cover: 'images/cover/cover-01.png', fb: 'images/color/color-02.jpg' },
-        { title: 'A-roll 02', url: 'https://www.tiktok.com/@scrumpgelateria/video/7605191703833857301', cover: 'images/cover/cover-02.png', fb: 'images/color/color-04.jpg' },
-        { title: 'A-roll 03', url: 'https://www.tiktok.com/@scrumpgelateria/video/7596193413217766664', cover: 'images/cover/cover-03.png', fb: 'images/color/color-07.jpg' }
+        { title: 'A-roll 01', url: 'https://www.tiktok.com/@scrumpgelateria/video/7598813310141713672', cover: 'images/cover/cover-01.png', fb: 'images/luna/luna1.jpg' },
+        { title: 'A-roll 02', url: 'https://www.tiktok.com/@scrumpgelateria/video/7605191703833857301', cover: 'images/cover/cover-02.png', fb: 'images/prangfah/prangfah1.jpg' },
+        { title: 'A-roll 03', url: 'https://www.tiktok.com/@scrumpgelateria/video/7596193413217766664', cover: 'images/cover/cover-03.png', fb: 'images/luna/luna2.jpg' }
       ] },
       { title: 'Storytelling', clips: [
-        { title: 'Storytelling 01', url: 'https://www.youtube.com/shorts/kYauhuUBqt0', cover: 'images/cover/cover-04.png', fb: 'images/bw/bw-01.jpg' },
-        { title: 'Storytelling 02', url: 'https://www.youtube.com/shorts/sBeK5mTBSk8', cover: 'images/cover/cover-05.png', fb: 'images/bw/bw-05.jpg' },
-        { title: 'Storytelling 03', url: 'https://www.youtube.com/shorts/FBRC4rA_XQo', cover: 'images/cover/cover-06.png', fb: 'images/color/color-09.jpg' }
+        { title: 'Storytelling 01', url: 'https://www.youtube.com/shorts/kYauhuUBqt0', cover: 'images/cover/cover-04.png', fb: 'images/ply/ply1.jpg' },
+        { title: 'Storytelling 02', url: 'https://www.youtube.com/shorts/sBeK5mTBSk8', cover: 'images/cover/cover-05.png', fb: 'images/fah/fah1.jpg' },
+        { title: 'Storytelling 03', url: 'https://www.youtube.com/shorts/FBRC4rA_XQo', cover: 'images/cover/cover-06.png', fb: 'images/prangfah/prangfah3.jpg' }
       ] }
     ],
     lead: '(ตัวอย่าง) รีทัชภาพ เกรดสี และตัดต่อวิดีโอสั้น ตั้งแต่ไฟล์ดิบจนถึงไฟล์ส่งมอบ',
