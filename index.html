@@ -515,6 +515,21 @@ h1,h2,h3,p{margin:0}
   html{scroll-behavior:auto}
   *,*::before,*::after{animation:none!important;transition:none!important}
 }
+
+/* fixed vertical music player */
+#site-music{position:fixed;z-index:1000;left:14px;top:50%;transform:translateY(-50%);width:184px;padding:14px 12px;border:1px solid var(--line);border-radius:16px;background:var(--glass);color:var(--fg);box-shadow:0 8px 30px var(--shadow);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);font-size:12px}
+#site-music .sm-kicker{font:600 10px/1.2 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--mute);margin-bottom:10px}
+#site-music .sm-title{font-size:13px;line-height:1.35;font-weight:650;overflow-wrap:anywhere}
+#site-music .sm-artist{font-size:11px;line-height:1.35;color:var(--mute);margin-top:4px}
+#site-music .sm-controls{display:flex;align-items:center;gap:7px;margin-top:12px}
+#site-music button{border:1px solid var(--line);background:var(--surface-2);color:var(--fg);border-radius:999px;min-width:34px;height:32px;padding:0 10px;cursor:pointer}
+#site-music button:focus-visible,#site-music input:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+#site-music .sm-volume{display:flex;align-items:center;gap:7px;margin-top:12px;color:var(--mute)}
+#site-music input[type=range]{width:100%;min-width:0;accent-color:var(--fg)}
+#site-music .sm-status{font-size:10px;line-height:1.35;color:var(--mute);margin-top:8px}
+@media(max-width:760px){#site-music{left:8px;top:auto;bottom:10px;transform:none;width:min(220px,calc(100vw - 32px));padding:10px 11px}#site-music .sm-kicker{margin-bottom:5px}#site-music .sm-controls{margin-top:8px}#site-music .sm-volume{margin-top:7px}}
+@media(prefers-reduced-motion:reduce){#site-music{scroll-behavior:auto}}
+
 </style>
 </head>
 <body>
@@ -902,7 +917,7 @@ function pxRender() {
 function bindPhotographer() {
   pxArtist = goArtist; goArtist = false;
   if (pxIo) pxIo.disconnect();
-  pxIo = new IntersectionObserver(es => es.forEach(en => { if (en.isIntersecting) document.querySelectorAll('#px-cats button').forEach(x => x.setAttribute('aria-pressed', String('px-' + x.dataset.c === en.target.id))); }), { rootMargin: '-40% 0px -55% 0px' });
+  pxIo = new IntersectionObserver(es => es.forEach(en => { if (en.isIntersecting) { document.querySelectorAll('#px-cats button').forEach(x => x.setAttribute('aria-pressed', String('px-' + x.dataset.c === en.target.id))); if (typeof syncMusicForSection === 'function') syncMusicForSection(en.target.id); } }), { rootMargin: '-40% 0px -55% 0px' });
   $('#px-seg').innerHTML = [['all', 'All'], ['color', 'Color mode']].map(([v, l]) => `<button type="button" data-m="${v}" aria-pressed="${v === pxMode}">${l}</button>`).join('');
   pxRender();
   $('#px-seg').addEventListener('click', e => {
@@ -1060,6 +1075,7 @@ function route() {
   if (r === 'photographer') bindPhotographer();
   if (r === 'home') { pxMasonry(); document.querySelectorAll('.ig-grid img').forEach(i => { if (!i.complete) i.addEventListener('load', pxMasonry, { once: true }); }); }
   if (r === 'videographer') bindVideographer();
+  syncMusicForPage(r);
   document.querySelectorAll('#nav-links a').forEach(a => a.getAttribute('data-r') === r ? a.setAttribute('aria-current', 'page') : a.removeAttribute('aria-current'));
   scrollTo({ top: 0, behavior: 'instant' });
   view.classList.remove('in'); void view.offsetWidth; view.classList.add('in');
@@ -1069,42 +1085,110 @@ function route() {
   if (!v.fb || v.fb === v.cover) return;
   const t = new Image(); t.onerror = () => { v.cover = v.fb; if (document.querySelector('.cinema, .vt, .reels')) route(); }; t.src = v.cover;
 });
-/* ---------- hover-to-play record audio ---------- */
-const players = {}; let hovId = null;
+/* ---------- page-aware music player ---------- */
+const players = {}; let hovId = null, lockId = null, mx = 0, my = 0;
+const TRACKS = {
+  photos: { id:'photos', title:'Do you think you could love me', artist:'Yung Kai', src:'audio/Song_yung kai.mp3' },
+  color: { id:'color', title:'BIRDS OF A FEATHER', artist:'Billie Eilish', src:'audio/Song_BIRDS OF A FEATHER .mp3' },
+  bw: { id:'bw', title:'505', artist:'Arctic Monkeys', src:'audio/Song_505.mp3' }
+};
+let activeTrack = null, musicRoute = 'home', musicStarted = false;
+const musicBox = document.getElementById('site-music');
+const musicTitle = document.getElementById('sm-title');
+const musicArtist = document.getElementById('sm-artist');
+const musicToggle = document.getElementById('sm-toggle');
+const musicVolume = document.getElementById('sm-volume');
+const musicStatus = document.getElementById('sm-status');
 function audioFor(id) {
-  const src = AUDIOMAP[id]; if (!src) return null;
-  if (!players[id]) { const a = new Audio(encodeURI(src)); a.loop = true; a.preload = 'none'; a.volume = 0; players[id] = a; }
+  const track = TRACKS[id] || (AUDIOMAP[id] ? { id, title:id, artist:'', src:AUDIOMAP[id] } : null);
+  if (!track || !track.src) return null;
+  if (!players[id]) {
+    const a = new Audio(encodeURI(track.src)); a.loop = true; a.preload = 'auto';
+    a.volume = (Number(musicVolume.value) || 0) / 100;
+    a.addEventListener('error', () => { if (activeTrack && activeTrack.id === id) musicStatus.textContent = 'ไฟล์เพลงไม่พบ — ตรวจสอบไฟล์ในโฟลเดอร์ audio'; });
+    a.addEventListener('playing', () => { if (activeTrack && activeTrack.id === id) { musicStatus.textContent = 'กำลังเล่น'; musicToggle.textContent = 'Ⅱ Pause'; musicToggle.setAttribute('aria-label','Pause music'); } });
+    a.addEventListener('pause', () => { if (activeTrack && activeTrack.id === id) { musicToggle.textContent = '▶ Play'; musicToggle.setAttribute('aria-label','Play music'); } });
+    players[id] = a;
+  }
   return players[id];
 }
 function fade(a, to, ms, done) {
-  clearInterval(a._t); const s = a.volume, t0 = performance.now();
+  clearInterval(a._t); const s = a.volume, target = Math.max(0,Math.min(1,to)), t0 = performance.now();
   a._t = setInterval(() => {
-    const k = Math.min(1, (performance.now() - t0) / ms); a.volume = Math.max(0, Math.min(1, s + (to - s) * k));
+    const k = Math.min(1,(performance.now()-t0)/ms); a.volume = Math.max(0,Math.min(1,s+(target-s)*k));
     if (k >= 1) { clearInterval(a._t); if (done) done(); }
-  }, 40);
+  },40);
 }
-function recPlay(id) { const a = audioFor(id); if (!a) return; try { const p = a.play(); if (p && p.catch) p.catch(() => {}); } catch (e) {} fade(a, .8, 500); }
-function recStop(id) { const a = players[id]; if (!a) return; fade(a, 0, 400, () => a.pause()); }
-let lockId = null, mx = 0, my = 0; /* lockId: record whose photo is open in the lightbox (its song keeps playing) */
-function recLeave(force) { if (lockId && !force) return; if (hovId) { recStop(hovId); hovId = null; } }
-function recSet(id) {
-  if (id === hovId) return;
-  recLeave(true);
-  if (id && audioFor(id)) { hovId = id; recPlay(id); }
+function recPlay(id) {
+  const a = audioFor(id); if (!a) return;
+  Object.values(players).forEach(other => { if (other !== a) { other.pause(); other.currentTime = 0; } });
+  a.volume = (Number(musicVolume.value) || 0) / 100;
+  const p = a.play();
+  if (p && p.then) p.then(() => { musicStarted = true; musicStatus.textContent='กำลังเล่น'; }).catch(() => {
+    musicStatus.textContent='กด Play เพื่อเริ่มเพลง (เบราว์เซอร์บล็อก autoplay)';
+    musicToggle.textContent='▶ Play'; musicToggle.setAttribute('aria-label','Play music');
+  });
 }
-function recUnder() { const el = document.elementFromPoint(mx, my), z = el && el.closest && el.closest('[data-aud]'); return z ? z.dataset.aud : null; }
-document.addEventListener('mouseover', e => {
-  mx = e.clientX; my = e.clientY;
-  if (lockId) return;
-  const z = e.target.closest && e.target.closest('[data-aud]');
-  recSet(z ? z.dataset.aud : null);
+function recStop(id) { const a = players[id]; if (a) { a.pause(); a.currentTime = 0; } }
+function recLeave(force) { if (lockId && !force) return; }
+function recSet(id) { if (id && TRACKS[id]) setMusicTrack(id, true); }
+function setMusicTrack(id, autoplay) {
+  const track = TRACKS[id]; if (!track) return;
+  const changed = !activeTrack || activeTrack.id !== id;
+  activeTrack = track; hovId = id;
+  musicTitle.textContent = track.title; musicArtist.textContent = track.artist;
+  musicBox.hidden = false;
+  if (changed) {
+    Object.entries(players).forEach(([key,a]) => { if (key !== id) { a.pause(); a.currentTime = 0; } });
+    musicStatus.textContent = 'พร้อมเล่น';
+    const a = audioFor(id);
+    if (a) { a.currentTime = 0; a.volume = (Number(musicVolume.value) || 0) / 100; }
+  }
+  if (autoplay) recPlay(id);
+}
+function syncMusicForSection(sectionId) {
+  if (musicRoute !== 'photographer' || pxMode !== 'color' || pxArtist) return;
+  if (sectionId === 'px-bw') setMusicTrack('bw', true);
+  else if (sectionId === 'px-color') setMusicTrack('color', true);
+}
+function syncMusicForPage(routeId) {
+  musicRoute = routeId;
+  if (routeId !== 'photographer') { Object.values(players).forEach(a => a.pause()); musicBox.hidden = true; return; }
+  musicBox.hidden = false;
+  if (pxMode === 'color' && !pxArtist) {
+    const visible = document.querySelector('.px-sec[id="px-bw"]');
+    const color = document.querySelector('.px-sec[id="px-color"]');
+    const mid = innerHeight * .5;
+    const bwTop = visible ? visible.getBoundingClientRect().top : Infinity;
+    const colorTop = color ? color.getBoundingClientRect().top : Infinity;
+    setMusicTrack(bwTop <= mid ? 'bw' : 'color', true);
+  } else setMusicTrack('photos', true);
+}
+musicToggle.addEventListener('click', () => {
+  if (!activeTrack) setMusicTrack('photos', false);
+  const a = audioFor(activeTrack.id); if (!a) return;
+  if (!a.paused) { a.pause(); musicStatus.textContent='หยุดเพลงแล้ว'; }
+  else { recPlay(activeTrack.id); }
 });
-document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; }, { passive: true });
-document.addEventListener('mouseout', e => { if (!e.relatedTarget) recLeave(); });
-/* browsers block sound until the first click/tap/key: retry on it if a record is under the cursor */
-['pointerdown', 'keydown'].forEach(ev => document.addEventListener(ev, () => { if (hovId) recPlay(hovId); }, { passive: true }));
+musicVolume.addEventListener('input', () => {
+  const v = Number(musicVolume.value)/100;
+  Object.values(players).forEach(a => { a.volume = v; });
+});
+document.addEventListener('pointerdown', () => {
+  if (activeTrack) { const a = audioFor(activeTrack.id); if (a && a.paused && !musicStarted) recPlay(activeTrack.id); }
+}, { once:true });
+document.addEventListener('keydown', () => {
+  if (activeTrack) { const a = audioFor(activeTrack.id); if (a && a.paused && !musicStarted) recPlay(activeTrack.id); }
+}, { once:true });
+addEventListener('scroll', () => {
+  if (musicRoute !== 'photographer' || pxMode !== 'color' || pxArtist) return;
+  const sections = [...document.querySelectorAll('#px-root .px-sec')];
+  const current = sections.find(s => { const r=s.getBoundingClientRect(); return r.top < innerHeight*.58 && r.bottom > innerHeight*.3; });
+  if (current) syncMusicForSection(current.id);
+}, {passive:true});
 addEventListener('hashchange', () => { lockId = null; recLeave(true); });
 addEventListener('hashchange', route);
+
 route();
 
 /* ---------- in-page (non-route) links ---------- */
@@ -1157,5 +1241,18 @@ let sx = null;
 $('#lb-stage').addEventListener('pointerdown', e => { sx = e.clientX; });
 $('#lb-stage').addEventListener('pointerup', e => { if (sx === null) return; const dx = e.clientX - sx; sx = null; if (Math.abs(dx) > 50) step(dx < 0 ? 1 : -1); });
 </script>
+
+<aside id="site-music" aria-label="Music player">
+  <div class="sm-kicker">Now playing</div>
+  <div class="sm-title" id="sm-title">Do you think you could love me</div>
+  <div class="sm-artist" id="sm-artist">Yung Kai</div>
+  <div class="sm-controls">
+    <button id="sm-toggle" type="button" aria-label="Play music">▶ Play</button>
+    <span id="sm-volume-label" aria-hidden="true">♪</span>
+  </div>
+  <label class="sm-volume" for="sm-volume"><span>VOL</span><input id="sm-volume" type="range" min="0" max="100" value="35" aria-label="Music volume"></label>
+  <div class="sm-status" id="sm-status" aria-live="polite">Trying to start music…</div>
+</aside>
+
 </body>
 </html>
