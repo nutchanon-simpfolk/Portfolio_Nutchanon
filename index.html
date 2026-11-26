@@ -495,6 +495,7 @@ h1,h2,h3,p{margin:0}
 .foot{border-top:1px solid var(--line);padding-block:18px calc(28px + env(safe-area-inset-bottom,0px));display:flex;justify-content:space-between;gap:10px 24px;flex-wrap:wrap;font-size:12px;color:var(--mute)}
 
 /* lightbox */
+.record-show{position:fixed;inset:0;z-index:1200;background:#050505;color:#f5f5f7;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;opacity:1;transition:opacity .35s ease}.record-show[hidden]{display:none}.record-show img{display:block;max-width:min(92vw,1400px);max-height:78vh;width:auto;height:auto;object-fit:contain;animation:recordReveal .55s ease both}.record-show-top{position:absolute;top:max(18px,env(safe-area-inset-top,0px));left:24px;right:24px;display:flex;align-items:center;justify-content:space-between;color:#aaa;font:11px var(--mono);letter-spacing:.1em;text-transform:uppercase}.record-show-count{color:#f5f5f7}.record-show-caption{margin:18px 0 0;text-align:center;color:#bdbdbd;font-size:13px;max-width:80vw}.record-show-close{border:1px solid #555;border-radius:999px;background:#171717;color:#fff;padding:9px 14px;cursor:pointer;font:inherit;letter-spacing:0}.record-show-progress{position:absolute;bottom:max(18px,env(safe-area-inset-bottom,0px));left:24px;right:24px;height:2px;background:#333;overflow:hidden}.record-show-progress span{display:block;height:100%;width:0;background:#f5f5f7;transition:width linear}@keyframes recordReveal{from{opacity:0;transform:scale(.985)}to{opacity:1;transform:scale(1)}}
 .lb{position:fixed;inset:0;z-index:100;background:#000;color:#f5f5f7;display:flex;flex-direction:column}
 .lb-top{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:max(14px,env(safe-area-inset-top,0px)) max(var(--gut),env(safe-area-inset-right,0px)) 10px max(var(--gut),env(safe-area-inset-left,0px))}
 .lb-top .mono{color:#a1a1a6}
@@ -563,6 +564,12 @@ h1,h2,h3,p{margin:0}
   <a href="#top" data-top>Back to top ↑</a>
 </footer>
 
+<div class="record-show" id="record-show" role="dialog" aria-modal="true" aria-label="Record slideshow" hidden>
+  <div class="record-show-top"><span id="record-show-title">Record</span><span class="record-show-count" id="record-show-count"></span><button class="record-show-close" id="record-show-close" type="button">Close ×</button></div>
+  <img id="record-show-img" alt="">
+  <p class="record-show-caption" id="record-show-caption"></p>
+  <div class="record-show-progress"><span id="record-show-progress"></span></div>
+</div>
 <div class="lb" id="lb" role="dialog" aria-modal="true" aria-label="Photo viewer" hidden>
   <div class="lb-top">
     <span class="mono" id="lb-count"></span>
@@ -691,7 +698,7 @@ function homeView() {
   }).filter(Boolean);
   const recCards = recs.map(({ g, main, minis }, i) => `
     <a class="hrec" href="#photographer" data-goto-photo="${esc(g.id)}:${g.photos.indexOf(main)}" aria-label="Open the ${esc(g.title)} record, ${g.photos.length} frames">
-      <div class="rec-art" data-aud="${esc(g.id)}">
+      <div class="rec-art" data-aud="${esc(g.id)}" data-record-slideshow="${esc(g.id)}" role="button" tabindex="0" aria-label="Play all ${g.photos.length} photos in ${esc(g.title)}">
         ${minis.map((p, j) => `<span class="mini" style="--x:${HMINI[j][0]};--y:${HMINI[j][1]};--r:${HMINI[j][2]}"><img src="${esc(p.src)}" alt="" loading="lazy"></span>`).join('')}
         <div class="disc" aria-hidden="true"><div class="disc-l"><img src="${esc(main.src)}" alt=""></div></div>
         <span class="sleeve"><img src="${esc(main.src)}" alt="${esc(main.alt)}" loading="lazy"></span>
@@ -1205,6 +1212,8 @@ route();
 
 /* ---------- in-page (non-route) links ---------- */
 document.addEventListener('click', e => {
+  const recordTrigger = e.target.closest('[data-record-slideshow]');
+  if (recordTrigger) { e.preventDefault(); e.stopPropagation(); startRecordSlideshow(recordTrigger.dataset.recordSlideshow, recordTrigger); return; }
   if (e.target.closest('.home-artists [data-at], [data-goto-artist]') && !e.target.closest('.ig-btn')) { goArtist = true; if (location.hash !== '#photographer') location.hash = '#photographer'; return; }
   const gp = e.target.closest('[data-goto-photo]');
   if (gp) { const [gid, i] = gp.dataset.gotoPhoto.split(':'); if (RECORDS.some(r => r.id === gid)) { pxMode = 'color'; recFocus = gid; } return; }
@@ -1218,6 +1227,47 @@ document.addEventListener('click', e => {
   if (!t) return;
   e.preventDefault();
   t.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });
+});
+
+/* ---------- record autoplay slideshow ---------- */
+const recordShow = $('#record-show'), recordShowImg = $('#record-show-img');
+let recordShowTimer = null, recordShowIndex = 0, recordShowItems = [], recordShowOpener = null, recordShowDuration = 2800;
+function paintRecordShow() {
+  const p = recordShowItems[recordShowIndex];
+  if (!p) return;
+  recordShowImg.style.animation = 'none'; void recordShowImg.offsetWidth; recordShowImg.style.animation = '';
+  recordShowImg.src = p.src; recordShowImg.alt = p.alt || '';
+  $('#record-show-title').textContent = p.gt || p.catTitle || 'Record';
+  $('#record-show-count').textContent = `${String(recordShowIndex + 1).padStart(2, '0')} / ${String(recordShowItems.length).padStart(2, '0')}`;
+  $('#record-show-caption').textContent = p.alt || p.cap || '';
+  const progress = $('#record-show-progress');
+  progress.style.transition = 'none'; progress.style.width = '0%'; void progress.offsetWidth;
+  progress.style.transition = `width ${recordShowDuration}ms linear`; progress.style.width = '100%';
+  clearTimeout(recordShowTimer);
+  recordShowTimer = setTimeout(() => {
+    recordShowIndex++;
+    if (recordShowIndex >= recordShowItems.length) { closeRecordShow(); return; }
+    paintRecordShow();
+  }, recordShowDuration);
+}
+function startRecordSlideshow(id, opener) {
+  const g = S.galleries.find(x => x.id === id);
+  if (!g || !Array.isArray(g.photos) || !g.photos.length) return;
+  clearTimeout(recordShowTimer); recordShowOpener = opener; recordShowItems = g.photos.map(p => ({ ...p, gt: g.title })); recordShowIndex = 0;
+  recordShow.hidden = false; document.body.style.overflow = 'hidden'; paintRecordShow(); $('#record-show-close').focus();
+}
+function closeRecordShow() {
+  clearTimeout(recordShowTimer); recordShowTimer = null; recordShow.hidden = true; recordShowImg.removeAttribute('src');
+  $('#record-show-progress').style.width = '0%'; document.body.style.overflow = '';
+  if (recordShowOpener && document.contains(recordShowOpener)) recordShowOpener.focus();
+  recordShowOpener = null; recordShowItems = [];
+}
+$('#record-show-close').addEventListener('click', closeRecordShow);
+recordShow.addEventListener('click', e => { if (e.target === recordShow) closeRecordShow(); });
+recordShow.addEventListener('keydown', e => { if (e.key === 'Escape') closeRecordShow(); });
+document.addEventListener('keydown', e => { if (!recordShow.hidden && e.key === 'Escape') closeRecordShow(); });
+document.addEventListener('keydown', e => {
+  if (!recordShow.hidden && (e.key === 'Enter' || e.key === ' ')) { if (document.activeElement && document.activeElement.matches('[data-record-slideshow]')) { e.preventDefault(); startRecordSlideshow(document.activeElement.dataset.recordSlideshow, document.activeElement); } }
 });
 
 /* ---------- lightbox ---------- */
