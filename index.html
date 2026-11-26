@@ -941,6 +941,8 @@ function bindPhotographer() {
   $('#px-seg').addEventListener('click', e => {
     const t = e.target.closest('[data-m]'); if (!t || (t.dataset.m === pxMode && !pxArtist)) return;
     pxMode = t.dataset.m; pxArtist = false; recLeave(true); pxRender();
+    // Keep the music in sync with the selected Photography mode.
+    setMusicTrack(pxMode === 'all' ? 'photos' : 'color', true);
     const y = $('#px-root').getBoundingClientRect().top + scrollY - 150; if (scrollY > y) scrollTo({ top: y, behavior: reduce ? 'auto' : 'smooth' });
   });
   $('#px-cats').addEventListener('click', e => {
