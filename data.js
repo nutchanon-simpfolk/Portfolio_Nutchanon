@@ -84,7 +84,7 @@ window.SITE = {
       { handle: 'dj.luna222', photos: ['luna1.jpg', 'luna2.jpg', 'luna5.jpg', 'luna6.jpg'] },
       { handle: '4moze', photos: [] /* ยังไม่มีรูปจริง: ใส่ชื่อไฟล์ภาพแล้วการ์ดจะแสดงเอง */ },
       { handle: 'chompu_konbai', photos: ['chompoo2.jpg', 'chompoo1.jpg'] },
-      { handle: 'ppanward', photos: ['ppanward1.jpg', 'ppanward4.jpg', 'ppanward2.jpg', 'ppanward3.jpg', 'ppanward5.jpg'] },
+      { handle: 'ppanward', avatar: 'ppanward4.jpg', photos: ['ppanward1.jpg', 'ppanward4.jpg', 'ppanward2.jpg', 'ppanward3.jpg', 'ppanward5.jpg'] },
       { handle: 'pai_makeup', photos: ['ply1.jpg', 'ply2.jpg', 'ply3.jpg'] },
       { handle: 'babarabeer_makeup', photos: ['beer1.jpg', 'beer2.jpg'] },
       { handle: 'boooon_20', photos: ['fah1.jpg', 'prangfah1.jpg', 'prangfah2.jpg', 'fah2.jpg', 'prangfah3.jpg', 'prangfah4.jpg', 'prangfah5.jpg', 'prangfah6.jpg'] },
