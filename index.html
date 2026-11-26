@@ -1143,6 +1143,7 @@ function recPlay(id) {
 function recStop(id) { const a = players[id]; if (a) { a.pause(); a.currentTime = 0; } }
 function recLeave(force) { if (lockId && !force) return; }
 function recSet(id) { if (id && TRACKS[id]) setMusicTrack(id, true); }
+function recUnder() { return activeTrack ? activeTrack.id : null; }
 function setMusicTrack(id, autoplay) {
   const track = TRACKS[id]; if (!track) return;
   const changed = !activeTrack || activeTrack.id !== id;
