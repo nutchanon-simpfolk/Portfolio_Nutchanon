@@ -1240,7 +1240,7 @@ function paintRecordShow() {
   recordShowImg.src = p.src; recordShowImg.alt = p.alt || '';
   $('#record-show-title').textContent = p.gt || p.catTitle || 'Record';
   $('#record-show-count').textContent = `${String(recordShowIndex + 1).padStart(2, '0')} / ${String(recordShowItems.length).padStart(2, '0')}`;
-  $('#record-show-caption').textContent = p.alt || p.cap || '';
+  $('#record-show-caption').textContent = p.cap || p.alt || '';
   const progress = $('#record-show-progress');
   progress.style.transition = 'none'; progress.style.width = '0%'; void progress.offsetWidth;
   progress.style.transition = `width ${recordShowDuration}ms linear`; progress.style.width = '100%';
