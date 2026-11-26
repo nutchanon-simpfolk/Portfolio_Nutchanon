@@ -575,6 +575,17 @@ h1,h2,h3,p{margin:0}
 </div>
 
 <script src="data.js"></script>
+<aside id="site-music" aria-label="Music player">
+  <div class="sm-kicker">Now playing</div>
+  <div class="sm-title" id="sm-title">Do you think you could love me</div>
+  <div class="sm-artist" id="sm-artist">Yung Kai</div>
+  <div class="sm-controls">
+    <button id="sm-toggle" type="button" aria-label="Play music">▶ Play</button>
+    <span id="sm-volume-label" aria-hidden="true">♪</span>
+  </div>
+  <label class="sm-volume" for="sm-volume"><span>VOL</span><input id="sm-volume" type="range" min="0" max="100" value="35" aria-label="Music volume"></label>
+  <div class="sm-status" id="sm-status" aria-live="polite">Trying to start music…</div>
+</aside>
 <script>
 const S = window.SITE;
 const $ = (s, r = document) => r.querySelector(s);
@@ -1242,17 +1253,6 @@ $('#lb-stage').addEventListener('pointerdown', e => { sx = e.clientX; });
 $('#lb-stage').addEventListener('pointerup', e => { if (sx === null) return; const dx = e.clientX - sx; sx = null; if (Math.abs(dx) > 50) step(dx < 0 ? 1 : -1); });
 </script>
 
-<aside id="site-music" aria-label="Music player">
-  <div class="sm-kicker">Now playing</div>
-  <div class="sm-title" id="sm-title">Do you think you could love me</div>
-  <div class="sm-artist" id="sm-artist">Yung Kai</div>
-  <div class="sm-controls">
-    <button id="sm-toggle" type="button" aria-label="Play music">▶ Play</button>
-    <span id="sm-volume-label" aria-hidden="true">♪</span>
-  </div>
-  <label class="sm-volume" for="sm-volume"><span>VOL</span><input id="sm-volume" type="range" min="0" max="100" value="35" aria-label="Music volume"></label>
-  <div class="sm-status" id="sm-status" aria-live="polite">Trying to start music…</div>
-</aside>
 
 </body>
 </html>
