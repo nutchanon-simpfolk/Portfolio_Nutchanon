@@ -961,7 +961,8 @@ function bindPhotographer() {
     const t = e.target.closest('.px-tile'), s = e.target.closest('[data-cover]'), sec = e.target.closest('.px-sec');
     if (!sec) return;
     const list = pxLists[sec.dataset.aud]; if (!list || !list.length) return;
-    if (t) openLB(list.map(lbItem), +t.dataset.i, t); else if (s) openLB(list.map(lbItem), 0, s);
+    if (t) openLB(list.map(lbItem), +t.dataset.i, t);
+    else if (s) { e.preventDefault(); e.stopPropagation(); startRecordSlideshow(sec.dataset.aud, s, list, sec.getAttribute('aria-label') || 'Photography'); }
   });
   if (recFocus) { const f = document.getElementById('px-' + recFocus); recFocus = null; if (f) setTimeout(() => f.scrollIntoView({ behavior: 'auto', block: 'start' }), 60); }
 }
@@ -1250,10 +1251,14 @@ function paintRecordShow() {
     paintRecordShow();
   }, recordShowDuration);
 }
-function startRecordSlideshow(id, opener) {
+function startRecordSlideshow(id, opener, suppliedItems = null, suppliedTitle = '') {
   const g = S.galleries.find(x => x.id === id);
-  if (!g || !Array.isArray(g.photos) || !g.photos.length) return;
-  clearTimeout(recordShowTimer); recordShowOpener = opener; recordShowItems = g.photos.map(p => ({ ...p, gt: g.title })); recordShowIndex = 0;
+  const photos = Array.isArray(suppliedItems) ? suppliedItems : (g && Array.isArray(g.photos) ? g.photos : []);
+  if (!photos.length) return;
+  const title = suppliedTitle || (g && g.title) || id || 'Record';
+  clearTimeout(recordShowTimer); recordShowOpener = opener;
+  recordShowItems = photos.map(p => ({ ...p, gt: title, src: p.src, alt: p.alt || p.cap || '' }));
+  recordShowIndex = 0;
   recordShow.hidden = false; document.body.style.overflow = 'hidden'; paintRecordShow(); $('#record-show-close').focus();
 }
 function closeRecordShow() {
