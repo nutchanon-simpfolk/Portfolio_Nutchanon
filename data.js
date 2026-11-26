@@ -94,12 +94,12 @@ window.SITE = {
   /* หมวดภาพ: ตอนนี้ไม่แยก Portrait / Candid (รวมเป็นหมวดเดียว)
      ถ้าอยากกลับไปแยก: ใช้ branch backup/portrait-candid บน GitHub */
   categories: [
-    { id: 'photos', title: 'Photos', blurb: 'ภาพบุคคล เบื้องหลัง และช่วงเวลาระหว่างงาน รวมไว้ด้วยกัน', audio: 'audio/Song_BIRDS OF A FEATHER .mp3' }
+    { id: 'photos', title: 'Photos', blurb: 'ภาพบุคคล เบื้องหลัง และช่วงเวลาระหว่างงาน รวมไว้ด้วยกัน', audio: 'audio/Song_yung kai.mp3' }
   ],
   /* galleries = โฟลเดอร์รูปสี / ขาวดำ (ใช้กับ Color mode และแผ่นเสียงหน้า Home)
      แต่ละภาพ: cat = portrait | candid | landscape (ถ้าไม่ใส่ จะใช้ค่า t)  artist / event = ตัวอย่าง ให้แทนที่ด้วยของจริง */
   galleries: [
-    { id: 'color', title: 'Color', folder: '', caption: 'ปี 2026 @cosdent', audio: 'audio/Song_BIRDS OF A FEATHER .mp3', /* เพลงตอนเลื่อนเมาส์ไปที่แผ่น (เว้นว่าง = ไม่มีเสียง) */
+    { id: 'color', title: 'Color', folder: '', caption: 'ปี 2026 @cosdent', audio: 'audio/Song_yung kai.mp3', /* เพลงตอนเลื่อนเมาส์ไปที่แผ่น (เว้นว่าง = ไม่มีเสียง) */
       blurb: 'Red sweeps, denim, white backdrops and silhouettes cut out by a single light.',
       photos: [
         /* ภาพจริง: fay_riezz & maywyda (images/faymay/)  ระบุ src เมื่อไฟล์อยู่นอกโฟลเดอร์ของหมวด */
@@ -125,7 +125,7 @@ window.SITE = {
         { f:'prangfah3.jpg', src:'images/prangfah/prangfah3.jpg', artist:'boooon_20', event:'', w:1150, h:1726, t:'candid', alt:'Woman in a light blue top smiling with arms crossed, another woman in the foreground' },
         { f:'prangfah4.jpg', src:'images/prangfah/prangfah4.jpg', artist:'boooon_20', event:'', w:888, h:1333, t:'candid', alt:'Two women behind a dark panel, one resting her head on her arm' }
       ]},
-    { id: 'bw', title: 'Black & White', folder: '', caption: 'ปี 2026 @cosdent', audio: 'audio/Song_505.mp3',
+    { id: 'bw', title: 'Black & White', folder: '', caption: 'ปี 2026 @cosdent', audio: 'audio/Song_yung kai.mp3',
       blurb: 'Tuxedos, spotlights and long shadows. Contrast first, grain left in.',
       photos: [
         /* ภาพจริงของ artist (images/luna, chompoo, ply, beer, fah, prangfah) */
