@@ -751,11 +751,7 @@ function editorView() {
   const reelCard = v => { const yid = ytId(v.url), id = yid ? null : tiktokId(v.url), any = yid || id; return `<div class="reel rv${any ? ' can-play' : ''}"${yid ? ` data-yt="${yid}" data-url="${esc(v.url)}" role="button" tabindex="0" aria-label="Play ${esc(v.title)}"` : ''}${id ? ` data-tt="${id}" data-url="${esc(v.url)}" role="button" tabindex="0" aria-label="${CARD ? 'Open on TikTok: ' : 'Play '}${esc(v.title)}"` : ''}><img src="${esc(v.cover)}" alt="" loading="lazy"><span class="play" aria-hidden="true">${PLAY}</span><span>Edit reel · ${esc(v.title)}</span></div>`; };
   const reels = groups.map(g => `${g.title ? `<h3 class="h-m reel-h">${esc(g.title)}</h3>` : ''}<div class="reels">${g.clips.map(reelCard).join('')}</div>`).join('');
   return `
-  <section class="wrap page-head">
-    <p class="eyebrow">Editor</p>
-    <h1 class="h-xl" style="margin-top:10px">Edit.<br>Finish.</h1>
-  </section>
-  <section class="wrap">
+  <section class="wrap" style="padding-top:clamp(36px,6vw,88px)">
     <div class="sec-head rv"><h2 class="h-l">Video edits</h2></div>
     ${reels}
   </section>
