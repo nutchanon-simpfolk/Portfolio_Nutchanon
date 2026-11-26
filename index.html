@@ -85,8 +85,11 @@ h1,h2,h3,p{margin:0}
 .ig-btn{margin-top:6px;align-self:flex-start;font-size:13px;font-weight:600;padding:5px 14px;border-radius:999px;border:1.5px solid var(--gold);color:var(--gold);text-decoration:none;transition:background .2s,color .2s}
 .ig-btn:hover,.ig-btn:focus-visible{background:var(--gold);color:var(--gold-fg)}
 .ig-posts{display:flex;flex-wrap:wrap;gap:4px;margin-top:18px}
-.ig-posts::after{content:'';flex-grow:100000}
-.ig.wide .ig-posts::after{display:none}
+/* every card: one justified row that fills the width, no empty space; cards keep their own height */
+.ig-posts{flex-wrap:nowrap}
+.ig-posts:not(.mix) button{flex-basis:0!important;min-width:0}
+.ig-posts:not(.mix) img{width:100%;height:auto;display:block}
+.ig:not(.wide){align-self:start}
 /* 2 large vertical frames + 2 horizontal frames stacked in two tiers */
 .ig-posts.mix{display:grid;grid-template-columns:1fr 1fr 1.125fr;grid-template-rows:1fr 1fr;aspect-ratio:2.08/1}
 .ig-posts.mix::after{display:none}
