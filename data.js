@@ -91,10 +91,10 @@ window.SITE = {
       { handle: 'zanizina', photos: [] /* ยังไม่มีรูปจริง: ใส่ชื่อไฟล์ภาพแล้วการ์ดจะแสดงเอง */ },
       { handle: 'glufkanawut', photos: [] /* ยังไม่มีรูปจริง: ใส่ชื่อไฟล์ภาพแล้วการ์ดจะแสดงเอง */ }
   ],
+  /* หมวดภาพ: ตอนนี้ไม่แยก Portrait / Candid (รวมเป็นหมวดเดียว)
+     ถ้าอยากกลับไปแยก: ใช้ branch backup/portrait-candid บน GitHub */
   categories: [
-    { id: 'portrait',  title: 'Portrait',  blurb: 'ภาพบุคคลที่จัดแสงและวางท่า เน้นสีหน้า เงา และคาแรกเตอร์ของคนในภาพ', audio: 'audio/Song_BIRDS OF A FEATHER .mp3' },
-    { id: 'candid',    title: 'Candid',    blurb: 'ช่วงเวลาไม่ได้จัด ระหว่างเตรียมงานและเบื้องหลัง จับจังหวะที่เป็นธรรมชาติ', audio: 'audio/Song_505.mp3' },
-    { id: 'landscape', title: 'Landscape', blurb: 'ภาพกว้างที่เห็นทั้งฉากและบรรยากาศ (ตอนนี้ใช้ภาพแนวนอนตัวอย่างแทนไปก่อน)', audio: 'audio/Song_BIRDS OF A FEATHER .mp3' }
+    { id: 'photos', title: 'Photos', blurb: 'ภาพบุคคล เบื้องหลัง และช่วงเวลาระหว่างงาน รวมไว้ด้วยกัน', audio: 'audio/Song_BIRDS OF A FEATHER .mp3' }
   ],
   /* galleries = โฟลเดอร์รูปสี / ขาวดำ (ใช้กับ Color mode และแผ่นเสียงหน้า Home)
      แต่ละภาพ: cat = portrait | candid | landscape (ถ้าไม่ใส่ จะใช้ค่า t)  artist / event = ตัวอย่าง ให้แทนที่ด้วยของจริง */

@@ -571,7 +571,7 @@ const IC = (() => {
 /* ---------- normalize data ---------- */
 S.galleries.forEach(g => {
   g.photos = g.photos.map(p => typeof p === 'string' ? { f: p } : p);
-  g.photos.forEach((p, i) => { p.n = i + 1; p.src = p.src || g.folder + p.f; p.gt = g.title; p.gid = g.id; p.cat = p.cat || p.t || 'portrait'; p.artist = p.artist || ''; p.event = p.event || ''; p.gcap = g.caption || ''; p.cap = [[p.artist, p.event].filter(Boolean).join(' · '), g.caption || ''].filter(Boolean).join(' · '); });
+  g.photos.forEach((p, i) => { p.n = i + 1; p.src = p.src || g.folder + p.f; p.gt = g.title; p.gid = g.id; p.cat = (S.categories && S.categories.length === 1) ? S.categories[0].id : (p.cat || p.t || 'portrait'); p.artist = p.artist || ''; p.event = p.event || ''; p.gcap = g.caption || ''; p.cap = [[p.artist, p.event].filter(Boolean).join(' · '), g.caption || ''].filter(Boolean).join(' · '); });
 });
 const ALL = S.galleries.flatMap(g => g.photos);
 const CATDEF = (S.categories && S.categories.length) ? S.categories : [{ id: 'portrait', title: 'Portrait' }, { id: 'candid', title: 'Candid' }, { id: 'landscape', title: 'Landscape' }];
@@ -694,7 +694,7 @@ function homeView() {
 
 function infoView() {
   const I = S.info, P = S.profile || {};
-  const ex = [['editor', 'Editor', 'Retouch, grade, cut'], ['photographer', 'Photographer', 'Portrait & candid'], ['videographer', 'Videographer', 'Short-form video'], ['other', 'Other', 'Events & KOL']]
+  const ex = [['editor', 'Editor', 'Retouch, grade, cut'], ['photographer', 'Photographer', 'Artists & portraits'], ['videographer', 'Videographer', 'Short-form video'], ['other', 'Other', 'Events & KOL']]
     .map(([id, t, d]) => `<a class="ex rv" href="#${id}"><img src="${esc(cover[id].src)}" alt="" loading="lazy"><span><small>${esc(d)}</small><b>${t}</b></span><span class="plus" aria-hidden="true">+</span></a>`).join('');
   const photo = P.photo
     ? `<img src="${esc(P.photo)}" alt="Portrait of ${esc(P.fullName || S.name)}">`
@@ -784,7 +784,7 @@ function photographerView() {
   <section class="wrap page-head">
     <p class="eyebrow">Photographer</p>
     <h1 class="h-xl" style="margin-top:10px">Frames,<br>on record.</h1>
-    <p class="lead">Portrait, Candid, Landscape — กดหมวดเพื่อเลื่อนไปดู และสลับ Color mode เพื่อดูแยกภาพสี/ขาวดำ</p>
+    <p class="lead">กด Artist เพื่อดูผลงานแยกตามศิลปิน หรือสลับ Color mode เพื่อดูแยกภาพสี/ขาวดำ</p>
   </section>
   <div class="px-bar"><div class="wrap px-bar-in">
     <div class="px-cats" id="px-cats" role="group" aria-label="Sections"></div>
