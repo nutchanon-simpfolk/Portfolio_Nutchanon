@@ -679,7 +679,7 @@ function homeView() {
   const edClips = reelGroups().flatMap(g => g.clips.slice(0, 2)).slice(0, 4);
   /* Home photography: plain photos (no IG card). order of prominence: faymay, prangfah, fah, ply */
   const pick = f => ALL.find(p => p.f === f);
-  const hp = ['faymay6.jpg', 'faymay8.jpg', 'faymay4.jpg', 'faymay3.jpg', 'prangfah1.jpg', 'prangfah6.jpg', 'fah1.jpg', 'ply1.jpg'].map(pick).filter(Boolean);
+  const hp = ['faymay6.jpg', 'faymay8.jpg', 'faymay4.jpg', 'faymay3.jpg', 'luna2.jpg', 'prangfah6.jpg', 'fah1.jpg', 'ply1.jpg'].map(pick).filter(Boolean);
   const poolN = ALL.filter(p => /^(faymay|prangfah|fah|ply)/.test(p.f)).length;
   const hpTile = (p, i, extra) => `<a href="#photographer" class="hp-t" style="--ar:${((p.w && p.h) ? p.w / p.h : .75).toFixed(3)}" aria-label="Open photographer page"><img src="${esc(p.src)}" alt="${esc(p.alt || '')}" width="${p.w || 400}" height="${p.h || 533}" loading="lazy">${extra ? `<span class="ig-more">+${extra}</span>` : ''}</a>`;
   const homePhotos = hp.length >= 8 ? `<div class="hp"><div class="hp-mix">${hp.slice(0, 4).map((p, i) => hpTile(p, i)).join('')}</div><div class="hp-row">${hp.slice(4).map((p, i, a) => hpTile(p, i, i === a.length - 1 ? poolN - hp.length : 0)).join('')}</div></div>` : '';
