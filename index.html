@@ -94,6 +94,19 @@ h1,h2,h3,p{margin:0}
 .ig-grid.mas{grid-auto-rows:2px;row-gap:0;grid-auto-flow:row dense}
 .ig-grid.mas .ig{margin-bottom:18px}
 /* 2 large vertical frames + 2 horizontal frames stacked in two tiers */
+.hp{display:grid;gap:4px}
+.hp-mix{display:grid;grid-template-columns:1fr 1fr 1.125fr;grid-template-rows:1fr 1fr;gap:4px;aspect-ratio:2.08/1}
+.hp-mix .hp-t:nth-child(1){grid-area:1/1/3/2}.hp-mix .hp-t:nth-child(2){grid-area:1/2/3/3}.hp-mix .hp-t:nth-child(3){grid-area:1/3/2/4}.hp-mix .hp-t:nth-child(4){grid-area:2/3/3/4}
+.hp-mix img{width:100%;height:100%;object-fit:cover}
+.hp-row{display:flex;gap:4px}
+.hp-row .hp-t{flex:var(--ar) 1 0;min-width:0}
+.hp-row img{width:100%;height:auto;display:block}
+.hp-t{position:relative;display:block;border-radius:8px;overflow:hidden;background:var(--surface-2)}
+.hp-t::after{content:'';position:absolute;inset:0;border-radius:8px;box-shadow:inset 0 0 0 1px rgba(128,128,128,.22);pointer-events:none}
+.hp-t img{transition:opacity .2s}.hp-t:hover img{opacity:.85}
+@media (max-width:640px){.hp-mix{grid-template-columns:1fr 1fr;grid-template-rows:none;aspect-ratio:auto}
+ .hp-mix .hp-t:nth-child(1){grid-area:1/1;aspect-ratio:2/3}.hp-mix .hp-t:nth-child(2){grid-area:1/2;aspect-ratio:2/3}
+ .hp-mix .hp-t:nth-child(3){grid-area:2/1/3/3;aspect-ratio:3/2}.hp-mix .hp-t:nth-child(4){grid-area:3/1/4/3;aspect-ratio:3/2}}
 .ig-posts.mix{display:grid;grid-template-columns:1fr 1fr 1.125fr;grid-template-rows:1fr 1fr;aspect-ratio:2.08/1}
 .ig-posts.mix::after{display:none}
 .ig-posts.mix button:nth-child(1){grid-area:1/1/3/2}
@@ -663,7 +676,13 @@ function homeView() {
     </a>`).join('');
   const vids = ((H.videos && H.videos.length) ? H.videos : [0, 1, 2, 3]).map(i => ({ v: S.videos[i], i })).filter(x => x.v).slice(0, 4);
   const meta = metaHtml();
-  const homeArtists = artistCards(3);
+  const edClips = reelGroups().flatMap(g => g.clips.slice(0, 2)).slice(0, 4);
+  /* Home photography: plain photos (no IG card). order of prominence: faymay, prangfah, fah, ply */
+  const pick = f => ALL.find(p => p.f === f);
+  const hp = ['faymay6.jpg', 'prangfah1.jpg', 'faymay4.jpg', 'faymay2.jpg', 'fah1.jpg', 'ply1.jpg', 'faymay3.jpg'].map(pick).filter(Boolean);
+  const poolN = ALL.filter(p => /^(faymay|prangfah|fah|ply)/.test(p.f)).length;
+  const hpTile = (p, i, extra) => `<a href="#photographer" class="hp-t" style="--ar:${((p.w && p.h) ? p.w / p.h : .75).toFixed(3)}" aria-label="Open photographer page"><img src="${esc(p.src)}" alt="${esc(p.alt || '')}" width="${p.w || 400}" height="${p.h || 533}" loading="lazy">${extra ? `<span class="ig-more">+${extra}</span>` : ''}</a>`;
+  const homePhotos = hp.length >= 7 ? `<div class="hp"><div class="hp-mix">${hp.slice(0, 4).map((p, i) => hpTile(p, i)).join('')}</div><div class="hp-row">${hp.slice(4).map((p, i, a) => hpTile(p, i, i === a.length - 1 ? poolN - hp.length : 0)).join('')}</div></div>` : '';
   return `
   <section class="wrap home-hero">
     <div>
@@ -681,13 +700,13 @@ function homeView() {
     <div class="hh-photo">${photo}</div>
   </section>
   <section class="wrap section">
-    <div class="sec-head rv"><div><p class="eyebrow">Selected work</p><h2 class="h-l" style="margin-top:6px">Photography</h2></div><a class="btn" href="#photographer" data-goto-artist>View all artists</a></div>
-    ${homeArtists ? `<div class="home-artists rv">${homeArtists}</div>` : `${RECORDS.some(r => r.audio) ? '<p class="mono" style="color:var(--mute);margin:-8px 0 14px">♪ Hover a record to play its track</p>' : ''}<div class="hrecs rv">${recCards}</div>`}
+    <div class="sec-head rv"><div><p class="eyebrow">Selected work</p><h2 class="h-l" style="margin-top:6px">Photography</h2></div><a class="btn" href="#photographer">View all photos</a></div>
+    ${homePhotos ? `<div class="rv">${homePhotos}</div>` : `${RECORDS.some(r => r.audio) ? '<p class="mono" style="color:var(--mute);margin:-8px 0 14px">♪ Hover a record to play its track</p>' : ''}<div class="hrecs rv">${recCards}</div>`}
   </section>
   <section class="wrap section" style="padding-top:0">
     <div class="vt rv">
-      <div class="vt-head"><div><p class="eyebrow" style="color:#a1a1a6">Selected work</p><h2 class="h-l" style="margin-top:6px">Videography</h2><p>Short-form videos from TikTok.</p></div><a class="btn btn-light" href="#videographer">View all videos</a></div>
-      <div class="vt-row">${vids.map(x => `<a class="vt-c" href="#videographer" data-goto-vid="${x.i}" aria-label="Open ${esc(x.v.title)}"><img src="${esc(x.v.cover)}" alt="" loading="lazy"><span class="play" aria-hidden="true">${PLAY}</span><span class="t">${esc(x.v.title)}</span></a>`).join('')}</div>
+      <div class="vt-head"><div><p class="eyebrow" style="color:#a1a1a6">Selected work</p><h2 class="h-l" style="margin-top:6px">Editor</h2><p>Video edits: A-roll and storytelling.</p></div><a class="btn btn-light" href="#editor">View all edits</a></div>
+      <div class="vt-row">${edClips.map(v => `<a class="vt-c" href="#editor" aria-label="Open ${esc(v.title)}"><img src="${esc(v.cover)}" alt="" loading="lazy"><span class="play" aria-hidden="true">${PLAY}</span><span class="t">${esc(v.title)}</span></a>`).join('')}</div>
     </div>
   </section>`;
 }
