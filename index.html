@@ -1093,10 +1093,6 @@ function otherView() {
   <section class="wrap section" style="padding-top:0">
     <div class="feat dark rv feat-wide"><div><p class="eyebrow" style="color:#a1a1a6">03</p><h2 class="h-l" style="margin-top:6px">${esc(O.kol.title)}</h2></div><p class="lead">${esc(O.kol.lead)}</p><ul>${evList(O.kol.work || [], ['Creator shortlist & matching', 'Negotiation & scheduling', 'Content production support', 'Post-campaign report'])}</ul></div>
   </section>
-  <section class="wrap section">
-    <div class="sec-head rv"><h2 class="h-l">How KOL sourcing works</h2></div>
-    <div class="steps">${O.kol.steps.map((s, i) => `<div class="card step rv"><b>${pad(i + 1)}</b><h3>${esc(s.t)}</h3><p>${esc(s.d)}</p></div>`).join('')}</div>
-  </section>
   <section class="wrap section" style="padding-top:0">
     <div class="card rv" style="display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap">
       <div><h2 class="h-m">Have an event or a campaign brief?</h2><p style="color:var(--mute);margin-top:6px">Send the date, place and goal. We’ll reply with a plan.</p></div>
