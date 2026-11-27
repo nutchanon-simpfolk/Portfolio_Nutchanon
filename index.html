@@ -1113,7 +1113,7 @@ const TRACKS = {
   color: { id:'color', title:'BIRDS OF A FEATHER', artist:'Billie Eilish', src:'audio/Song_BIRDS OF A FEATHER .mp3' },
   bw: { id:'bw', title:'505', artist:'Arctic Monkeys', src:'audio/Song_505.mp3' }
 };
-let activeTrack = null, musicRoute = 'home', musicStarted = false;
+let activeTrack = null, musicRoute = 'home', musicStarted = false, userPaused = false; /* userPaused: viewer pressed Pause, so track changes must not restart sound */
 const musicBox = document.getElementById('site-music');
 const musicTitle = document.getElementById('sm-title');
 const musicArtist = document.getElementById('sm-artist');
@@ -1166,7 +1166,7 @@ function setMusicTrack(id, autoplay) {
     const a = audioFor(id);
     if (a) { a.currentTime = 0; a.volume = (Number(musicVolume.value) || 0) / 100; }
   }
-  if (autoplay) recPlay(id);
+  if (autoplay && !userPaused) recPlay(id);
 }
 function syncMusicForSection(sectionId) {
   if (musicRoute !== 'photographer' || pxMode !== 'color' || pxArtist) return;
@@ -1189,8 +1189,8 @@ function syncMusicForPage(routeId) {
 musicToggle.addEventListener('click', () => {
   if (!activeTrack) setMusicTrack('photos', false);
   const a = audioFor(activeTrack.id); if (!a) return;
-  if (!a.paused) { a.pause(); musicStatus.textContent='หยุดเพลงแล้ว'; }
-  else { recPlay(activeTrack.id); }
+  if (!a.paused) { userPaused = true; a.pause(); musicStatus.textContent='หยุดเพลงแล้ว'; }
+  else { userPaused = false; recPlay(activeTrack.id); }
 });
 musicVolume.addEventListener('input', () => {
   const v = Number(musicVolume.value)/100;
@@ -1207,6 +1207,7 @@ addEventListener('scroll', () => {
   const sections = [...document.querySelectorAll('#px-root .px-sec')];
   const current = sections.find(s => { const r=s.getBoundingClientRect(); return r.top < innerHeight*.58 && r.bottom > innerHeight*.3; });
   if (current) syncMusicForSection(current.id);
+  else if (sections.length && sections[0].getBoundingClientRect().top >= innerHeight*.58) syncMusicForSection(sections[0].id); /* above the first record: first track */
 }, {passive:true});
 addEventListener('hashchange', () => { lockId = null; recLeave(true); });
 addEventListener('hashchange', route);
