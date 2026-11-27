@@ -88,7 +88,7 @@ window.SITE = {
       { handle: 'pai_makeup', photos: ['ply1.jpg', 'ply2.jpg', 'ply3.jpg'] },
       { handle: 'babarabeer_makeup', photos: ['beer1.jpg', 'beer2.jpg'] },
       { handle: 'boooon_20', photos: ['fah1.jpg', 'prangfah1.jpg', 'prangfah2.jpg', 'fah2.jpg', 'prangfah3.jpg', 'prangfah4.jpg', 'prangfah5.jpg', 'prangfah6.jpg'] },
-      { handle: 'zanizina', photos: [] /* ยังไม่มีรูปจริง: ใส่ชื่อไฟล์ภาพแล้วการ์ดจะแสดงเอง */ },
+      { handle: 'zanizina', photos: ['zanizina1.jpg'] },
       { handle: 'glufkanawut', photos: [] /* ยังไม่มีรูปจริง: ใส่ชื่อไฟล์ภาพแล้วการ์ดจะแสดงเอง */ }
   ],
   /* หมวดภาพ: ตอนนี้ไม่แยก Portrait / Candid (รวมเป็นหมวดเดียว)
@@ -111,6 +111,8 @@ window.SITE = {
         { f:'faymay1.jpg', src:'images/faymay/faymay1.jpg', artist:'fay_riezz & maywyda', event:'', w:1024, h:1536, t:'candid', alt:'Two women on a floral sofa, one reading a book while the other lies across her lap' },
         { f:'faymay2.jpg', src:'images/faymay/faymay2.jpg', artist:'fay_riezz & maywyda', event:'', w:1535, h:1024, t:'portrait', alt:'Two women smiling, wrapped together in one striped blanket against a blue wall' },
         { f:'faymay3.jpg', src:'images/faymay/faymay3.jpg', artist:'fay_riezz & maywyda', event:'', w:1447, h:1087, t:'candid', alt:'Two women on a floral sofa, one lying down laughing while the other looks at her book' },
+        /* ภาพจริงของ zanizina (images/zanizina) */
+        { f:'zanizina1.jpg', src:'images/zanizina/zanizina1.jpg', artist:'zanizina', event:'', w:1334, h:2000, t:'portrait', alt:'Smiling woman with red hair in a bun waving her hand at the camera, in a black cardigan' },
         /* ภาพจริงของ ppanward (images/panward) */
         { f:'ppanward1.jpg', src:'images/panward/ppanward1.jpg', artist:'ppanward', event:'', w:1357, h:2037, t:'portrait', alt:'Woman in a yellow dress sitting on the floor holding a paint palette beside a painted flower' },
         { f:'ppanward2.jpg', src:'images/panward/ppanward2.jpg', artist:'ppanward', event:'', w:2407, h:1603, t:'candid', alt:'Woman in a yellow dress sitting cross-legged and painting pink flowers on a glass wall' },

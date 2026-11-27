@@ -89,6 +89,8 @@ h1,h2,h3,p{margin:0}
 .ig-posts{flex-wrap:nowrap}
 .ig-posts:not(.mix) button{flex-basis:0!important;min-width:0}
 .ig-posts:not(.mix) img{width:100%;height:auto;display:block}
+.ig-posts:has(> button:only-child){max-width:min(100%,380px)}
+.ig-posts:has(> button:only-child) button{flex:1 1 auto!important}
 .ig{align-self:start}
 /* masonry: cards pull up into free space (row unit 2px, spans set by pxMasonry) */
 .ig-grid.mas{grid-auto-rows:2px;row-gap:0;grid-auto-flow:row dense}
@@ -933,7 +935,7 @@ function artistCards(limit) {
   if (!arts.length) return '';
   const shown = limit ? arts.slice(0, limit) : arts;
   const av = a => `<div class="ig-av"><img src="${esc((a.avatarPhoto || a.list[0]).src)}" alt="" loading="lazy"></div>`;
-  const idb = (h, a) => `<div class="ig-id"><b>@${esc(h)}</b><span>Artist${a.hs.length < 2 ? ` · ${a.list.length} frames` : ''}</span>
+  const idb = (h, a) => `<div class="ig-id"><b>@${esc(h)}</b><span>Artist${a.hs.length < 2 ? ` · ${a.list.length} ${a.list.length === 1 ? 'frame' : 'frames'}` : ''}</span>
             <a class="ig-btn" href="https://www.instagram.com/${encodeURIComponent(h)}/" target="_blank" rel="noopener">${igIcon}Instagram</a></div>`;
   const prof = (h, a) => `<div class="ig-top">${av(a)}${idb(h, a)}</div>`;
   const tops = a => a.hs.length > 1 ? `<div class="ig-top">${av(a)}<div class="ig-ids">${a.hs.map(h => idb(h, a)).join('')}</div></div>` : prof(a.hs[0], a);
