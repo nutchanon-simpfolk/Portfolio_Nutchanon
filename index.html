@@ -479,6 +479,9 @@ h1,h2,h3,p{margin:0}
 .feat li.ev b{font-size:19px;font-weight:600;color:var(--fg)}
 .feat.dark li.ev b{color:#f5f5f7}
 .feat li.ev span{font-size:15px}
+.feat li.ev .ev-role{align-self:flex-start;display:inline-flex;align-items:center;gap:8px;margin:6px 0 4px;padding:4px 12px 4px 10px;border-radius:999px;font-size:14px;font-weight:600;background:var(--fg);color:var(--bg)}
+.feat li.ev .ev-role small{font-size:11px;font-weight:500;letter-spacing:.04em;opacity:.7}
+.feat.dark li.ev .ev-role{background:#f5f5f7;color:#000}
 .feat .ev-d{list-style:none;margin:8px 0 0;padding:0;display:flex;flex-direction:column;gap:5px}
 .feat .ev-d li{border:0;padding:0 0 0 16px;position:relative;font-size:15px;line-height:1.5}
 .feat .ev-d li::before{content:'–';position:absolute;left:0}
@@ -1074,7 +1077,7 @@ function bindVideographer() {
 /* events / workshops / KOL work: title + date · role + bullet details; newest first when dated */
 function evList(list, fallback) {
   if (!(list && list.length)) return (fallback || []).map(i => `<li>${esc(i)}</li>`).join('');
-  return [...list].sort((x, y) => String(y.date || '').localeCompare(String(x.date || ''))).map(e => `<li class="ev"><b>${esc(e.title)}</b>${e.label ? `<span>${esc(e.label)}</span>` : ''}${(e.roles || []).length ? `<span>ตำแหน่ง : ${esc(e.roles.join(', '))}</span>` : ''}${(e.details || []).length ? `<ul class="ev-d">${e.details.map(t => `<li>${esc(t)}</li>`).join('')}</ul>` : ''}</li>`).join('');
+  return [...list].sort((x, y) => String(y.date || '').localeCompare(String(x.date || ''))).map(e => `<li class="ev"><b>${esc(e.title)}</b>${(e.roles || []).length ? `<span class="ev-role"><small>ตำแหน่ง</small>${esc(e.roles.join(', '))}</span>` : ''}${e.label ? `<span>${esc(e.label)}</span>` : ''}${(e.details || []).length ? `<ul class="ev-d">${e.details.map(t => `<li>${esc(t)}</li>`).join('')}</ul>` : ''}</li>`).join('');
 }
 function otherView() {
   const O = S.other;
