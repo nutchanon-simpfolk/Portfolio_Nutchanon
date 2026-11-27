@@ -553,11 +553,23 @@ h1,h2,h3,p{margin:0}
 #site-music button:focus-visible,#site-music input:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 #site-music .sm-volume{display:flex;align-items:center;gap:7px;margin-top:12px;color:var(--mute)}
 #site-music input[type=range]{width:100%;min-width:0;accent-color:var(--fg)}
+/* cat sticker (images/cat.gif): hangs under the hovered menu item; sits on top of the music player */
+:root{--cat-filter:none}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--cat-filter:invert(1) hue-rotate(180deg)}}
+:root[data-theme="dark"]{--cat-filter:invert(1) hue-rotate(180deg)}
+.cat{filter:var(--cat-filter);pointer-events:none;user-select:none;-webkit-user-drag:none}
+.cat-nav{position:fixed;z-index:49;width:104px;height:auto;left:0;top:0;opacity:0;transform:scaleY(-1) translateY(45%);transition:opacity .18s ease,transform .28s cubic-bezier(.34,1.56,.64,1)}
+.cat-nav.on{opacity:1;transform:scaleY(-1) translateY(0)}
+.cat-nav[hidden]{display:none}
+#site-music .cat-player{position:absolute;width:104px;height:auto;left:50%;top:-27px;transform:translateX(-50%)}
+#site-music{padding-top:34px}
+@media (max-width:760px){.cat-nav{display:none!important}}
 #site-music .sm-status{font-size:10px;line-height:1.35;color:var(--mute);margin-top:8px}
 @media(max-width:760px){
   /* bottom bar, like a browser tab bar: [title / artist] [play] [volume] */
+  #site-music .cat-player{width:62px;left:44%;right:auto;top:-16px;transform:none}
   #site-music{left:0;right:0;bottom:0;top:auto;transform:none;width:auto;min-height:0;border-radius:0;border-width:1px 0 0;box-shadow:0 -6px 24px var(--shadow);
-    padding:8px max(14px,env(safe-area-inset-right,0px)) calc(8px + env(safe-area-inset-bottom,0px)) max(14px,env(safe-area-inset-left,0px));
+    padding:16px max(14px,env(safe-area-inset-right,0px)) calc(8px + env(safe-area-inset-bottom,0px)) max(14px,env(safe-area-inset-left,0px));
     display:grid;grid-template-columns:minmax(0,1fr) auto auto;grid-template-rows:auto auto;column-gap:12px;align-items:center}
   #site-music .sm-kicker,#site-music .sm-status,#site-music #sm-volume-label{display:none}
   #site-music .sm-title{grid-column:1;grid-row:1;margin:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:13px}
@@ -576,6 +588,7 @@ h1,h2,h3,p{margin:0}
 <body>
 
 
+<img class="cat cat-nav" id="cat-nav" alt="" aria-hidden="true" width="480" height="348" draggable="false" hidden>
 <header class="nav">
   <div class="wrap nav-in">
     <a class="brand" href="#home" id="brand">Simpfolk</a>
@@ -623,6 +636,7 @@ h1,h2,h3,p{margin:0}
 
 <script src="data.js"></script>
 <aside id="site-music" aria-label="Music player">
+  <img class="cat cat-player" alt="" aria-hidden="true" width="480" height="348" draggable="false">
   <div class="sm-kicker">Now playing</div>
   <div class="sm-title" id="sm-title">Do you think you could love me</div>
   <div class="sm-artist" id="sm-artist">Yung Kai</div>
@@ -1353,6 +1367,33 @@ document.addEventListener('keydown', e => {
 let sx = null;
 $('#lb-stage').addEventListener('pointerdown', e => { sx = e.clientX; });
 $('#lb-stage').addEventListener('pointerup', e => { if (sx === null) return; const dx = e.clientX - sx; sx = null; if (Math.abs(dx) > 50) step(dx < 0 ? 1 : -1); });
+
+/* ---------- cat sticker ---------- */
+(() => {
+  const GIF = 'images/cat.gif', STILL = 'images/cat-still.png';
+  const src = () => matchMedia('(prefers-reduced-motion: reduce)').matches ? STILL : GIF;
+  const nav = document.querySelector('.nav'), links = document.getElementById('nav-links'), cat = document.getElementById('cat-nav');
+  document.querySelectorAll('.cat-player').forEach(i => { i.src = src(); });
+  const HOVER = matchMedia('(hover:hover) and (pointer:fine) and (min-width:761px)');
+  if (!nav || !links || !cat) return;
+  let loaded = false, t;
+  const show = a => {
+    if (!HOVER.matches) return;
+    clearTimeout(t);
+    if (!loaded) { cat.src = src(); loaded = true; }
+    cat.hidden = false;
+    const r = a.getBoundingClientRect(), nb = nav.getBoundingClientRect().bottom, w = 104;
+    cat.style.left = Math.round(r.left + r.width / 2 - w / 2) + 'px';
+    cat.style.top = Math.round(nb - 14) + 'px';
+    requestAnimationFrame(() => cat.classList.add('on'));
+  };
+  const hide = () => { cat.classList.remove('on'); t = setTimeout(() => { cat.hidden = true; }, 320); };
+  links.addEventListener('mouseover', e => { const a = e.target.closest('a'); if (a) show(a); });
+  links.addEventListener('mouseleave', hide);
+  links.addEventListener('focusin', e => { const a = e.target.closest('a'); if (a && e.target.matches(':focus-visible')) show(a); });
+  links.addEventListener('focusout', hide);
+  addEventListener('hashchange', hide);
+})();
 </script>
 
 
