@@ -200,12 +200,29 @@ window.SITE = {
       items: ['Event photo & video coverage', 'Highlight reel', 'Same-day edit', 'Backstage & candid moments'],
       /* งานอีเวนต์ที่เคยร่วม: date = 'ปี-เดือน' ใช้เรียง (ใหม่ขึ้นก่อนอัตโนมัติ)  label = ข้อความที่แสดง  roles = บทบาท */
       list: [
-        { title: 'TOA 3X3 Basketball', date: '2024-07', label: 'July 2024', roles: ['Content Creator'] },
-        { title: 'CP innovation @true digital park', date: '2025-09', label: 'September 2025', roles: ['Staff', 'Coordinator'] }
+        { title: 'TOA 3X3 Basketball', date: '2024-07', label: 'July 2024', roles: ['Content Creator'],
+          details: ['ถามคำถาม สัมภาษณ์ผู้ชมข้างสนาม', 'ถ่ายคลิปสำหรับไปตัดต่อทำสื่อออนไลน์'] },
+        { title: 'CP innovation @true digital park', date: '2025-09', label: 'September 2025', roles: ['Staff', 'Coordinator'],
+          details: ['ประสานงานระหว่างลูกค้าและผู้จัด', 'ดูแลโปรแกรมหลังบ้าน', 'คอยตอบปัญหาลูกค้าและหาทางแก้ไข'] }
+      ]
+    },
+    /* Workshop: date ใช้เรียง (ใหม่ขึ้นก่อนอัตโนมัติ) */
+    workshops: {
+      title: 'Workshop',
+      lead: 'ประสบการณ์เป็นวิทยากรและผู้ช่วยวิทยากร',
+      list: [
+        { title: 'วิทยาลัยอาชีวศึกษาสระบุรี', date: '2024', label: 'กิจกรรมนักศึกษาทุน 2024', roles: ['Assistant Lecturer'],
+          details: ['ให้คำปรึกษาและไกด์เกี่ยวกับกระบวนการทางการถ่ายทำ', 'สอนวิธีคิดและคอยกำกับขณะจัดทำสื่อ'] },
+        { title: 'โรงเรียนสระบุรีวิทยาคม', date: '2023', label: 'กิจกรรมนอกหลักสูตร 2023', roles: ['Lecturer'],
+          details: ['อภิปรายเกี่ยวกับการเรียนการสอน และทุนการศึกษา', 'จัดกิจกรรมตอบคำถามชิงของรางวัล'] }
       ]
     },
     kol: {
       title: 'KOL Sourcing',
+      /* งาน KOL ที่ทำจริง (แสดงแทนรายการตัวอย่างเดิม) */
+      work: [
+        { title: 'Freelance', details: ['ค้นหาอินฟลูเอนเซอร์ที่เหมาะสมกับงาน และจัดทำพรีเซนต์สำหรับนำเสนอบริษัท', 'จัดทำรีพอร์ตหลังจบแคมเปญเกี่ยวกับสินค้า', 'ทำจ่ายตามรอบแก่อินฟลูเอนเซอร์แต่ละคน'] }
+      ],
       lead: 'จัดหา KOL และครีเอเตอร์ให้ตรงกับแบรนด์และงบประมาณ พร้อมประสานงานจนจบแคมเปญ',
       steps: [
         { t: 'Brief',    d: 'รับโจทย์ เป้าหมาย งบ และกลุ่มเป้าหมาย' },

@@ -479,6 +479,14 @@ h1,h2,h3,p{margin:0}
 .feat li.ev b{font-size:19px;font-weight:600;color:var(--fg)}
 .feat.dark li.ev b{color:#f5f5f7}
 .feat li.ev span{font-size:15px}
+.feat .ev-d{list-style:none;margin:8px 0 0;padding:0;display:flex;flex-direction:column;gap:5px}
+.feat .ev-d li{border:0;padding:0 0 0 16px;position:relative;font-size:15px;line-height:1.5}
+.feat .ev-d li::before{content:'–';position:absolute;left:0}
+.big2 .feat ul{margin-top:8px}
+.feat-wide{min-height:0}
+.feat-wide ul{margin-top:8px}
+@media (min-width:861px){.feat-wide{flex-direction:row;flex-wrap:wrap;align-items:flex-start;column-gap:48px}.feat-wide>div:first-child{flex:0 0 240px}.feat-wide .lead{flex:1 1 280px;margin:0}.feat-wide ul{flex:1 1 100%}}
+
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .feat.dark{background:var(--surface)}}
 :root[data-theme="dark"] .feat.dark{background:var(--surface)}
 
@@ -1063,6 +1071,11 @@ function bindVideographer() {
   });
 }
 
+/* events / workshops / KOL work: title + date · role + bullet details; newest first when dated */
+function evList(list, fallback) {
+  if (!(list && list.length)) return (fallback || []).map(i => `<li>${esc(i)}</li>`).join('');
+  return [...list].sort((x, y) => String(y.date || '').localeCompare(String(x.date || ''))).map(e => `<li class="ev"><b>${esc(e.title)}</b>${e.label ? `<span>${esc(e.label)}</span>` : ''}${(e.roles || []).length ? `<span>ตำแหน่ง : ${esc(e.roles.join(', '))}</span>` : ''}${(e.details || []).length ? `<ul class="ev-d">${e.details.map(t => `<li>${esc(t)}</li>`).join('')}</ul>` : ''}</li>`).join('');
+}
 function otherView() {
   const O = S.other;
   return `
@@ -1071,9 +1084,12 @@ function otherView() {
     <div class="films">${O.films.map(f => { const id = ytId(f.url); return `<article class="film rv"><div class="film-v${id ? ' can-play' : ''}"${id ? ` data-yt="${id}" data-url="${esc(f.url)}" data-title="${esc(f.title)}" role="button" tabindex="0" aria-label="Play ${esc(f.title)}"` : ''}>${id ? `<img src="https://i.ytimg.com/vi/${id}/hqdefault.jpg" alt="" loading="lazy"><span class="play" aria-hidden="true">${PLAY}</span>` : ''}</div><div class="film-b"><div class="chips">${(f.roles || []).map(r => `<span>${esc(r)}</span>`).join('')}</div><h3>${esc(f.title)}</h3><p><b>Detail</b> · ${esc(f.detail)}</p><p><b>Concept</b> · ${esc(f.concept)}</p></div></article>`; }).join('')}</div>
   </section>` : ''}
   <section class="wrap section"><div class="big2">
-    <div class="feat dark rv"><div><p class="eyebrow" style="color:#a1a1a6">01</p><h2 class="h-l" style="margin-top:6px">${esc(O.events.title)}</h2></div><p class="lead">${esc(O.events.lead)}</p><ul>${(O.events.list && O.events.list.length ? [...O.events.list].sort((x, y) => String(y.date).localeCompare(String(x.date))).map(e => `<li class="ev"><b>${esc(e.title)}</b><span>${esc(e.label || e.date)} · ${esc((e.roles || []).join(', '))}</span></li>`) : O.events.items.map(i => `<li>${esc(i)}</li>`)).join('')}</ul></div>
-    <div class="feat gray rv"><div><p class="eyebrow">02</p><h2 class="h-l" style="margin-top:6px">${esc(O.kol.title)}</h2></div><p class="lead">${esc(O.kol.lead)}</p><ul>${['Creator shortlist & matching', 'Negotiation & scheduling', 'Content production support', 'Post-campaign report'].map(i => `<li>${i}</li>`).join('')}</ul></div>
+    <div class="feat dark rv"><div><p class="eyebrow" style="color:#a1a1a6">01</p><h2 class="h-l" style="margin-top:6px">${esc(O.events.title)}</h2></div><p class="lead">${esc(O.events.lead)}</p><ul>${evList(O.events.list, O.events.items)}</ul></div>
+    ${O.workshops ? `<div class="feat gray rv"><div><p class="eyebrow">02</p><h2 class="h-l" style="margin-top:6px">${esc(O.workshops.title)}</h2></div><p class="lead">${esc(O.workshops.lead)}</p><ul>${evList(O.workshops.list)}</ul></div>` : ''}
   </div></section>
+  <section class="wrap section" style="padding-top:0">
+    <div class="feat dark rv feat-wide"><div><p class="eyebrow" style="color:#a1a1a6">03</p><h2 class="h-l" style="margin-top:6px">${esc(O.kol.title)}</h2></div><p class="lead">${esc(O.kol.lead)}</p><ul>${evList(O.kol.work || [], ['Creator shortlist & matching', 'Negotiation & scheduling', 'Content production support', 'Post-campaign report'])}</ul></div>
+  </section>
   <section class="wrap section">
     <div class="sec-head rv"><h2 class="h-l">How KOL sourcing works</h2></div>
     <div class="steps">${O.kol.steps.map((s, i) => `<div class="card step rv"><b>${pad(i + 1)}</b><h3>${esc(s.t)}</h3><p>${esc(s.d)}</p></div>`).join('')}</div>
