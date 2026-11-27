@@ -50,7 +50,7 @@ window.SITE = {
     experience: [
       { period: '2025 – Now', title: '', org: 'COSDENT COMPANY LIMITED', points: ['Marketing', 'Video and Photographer'] },
       { period: 'July – October 2024', title: '', org: 'Mainstand Creator (Thailand) Co., Ltd', points: ['Video and Photographer', 'Livestream'] },
-      { period: '2024 – 2026', title: 'Content Creator - Outsidezitys', org: '', points: ['Editor', 'Creative', 'Graphic'],
+      { side: true, period: '2024 – 2026', title: 'Content Creator - Outsidezitys', org: '', points: ['Editor', 'Creative', 'Graphic'],
         links: [
           { label: 'TikTok', url: 'https://www.tiktok.com/@outsidezitys' },
           { label: 'YouTube', url: 'https://www.youtube.com/@OutsideZitys-ฟุตบอลปลายแถว' }
